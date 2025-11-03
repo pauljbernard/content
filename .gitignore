@@ -1,0 +1,5 @@
+# Spec-kit agent folder - ignore user settings but keep commands
+.claude/settings.local.json
+.claude/*.local.*
+.claude/cache/
+.claude/logs/
