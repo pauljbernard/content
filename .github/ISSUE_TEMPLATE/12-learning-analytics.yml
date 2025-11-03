@@ -1,0 +1,110 @@
+name: 📊 Learning Analytics
+description: Analyze learning outcomes, calculate metrics, generate insights
+title: "[Analytics] "
+labels: ["learning-analytics", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Learning Analytics Request
+
+        Use Professor's analytics capabilities to analyze learning data and generate actionable insights.
+
+        **Skills Used:**
+        - `curriculum.analyze-outcomes` - Analyze learning outcomes
+        - `learning.impact-measurement` - Measure learning impact
+        - `learning.kirkpatrick-evaluation` - Kirkpatrick evaluation
+
+        **Agent:** `learning-analytics` provides comprehensive analysis
+
+  - type: dropdown
+    id: analysis_type
+    attributes:
+      label: Analysis Type
+      options:
+        - Outcome Analysis (mastery rates, gaps)
+        - Impact Measurement (effectiveness)
+        - Kirkpatrick Evaluation (L1-L4)
+        - Diagnostic Analytics (pre-assessment)
+        - Formative Analytics (ongoing progress)
+        - Summative Analytics (final results)
+        - Predictive Analytics (forecasting)
+    validations:
+      required: true
+
+  - type: input
+    id: data_source
+    attributes:
+      label: Data Source
+      description: Path to assessment data or results file
+      placeholder: "analytics/assessment-results.csv"
+    validations:
+      required: true
+
+  - type: textarea
+    id: learning_objectives
+    attributes:
+      label: Learning Objectives
+      description: What were the learning objectives being measured?
+      placeholder: |
+        - Objective 1: Students will...
+        - Objective 2: Students will...
+    validations:
+      required: false
+
+  - type: dropdown
+    id: cohort_size
+    attributes:
+      label: Cohort Size
+      options:
+        - Small (< 30 students)
+        - Medium (30-100 students)
+        - Large (100-500 students)
+        - Very Large (> 500 students)
+    validations:
+      required: false
+
+  - type: textarea
+    id: analysis_questions
+    attributes:
+      label: Analysis Questions
+      description: What specific questions should the analysis answer?
+      placeholder: |
+        - What is the overall mastery rate?
+        - Which objectives had the lowest performance?
+        - Are there achievement gaps by demographic?
+        - Did the intervention improve outcomes?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: deliverables
+    attributes:
+      label: Analytics Deliverables
+      options:
+        - label: "Executive summary report"
+          required: false
+        - label: "Detailed statistical analysis"
+          required: false
+        - label: "Data visualizations (charts, graphs)"
+          required: false
+        - label: "Objective-level breakdown"
+          required: false
+        - label: "Achievement gap analysis"
+          required: false
+        - label: "Recommendations for improvement"
+          required: false
+        - label: "Predictive insights"
+          required: false
+        - label: "Interactive dashboard"
+          required: false
+
+  - type: input
+    id: output_location
+    attributes:
+      label: Output Location
+      value: "analytics/reports/"
+    validations:
+      required: true

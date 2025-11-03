@@ -1,0 +1,79 @@
+name: 📋 Grading Assistance
+description: Apply rubrics, provide feedback, assist with grading student work
+title: "[Grading] "
+labels: ["grading-assistance", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Grading Assistance Request
+
+        **Skills Used:**
+        - `curriculum.grade-assist` - Apply rubrics and grade work
+        - `learning.formative-assessment` - Provide formative feedback
+
+  - type: input
+    id: submissions_path
+    attributes:
+      label: Student Submissions Path
+      description: Path to student work files
+      placeholder: "analytics/submissions/"
+    validations:
+      required: true
+
+  - type: input
+    id: rubric_path
+    attributes:
+      label: Rubric File Path
+      description: Path to scoring rubric
+      placeholder: "assessments/rubrics/essay-rubric.json"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: assignment_type
+    attributes:
+      label: Assignment Type
+      options:
+        - Essay/written response
+        - Problem solving (math/science)
+        - Project/presentation
+        - Code/programming
+        - Performance task
+        - Multiple assignments (batch)
+    validations:
+      required: true
+
+  - type: input
+    id: submission_count
+    attributes:
+      label: Number of Submissions
+      placeholder: "e.g., 30 students"
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: grading_options
+    attributes:
+      label: Grading Options
+      options:
+        - label: "Apply rubric consistently across all submissions"
+          required: false
+        - label: "Provide detailed criterion-level feedback"
+          required: false
+        - label: "Identify common patterns/issues across submissions"
+          required: false
+        - label: "Generate summary statistics"
+          required: false
+        - label: "Flag submissions needing human review"
+          required: false
+
+  - type: input
+    id: output_location
+    attributes:
+      label: Output Location
+      value: "analytics/grading-results/"
+    validations:
+      required: true

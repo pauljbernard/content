@@ -1,0 +1,159 @@
+name: 📝 Assessment Creation
+description: Design and create assessments - items, rubrics, blueprints
+title: "[Assessment] "
+labels: ["assessment-creation", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Assessment Creation Request
+
+        Use Professor's assessment design capabilities to create comprehensive assessment systems aligned to learning objectives.
+
+        **Skills Used:**
+        - `curriculum.assess-design` - Create assessment blueprints
+        - `curriculum.develop-items` - Generate assessment items
+        - `learning.diagnostic-assessment` - Design diagnostic assessments
+        - `learning.formative-assessment` - Create formative assessments
+
+        **Agent:** `assessment-designer` creates complete assessment systems
+
+  - type: dropdown
+    id: assessment_type
+    attributes:
+      label: Assessment Type
+      description: What type of assessment do you need?
+      options:
+        - Diagnostic (pre-assessment)
+        - Formative (ongoing checks)
+        - Summative (final assessment)
+        - Performance task
+        - Adaptive assessment
+        - Portfolio assessment
+        - Authentic assessment
+    validations:
+      required: true
+
+  - type: textarea
+    id: learning_objectives
+    attributes:
+      label: Learning Objectives
+      description: What learning objectives should this assessment measure?
+      placeholder: |
+        Paste objectives or reference a file:
+        - Objective 1: Students will be able to...
+        - Objective 2: Students will be able to...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: educational_level
+    attributes:
+      label: Educational Level
+      options:
+        - K-5 (Elementary)
+        - 6-8 (Middle School)
+        - 9-12 (High School)
+        - Undergraduate
+        - Graduate
+        - Professional Learning
+    validations:
+      required: true
+
+  - type: input
+    id: item_count
+    attributes:
+      label: Number of Items
+      description: How many assessment items do you need?
+      placeholder: "e.g., 20 items, 10-15 items"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: item_types
+    attributes:
+      label: Item Types
+      description: What types of items should be included?
+      multiple: true
+      options:
+        - Multiple choice
+        - True/false
+        - Short answer
+        - Essay/extended response
+        - Performance task
+        - Problem solving
+        - Mixed (let agent decide)
+    validations:
+      required: true
+
+  - type: textarea
+    id: coverage
+    attributes:
+      label: Content Coverage
+      description: What topics/skills should this assessment cover?
+      placeholder: |
+        - Topic 1 (30% of items)
+        - Topic 2 (40% of items)
+        - Topic 3 (30% of items)
+    validations:
+      required: false
+
+  - type: dropdown
+    id: blooms_levels
+    attributes:
+      label: Bloom's Taxonomy Levels
+      description: What cognitive levels should be assessed?
+      multiple: true
+      options:
+        - Remember
+        - Understand
+        - Apply
+        - Analyze
+        - Evaluate
+        - Create
+        - Mixed levels (let agent decide)
+    validations:
+      required: true
+
+  - type: checkbox
+    id: rubric_needed
+    attributes:
+      label: Rubric Required
+      description: Create a detailed scoring rubric?
+      options:
+        - label: "Yes, create a detailed rubric with performance criteria"
+          required: false
+
+  - type: checkbox
+    id: answer_key_needed
+    attributes:
+      label: Answer Key Required
+      description: Generate answer key with explanations?
+      options:
+        - label: "Yes, include answer key with rationales"
+          required: false
+
+  - type: dropdown
+    id: output_format
+    attributes:
+      label: Export Format
+      multiple: true
+      options:
+        - Markdown (default)
+        - JSON
+        - QTI (for LMS)
+        - PDF
+    validations:
+      required: true
+
+  - type: input
+    id: output_location
+    attributes:
+      label: Output Location
+      description: Where should assessment files be saved?
+      placeholder: "assessments/"
+      value: "assessments/"
+    validations:
+      required: true

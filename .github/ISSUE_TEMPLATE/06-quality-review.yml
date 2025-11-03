@@ -1,0 +1,117 @@
+name: ✅ Quality Review
+description: Review content for pedagogical soundness, accessibility, and bias
+title: "[Quality Review] "
+labels: ["quality-review", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Quality Review Request
+
+        Use Professor's review capabilities to validate pedagogical quality, accessibility compliance, and cultural responsiveness.
+
+        **Skills Used:**
+        - `curriculum.review-pedagogy` - Review pedagogical soundness
+        - `curriculum.review-accessibility` - Check WCAG 2.1 compliance
+        - `curriculum.review-bias` - Detect bias and cultural issues
+
+        **Agents:** `pedagogical-reviewer`, `quality-assurance`
+
+  - type: input
+    id: content_path
+    attributes:
+      label: Content to Review
+      description: Path to content files or directory
+      placeholder: "drafts/biology-unit/ or published/course-materials/"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: review_types
+    attributes:
+      label: Review Types
+      description: What aspects should be reviewed?
+      multiple: true
+      options:
+        - Pedagogical soundness (learning design)
+        - Constructive alignment (objectives ↔ activities ↔ assessments)
+        - Accessibility (WCAG 2.1 AA)
+        - Bias and cultural responsiveness
+        - Standards alignment
+        - Age-appropriateness
+        - Complete quality certification (all above)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: educational_level
+    attributes:
+      label: Educational Level
+      description: What level is this content for?
+      options:
+        - K-5 (Elementary)
+        - 6-8 (Middle School)
+        - 9-12 (High School)
+        - Undergraduate
+        - Graduate
+        - Professional Learning
+    validations:
+      required: true
+
+  - type: dropdown
+    id: strictness
+    attributes:
+      label: Review Strictness
+      options:
+        - Standard (typical quality checks)
+        - High (thorough review)
+        - Commercial-grade (publication-ready)
+      default: 1
+    validations:
+      required: true
+
+  - type: dropdown
+    id: frameworks
+    attributes:
+      label: Pedagogical Frameworks to Check
+      description: Which frameworks should guide the review?
+      multiple: true
+      options:
+        - Bloom's Taxonomy
+        - Universal Design for Learning (UDL)
+        - Backwards Design
+        - Constructive Alignment
+        - Learning Science Principles
+        - All frameworks
+    validations:
+      required: false
+
+  - type: textarea
+    id: specific_concerns
+    attributes:
+      label: Specific Concerns
+      description: Any specific issues or areas to focus on?
+      placeholder: |
+        - Check if activities align to objectives
+        - Ensure accessibility for screen readers
+        - Verify cultural representation
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: actions
+    attributes:
+      label: Actions After Review
+      options:
+        - label: "Create detailed review report"
+          required: false
+        - label: "Flag critical issues as separate GitHub issues"
+          required: false
+        - label: "Suggest specific improvements with line numbers"
+          required: false
+        - label: "Auto-fix minor issues (if possible)"
+          required: false
+        - label: "Coordinate with content-developer agent to address issues"
+          required: false
