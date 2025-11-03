@@ -1,5 +1,23 @@
-# Spec-kit agent folder - ignore user settings but keep commands
+# Claude Code configuration
+# Track: commands, skills, agents, framework (team-shared)
+# Ignore: user settings, cache, logs (local only)
+
+# User-specific settings
 .claude/settings.local.json
 .claude/*.local.*
+
+# Temporary files and caches
 .claude/cache/
 .claude/logs/
+.claude/temp/
+
+# Environment and secrets
+.claude/.env
+.claude/**/.env
+.claude/**/secrets.json
+
+# But DO track these directories:
+!.claude/commands/
+!.claude/skills/
+!.claude/agents/
+!.claude/framework/

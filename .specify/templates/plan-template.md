@@ -31,7 +31,63 @@
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+Verify compliance with `.specify/memory/constitution.md`:
+
+**I. CLI-First Interface**
+- [ ] All functionality accessible via CLI commands with clear arguments
+- [ ] Text-based I/O: stdin/args → stdout (results), stderr (errors)
+- [ ] Both JSON and human-readable output formats supported
+- [ ] Commands documented with `--help` flags
+- [ ] POSIX exit codes (0 = success, non-zero = error)
+
+**II. Educational Clarity**
+- [ ] Code is self-documenting with clear names
+- [ ] Complex logic includes "why" comments
+- [ ] Error messages are instructive with solutions
+- [ ] Documentation includes examples for every feature
+- [ ] Abstractions are justified (no premature generalization)
+
+**III. Incremental Value Delivery**
+- [ ] Feature broken into prioritized user stories (P1, P2, P3...)
+- [ ] Each story independently implementable and testable
+- [ ] P1 represents viable MVP
+- [ ] Implementation proceeds in priority order
+- [ ] Each story completion is demonstrable
+
+**IV. Skills-First Architecture**
+- [ ] Educational capabilities implemented as Claude skills
+- [ ] Skills follow skill-creator pattern with clear prompts/tools/workflows
+- [ ] Skills compose with each other for complex workflows
+- [ ] Skills expose CLI interfaces
+- [ ] Skill descriptions clearly indicate trigger patterns
+
+**V. Lifecycle Coverage**
+- [ ] Feature supports relevant curriculum lifecycle phases (Research, Design, Development, Review, Delivery, Assessment, Iteration)
+- [ ] Artifacts from one phase inform subsequent phases
+- [ ] Traceability maintained: learning objectives → content → assessments → outcomes
+- [ ] Version control for curriculum revisions
+
+**VI. Educational Spectrum**
+- [ ] Skills adapt output to specified educational level (K-5, 6-8, 9-12, Undergrad, Grad, Post-Grad)
+- [ ] Vocabulary/complexity/cognitive load matches target audience
+- [ ] Assessment types are age/level appropriate
+- [ ] Standards alignment for K-12 (Common Core, NGSS, etc.)
+- [ ] Discipline-specific conventions for higher education
+
+**VII. Pedagogical Rigor**
+- [ ] Design grounded in evidence-based instructional principles
+- [ ] Learning objectives use measurable action verbs (Bloom's Taxonomy)
+- [ ] Assessments map explicitly to learning objectives
+- [ ] Pedagogical approach is justified (Backwards Design, Constructive Alignment, UDL)
+- [ ] Content reviewed for bias, accessibility, inclusive language
+- [ ] Cognitive load managed appropriately for level
+- [ ] Rubrics have clear criteria and performance levels
+
+**Quality Gates**:
+- [ ] Specification Gate: Clear user stories with acceptance criteria
+- [ ] Design Gate: Technical plan addresses all constitution principles
+- [ ] Pedagogical Gate (curriculum skills): Evidence-based design validated
+- [ ] Complexity justified in "Complexity Tracking" section if needed
 
 ## Project Structure
 
