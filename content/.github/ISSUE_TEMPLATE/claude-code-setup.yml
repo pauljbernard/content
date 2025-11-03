@@ -1,0 +1,101 @@
+name: Setup/Update Claude Code CLI with Professor
+description: Install or update Claude Code CLI and configure it with the Professor framework for content development
+title: "[Claude Code Setup] "
+labels: ["claude-code", "setup", "automation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Claude Code CLI Setup Request
+
+        This issue template triggers an automated workflow to install or update Claude Code CLI and configure it with the Professor framework from the private repository.
+
+        **What this workflow does:**
+        - Installs or updates Claude Code CLI to the latest version
+        - Clones the Professor framework from `https://github.com/pauljbernard/professor.git`
+        - Configures Claude Code with:
+          - All skills from Professor
+          - All commands from Professor
+          - Sub-agent configurations
+          - Framework-specific settings
+        - Validates the configuration
+        - Reports results back to this issue
+
+  - type: dropdown
+    id: action
+    attributes:
+      label: Action Type
+      description: What would you like to do?
+      options:
+        - Install Claude Code CLI (fresh installation)
+        - Update Claude Code CLI (update existing installation)
+        - Reconfigure with Professor (CLI already installed)
+        - Full reinstall (remove and reinstall everything)
+      default: 0
+    validations:
+      required: true
+
+  - type: dropdown
+    id: professor_branch
+    attributes:
+      label: Professor Branch
+      description: Which branch of the Professor repository should be used?
+      options:
+        - main
+        - master
+        - development
+        - custom (specify below)
+      default: 0
+    validations:
+      required: true
+
+  - type: input
+    id: custom_branch
+    attributes:
+      label: Custom Branch Name
+      description: If you selected "custom" above, specify the branch name
+      placeholder: "e.g., feature/new-skills"
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_config
+    attributes:
+      label: Additional Configuration
+      description: Any additional configuration options or notes
+      placeholder: |
+        - Specific skills to enable/disable
+        - Custom environment variables
+        - Special requirements
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: components
+    attributes:
+      label: Components to Configure
+      description: Select which components from Professor to install
+      options:
+        - label: Skills
+          required: false
+        - label: Commands (slash commands)
+          required: false
+        - label: Sub-agents
+          required: false
+        - label: Framework configurations
+          required: false
+        - label: All components (default)
+          required: false
+
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Acknowledgments
+      description: Please confirm the following
+      options:
+        - label: I have access to the private Professor repository
+          required: true
+        - label: I understand this will configure Claude Code CLI in the GitHub Actions environment
+          required: true
