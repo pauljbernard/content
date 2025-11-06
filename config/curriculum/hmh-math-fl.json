@@ -9,14 +9,12 @@
   "version": "2024",
   "knowledge_resolution": {
     "order": [
-      "/reference/hmh-knowledge-v2/subjects/mathematics/districts/florida/into-math/",
-      "/reference/hmh-knowledge-v2/subjects/mathematics/districts/florida/",
-      "/reference/hmh-knowledge-v2/subjects/mathematics/common/",
-      "/reference/hmh-knowledge-v2/districts/florida/",
-      "/reference/hmh-knowledge-v2/publishers/hmh/",
-      "/reference/hmh-knowledge-v2/universal/"
+      "/reference/hmh-knowledge/subjects/mathematics/districts/florida/",
+      "/reference/hmh-knowledge/subjects/mathematics/common/",
+      "/reference/hmh-knowledge/districts/florida/",
+      "/reference/hmh-knowledge/universal/"
     ],
-    "description": "Resolution order searches from most specific (Into Math Florida program-specific) to most general (universal). First match wins."
+    "description": "Resolution order searches from most specific (subject-district) to most general (universal). First match wins."
   },
   "standards": {
     "content": "MAFS",

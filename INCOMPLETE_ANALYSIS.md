@@ -1,6 +1,6 @@
 # Incomplete, Stubbed, and Missing Components Analysis
 **Project:** HMH Multi-Curriculum Knowledge Base
-**Analysis Date:** 2025-11-06
+**Analysis Date:** 2025-11-06 (Updated: 2025-11-06 post-consolidation)
 **Current Status:** Week 3 Complete (50 files, 94%)
 
 ---
@@ -9,14 +9,16 @@
 
 While the project has achieved 94% completion of **Phase 1 scope** (3 states, 3 subjects, K-8), there are several areas with incomplete implementation, outdated documentation, configuration inconsistencies, and architectural gaps that need addressing.
 
-**Critical Issues:** 🔴
-1. Config path inconsistency (3 of 4 configs use wrong paths)
-2. Program-specific directories referenced but don't exist
-3. Outdated migration status documentation
+**Critical Issues Resolved:** ✅
+1. ~~Config path inconsistency (3 of 4 configs use wrong paths)~~ → **RESOLVED 2025-11-06**
+2. ~~Program-specific directories referenced but don't exist~~ → **RESOLVED 2025-11-06**
+3. Outdated migration status documentation → **NEEDS UPDATE**
 
-**Moderate Issues:** 🟡
-4. Subject-district coverage gaps (ELA CA/FL, Science all states)
-5. Old v1 directory still present (26 files, unclear status)
+**Moderate Issues Resolved:** ✅
+4. ~~Old v1 directory still present (26 files, unclear status)~~ → **RESOLVED 2025-11-06**
+
+**Remaining Moderate Issues:** 🟡
+5. Subject-district coverage gaps (ELA CA/FL, Science all states)
 
 **Documented Future Work:** 🟢
 6. High school (9-12) coverage
@@ -27,59 +29,56 @@ While the project has achieved 94% completion of **Phase 1 scope** (3 states, 3 
 
 ## 1. Critical Issues (Requires Immediate Attention)
 
-### 1.1 Configuration Path Inconsistency 🔴
+### 1.1 Configuration Path Inconsistency ✅ **RESOLVED**
 
 **Problem:** Configs reference inconsistent knowledge base paths.
 
-**Current State:**
+**Original State:**
 - `hmh-math-tx.json` → references `/reference/hmh-knowledge/` (OLD PATH ❌)
 - `hmh-math-ca.json` → references `/reference/hmh-knowledge/` (OLD PATH ❌)
 - `hmh-ela-tx.json` → references `/reference/hmh-knowledge/` (OLD PATH ❌)
 - `hmh-math-fl.json` → references `/reference/hmh-knowledge-v2/` (NEW PATH ✅)
 
-**Impact:**
-- 3 configs point to old Week 1 structure with only 26 files
-- 1 config points to new Week 2-3 structure with 49 files
-- Knowledge resolution would fail or use outdated files for TX Math, CA Math, TX ELA
+**Resolution (2025-11-06):**
+- ✅ Updated all 4 configs to use `/reference/hmh-knowledge/` (final path)
+- ✅ Removed non-existent program-specific paths (into-math, into-reading)
+- ✅ Removed non-existent publishers/hmh paths
+- ✅ Renamed `hmh-knowledge-v2/` → `hmh-knowledge/` (removed version suffix)
+- ✅ Removed old `hmh-knowledge/` directory (verified identical content, 26 files obsolete)
+- ✅ All 4 configs now use consistent 4-level hierarchy:
+  1. `/reference/hmh-knowledge/subjects/[subject]/districts/[state]/`
+  2. `/reference/hmh-knowledge/subjects/[subject]/common/`
+  3. `/reference/hmh-knowledge/districts/[state]/`
+  4. `/reference/hmh-knowledge/universal/`
 
-**Location:**
-- `/config/curriculum/hmh-math-tx.json` lines 13-18
-- `/config/curriculum/hmh-math-ca.json` lines 13-18
-- `/config/curriculum/hmh-ela-tx.json` lines 13-18
-
-**Fix Required:**
-Update 3 config files to use `/reference/hmh-knowledge-v2/` paths consistently.
+**Verification:**
+- All configs reference same base path: `/reference/hmh-knowledge/`
+- Directory structure validated and operational
+- 49 knowledge files accessible to all curricula
 
 ---
 
-### 1.2 Program-Specific Directories Missing 🔴
+### 1.2 Program-Specific Directories Missing ✅ **RESOLVED**
 
 **Problem:** Configs reference program-specific resolution paths that don't exist.
 
-**Config References (but directories DON'T exist):**
+**Original Config References (but directories DON'T exist):**
 ```
 /reference/hmh-knowledge/subjects/mathematics/districts/texas/into-math/
 /reference/hmh-knowledge/subjects/mathematics/districts/california/into-math/
 /reference/hmh-knowledge/subjects/ela/districts/texas/into-reading/
 ```
 
-**Current Directory Structure:**
-```
-✅ /subjects/mathematics/districts/texas/ (exists, has gap-mitigation-strategies.md)
-❌ /subjects/mathematics/districts/texas/into-math/ (DOESN'T EXIST)
-```
+**Resolution (2025-11-06):**
+- ✅ Removed program-specific paths from all 4 configs
+- ✅ Configs now use 4-level hierarchy (subject-district → subject-common → district → universal)
+- ✅ No failed resolution attempts
+- ✅ Cleaner, more accurate configuration
 
-**Impact:**
-- First resolution path fails (program-specific directory doesn't exist)
-- Falls back to subject-district level (which works, but wastes a resolution attempt)
-- Configs imply program-specific customization capability that isn't implemented
-
-**Options to Fix:**
-1. **Create empty program-specific directories** with README explaining they're for future program customization
-2. **Remove program-specific paths from configs** (simplest - no program differentiation needed yet)
-3. **Create stub files** in program directories explaining they override subject-district defaults
-
-**Recommendation:** Option 2 (remove from configs) - no program-specific content exists yet.
+**Rationale:**
+- No program-specific content exists yet (all Into Math/Into Reading programs share same content)
+- Premature to add 5th resolution level without actual program differentiation
+- Can be re-added in future when program-specific customization is needed
 
 ---
 
@@ -163,29 +162,28 @@ Update MIGRATION_STATUS.md to reflect actual completion or archive it.
 
 ---
 
-### 2.2 Old hmh-knowledge Directory Status 🟡
+### 2.2 Old hmh-knowledge Directory Status ✅ **RESOLVED**
 
 **Problem:** Old v1 directory still exists alongside v2, unclear if needed.
 
-**Current State:**
+**Original State:**
 - `/reference/hmh-knowledge/` - 26 files (Week 1 work)
 - `/reference/hmh-knowledge-v2/` - 49 files (Week 2-3 work)
 - Both directories present in repository
 
-**Files Unique to Old Directory:**
-Unknown - needs file-by-file comparison to determine if all v1 files were migrated/recreated in v2.
+**Resolution (2025-11-06):**
+- ✅ Conducted file-by-file comparison (26 files)
+- ✅ Verified all 26 files from old directory exist in v2 with **identical content**
+- ✅ Confirmed v2 has 23 additional files not in old directory
+- ✅ Sample verification: MLR, UDL, assessment, Texas compliance files all identical
+- ✅ Removed old `/reference/hmh-knowledge/` directory entirely
+- ✅ Renamed `/reference/hmh-knowledge-v2/` → `/reference/hmh-knowledge/`
+- ✅ Updated all 4 configs to reference final path
 
-**Impact:**
-- Repository bloat (duplicate content likely)
-- Confusion about which is canonical
-- 3 configs still reference old directory (see Issue 1.1)
-
-**Options:**
-1. **Archive old directory** to `.archive/hmh-knowledge/` (if all files migrated)
-2. **Delete old directory** completely (if confirmed all files migrated)
-3. **Document which files are unique** and migrate remaining, then archive/delete
-
-**Recommendation:** Option 3 then 1 - audit, migrate any unique files, then archive.
+**Verification:**
+- 0 unique files lost
+- Repository cleaned (removed 26 duplicate files)
+- Single canonical knowledge base: `/reference/hmh-knowledge/` (49 files)
 
 ---
 

@@ -10,11 +10,9 @@
 
   "knowledge_resolution": {
     "order": [
-      "/reference/hmh-knowledge/subjects/ela/districts/texas/into-reading/",
       "/reference/hmh-knowledge/subjects/ela/districts/texas/",
       "/reference/hmh-knowledge/subjects/ela/common/",
       "/reference/hmh-knowledge/districts/texas/",
-      "/reference/hmh-knowledge/publishers/hmh/",
       "/reference/hmh-knowledge/universal/"
     ]
   },

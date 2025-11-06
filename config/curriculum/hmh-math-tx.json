@@ -10,11 +10,9 @@
 
   "knowledge_resolution": {
     "order": [
-      "/reference/hmh-knowledge/subjects/mathematics/districts/texas/into-math/",
       "/reference/hmh-knowledge/subjects/mathematics/districts/texas/",
       "/reference/hmh-knowledge/subjects/mathematics/common/",
       "/reference/hmh-knowledge/districts/texas/",
-      "/reference/hmh-knowledge/publishers/hmh/",
       "/reference/hmh-knowledge/universal/"
     ]
   },

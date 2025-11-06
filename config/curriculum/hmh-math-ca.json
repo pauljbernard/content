@@ -10,11 +10,9 @@
 
   "knowledge_resolution": {
     "order": [
-      "/reference/hmh-knowledge/subjects/mathematics/districts/california/into-math/",
       "/reference/hmh-knowledge/subjects/mathematics/districts/california/",
       "/reference/hmh-knowledge/subjects/mathematics/common/",
       "/reference/hmh-knowledge/districts/california/",
-      "/reference/hmh-knowledge/publishers/hmh/",
       "/reference/hmh-knowledge/universal/"
     ]
   },
