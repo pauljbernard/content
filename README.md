@@ -183,9 +183,47 @@ config/curriculum/
 - Gap mitigation strategies (TX Math)
 - (ELA CA/FL and Science files - documented gaps)
 
+### Documentation: Complete Guide Suite
+
+The system provides **4 specialized guides** for different roles:
+
+**📝 [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)** - For Content Authors
+- Complete authoring workflows (lessons, assessments, activities)
+- Using the knowledge base to generate content
+- AI assistance with Professor Framework
+- Quality standards and checklists
+- **850 lines** of comprehensive guidance
+
+**✅ [EDITOR_GUIDE.md](EDITOR_GUIDE.md)** - For Content Editors
+- Editorial workflow from assignment to approval
+- 8-section comprehensive review checklist
+- Effective feedback templates
+- Common issues and fixes
+- **450 lines** of editorial guidance
+
+**📦 [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md)** - For Publishers/Production
+- Multi-format production (PDF, HTML, SCORM, accessible)
+- Asset management and optimization
+- QA checklists and delivery workflows
+- **450 lines** of production guidance
+
+**⚙️ [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md)** - For Knowledge Base Engineers
+- System architecture and hierarchical resolution
+- Adding new states/districts (2-6 files, 85-97% reuse)
+- Adding new subjects (8-15 files)
+- Creating curriculum configs
+- File creation best practices and templates
+- **1700 lines** of engineering documentation
+
+**📋 [USER_GUIDE.md](USER_GUIDE.md)** - Overview and Navigation
+- Introduction to the 4 guides
+- Quick navigation by role
+- Complete content lifecycle
+- Documentation roadmap
+
 ### For Engineers: How to Use This System
 
-**See:** [`USER_GUIDE.md`](USER_GUIDE.md) - Comprehensive guide for prompt and context engineers
+**See:** [`ENGINEER_GUIDE.md`](ENGINEER_GUIDE.md) - Complete guide for knowledge base engineers
 
 **Quick Start:**
 1. Choose or create a curriculum config (see `config/curriculum/`)
@@ -305,7 +343,11 @@ Every Monday, the system automatically reviews published content for quality, ac
 content/
 ├── README.md                               # This file
 ├── CLAUDE.md                               # Claude Code configuration (Professor)
-├── USER_GUIDE.md                           # HMH Knowledge Base engineering guide
+├── USER_GUIDE.md                           # Documentation overview and navigation
+├── AUTHOR_GUIDE.md                         # Complete guide for content authors
+├── EDITOR_GUIDE.md                         # Complete guide for content editors
+├── PRODUCTION_GUIDE.md                     # Complete guide for production/publishing
+├── ENGINEER_GUIDE.md                       # Complete guide for knowledge base engineers
 ├── INCOMPLETE_ANALYSIS.md                  # Known gaps and future work
 ├── .archive/                               # Archived planning documents
 │   └── HMH_*.md                            # Week 1-3 summaries, roadmap
@@ -345,13 +387,38 @@ content/
 
 ## Getting Started
 
+### Choose Your Guide
+
+Start with the guide that matches your role:
+
+**Creating Content?** → [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)
+- Learn authoring workflows for lessons (3-5 days), assessments (2-4 days), and activities (1-2 days)
+- Use the knowledge base to generate aligned content
+- Work with AI assistance and quality checklists
+
+**Reviewing Content?** → [EDITOR_GUIDE.md](EDITOR_GUIDE.md)
+- Follow the editorial workflow (2-4 hours per review)
+- Use the comprehensive 8-section review checklist
+- Provide effective feedback with templates
+
+**Producing Deliverables?** → [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md)
+- Create multi-format outputs (PDF, HTML, SCORM, accessible)
+- Manage and optimize assets
+- Run QA checks before delivery
+
+**Extending the System?** → [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md)
+- Understand system architecture
+- Add new states (2-6 files, 85-97% reuse)
+- Add new subjects (8-15 files)
+- Create curriculum configs
+
 ### For Content Engineers (Using HMH Knowledge Base)
 
-1. **Read the USER_GUIDE.md** - Comprehensive guide for extending the system
+1. **Read [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md)** - Complete engineering guide
 2. **Choose a curriculum config** - See `config/curriculum/`
 3. **Understand resolution order** - Specific → general (first match wins)
 4. **Generate content** - Use Claude Code with appropriate config
-5. **Add new states/subjects** - Follow patterns in USER_GUIDE.md
+5. **Add new states/subjects** - Follow patterns in ENGINEER_GUIDE.md
 
 ### For Curriculum Developers (Using Professor Framework)
 
@@ -533,8 +600,15 @@ Align to ACM Computer Science guidelines
 
 ## Support
 
-- **HMH Knowledge Base**: See [`USER_GUIDE.md`](USER_GUIDE.md)
-- **Known Issues**: See [`INCOMPLETE_ANALYSIS.md`](INCOMPLETE_ANALYSIS.md)
+**Documentation by Role:**
+- **Content Authors**: See [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)
+- **Content Editors**: See [EDITOR_GUIDE.md](EDITOR_GUIDE.md)
+- **Production/Publishing**: See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md)
+- **Knowledge Base Engineers**: See [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md)
+- **Overview/Navigation**: See [USER_GUIDE.md](USER_GUIDE.md)
+
+**Additional Resources:**
+- **Known Issues**: See [INCOMPLETE_ANALYSIS.md](INCOMPLETE_ANALYSIS.md)
 - **Professor Framework**: https://github.com/pauljbernard/professor
 - **Claude Code Docs**: https://docs.claude.com/en/docs/claude-code
 - **Issues**: Create an issue in this repository
@@ -549,10 +623,21 @@ MIT License
 
 ## Version History
 
-**v2.0.0** (2025-11-06) - Week 3 Complete
+**v3.0.0** (2025-11-06) - Complete Documentation Suite
+- **4 Specialized Role-Based Guides:**
+  - AUTHOR_GUIDE.md (850 lines) - Complete authoring workflows
+  - EDITOR_GUIDE.md (450 lines) - Editorial process and review
+  - PRODUCTION_GUIDE.md (450 lines) - Multi-format production
+  - ENGINEER_GUIDE.md (1700 lines) - System architecture and extension
+  - USER_GUIDE.md (335 lines) - Overview and navigation
+- **Total Documentation:** 3,785 lines covering complete content lifecycle
 - HMH Multi-Curriculum Knowledge Base: 50 files, 3 states, 3 subjects, 85-97% reuse
 - 4 curriculum configs
-- USER_GUIDE.md for engineers
+
+**v2.0.0** (2025-11-06) - Week 3 Complete
+- HMH Multi-Curriculum Knowledge Base: 50 files, 3 states, 3 subjects
+- 4 curriculum configs
+- Initial USER_GUIDE.md for engineers
 - Scaling roadmap for national coverage
 
 **v1.0.0** (2025-11-03) - Initial Release
