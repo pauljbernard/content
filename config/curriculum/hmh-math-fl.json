@@ -1,0 +1,87 @@
+{
+  "id": "hmh-into-math-fl",
+  "name": "HMH Into Math Florida Edition",
+  "publisher": "hmh",
+  "program": "into-math",
+  "subject": "mathematics",
+  "district": "florida",
+  "grades": ["K", "1", "2", "3", "4", "5", "6", "7", "8"],
+  "version": "2024",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge-v2/subjects/mathematics/districts/florida/into-math/",
+      "/reference/hmh-knowledge-v2/subjects/mathematics/districts/florida/",
+      "/reference/hmh-knowledge-v2/subjects/mathematics/common/",
+      "/reference/hmh-knowledge-v2/districts/florida/",
+      "/reference/hmh-knowledge-v2/publishers/hmh/",
+      "/reference/hmh-knowledge-v2/universal/"
+    ],
+    "description": "Resolution order searches from most specific (Into Math Florida program-specific) to most general (universal). First match wins."
+  },
+  "standards": {
+    "content": "MAFS",
+    "content_transition": "B.E.S.T. Mathematics (transitioning)",
+    "language": "ESOL (WIDA)",
+    "accessibility": "WCAG 2.1 AA",
+    "note": "Florida is transitioning from MAFS to B.E.S.T. Mathematics. Materials should support both during transition period."
+  },
+  "compliance": {
+    "required": [
+      "MAFS alignment (or B.E.S.T. Math)",
+      "ESOL support (WIDA proficiency levels 1-6)",
+      "Florida statutory compliance (F.S. 1006.31-1006.40)",
+      "Age-appropriate content",
+      "Bias-free and diverse representation",
+      "Accessibility (WCAG 2.1 AA)",
+      "State adoption process compliance"
+    ],
+    "assessment": "FSA (phasing out) / B.E.S.T. Assessments (new)"
+  },
+  "esol_framework": {
+    "name": "WIDA English Language Development Standards",
+    "proficiency_levels": 6,
+    "levels": [
+      "Level 1: Entering",
+      "Level 2: Emerging",
+      "Level 3: Developing",
+      "Level 4: Expanding",
+      "Level 5: Bridging",
+      "Level 6: Reaching"
+    ],
+    "domains": [
+      "Social and Instructional Language",
+      "Language of Language Arts",
+      "Language of Mathematics",
+      "Language of Science",
+      "Language of Social Studies"
+    ],
+    "modalities": ["Listening", "Speaking", "Reading", "Writing"]
+  },
+  "knowledge_reuse": {
+    "universal_files_reused": 15,
+    "math_common_files_reused": 12,
+    "florida_district_files_reused": 3,
+    "florida_math_specific_files": 1,
+    "total_files_available": 31,
+    "new_files_needed": 1,
+    "reuse_percentage": 97,
+    "note": "Florida Math achieves ~97% knowledge reuse by leveraging universal frameworks, math common routines (MLRs), and Florida district compliance."
+  },
+  "comparison": {
+    "similar_to": "hmh-math-ca",
+    "reason": "Both MAFS and CCSS-M are nearly identical in content (MAFS based on CCSS-M)",
+    "key_differences": [
+      "Standard codes (MAFS.5.NF.1.1 vs CCSS.MATH.CONTENT.5.NF.A.1)",
+      "Language support (ESOL/WIDA vs ELD)",
+      "Compliance (Florida statutes vs California adoption criteria)",
+      "Transitioning to B.E.S.T. Math (Florida-specific)"
+    ]
+  },
+  "validation_status": {
+    "architecture_validated": true,
+    "knowledge_resolution_tested": true,
+    "demonstrates": "3rd state scalability",
+    "curriculum_number": 3,
+    "states_supported": ["Texas", "California", "Florida"]
+  }
+}
