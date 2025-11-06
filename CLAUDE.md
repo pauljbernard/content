@@ -2,12 +2,131 @@
 
 ## Project Overview
 
-This repository is a **content development platform** powered by the **Professor framework** - a world-class learning engineering platform with 92 specialized skills and 22 autonomous agents for curriculum and assessment engineering.
+This repository provides **two integrated systems** for educational content development:
+
+1. **HMH Multi-Curriculum Knowledge Base** - A hierarchical, reusable knowledge system (50 files) for creating standards-aligned instructional materials across any state, any subject, any grade level with 85-97% knowledge reuse
+2. **Professor Framework Integration** - AI-powered content development with 92 specialized skills and 22 autonomous agents
 
 **Purpose**: Create, manage, and publish high-quality educational content across all educational levels (K-12, undergraduate, graduate, post-graduate, and professional learning).
 
 **Repository**: https://github.com/pauljbernard/content
 **Professor Framework**: https://github.com/pauljbernard/professor (private)
+
+---
+
+## HMH Multi-Curriculum Knowledge Base (NEW - Week 3 Complete)
+
+### What It Is
+
+A **hierarchical knowledge resolution system** that enables creating standards-aligned, state-compliant instructional materials with **85-97% knowledge reuse** across curricula.
+
+**Location**: `/reference/hmh-knowledge-v2/`
+**Status**: Week 3 Complete (50 files, 94%)
+**Documentation**: See [`USER_GUIDE.md`](USER_GUIDE.md) for complete engineering guide
+
+### Current Coverage
+
+**States**: Texas (TEKS), California (CCSS/NGSS), Florida (MAFS/B.E.S.T./NGSSS)
+**Subjects**: Mathematics (K-8), ELA (K-8), Science (K-8)
+**Curricula**: 4 HMH programs (Into Math TX/CA/FL, Into Reading TX)
+
+### 5-Level Hierarchical Architecture
+
+Knowledge resolution order (specific → general, first match wins):
+
+```
+1. Program-Specific    → /subjects/mathematics/districts/texas/into-math/
+2. Subject-District    → /subjects/mathematics/districts/texas/
+3. Subject-Common      → /subjects/mathematics/common/
+4. District-Wide       → /districts/texas/
+5. Universal           → /universal/
+```
+
+### Key Knowledge Files
+
+**Universal (15 files) - ALL curricula use:**
+- UDL Principles, DOK Framework, EB Scaffolding, Sentence Frames
+- WCAG 2.1 AA Compliance, CEID Guidelines
+- 8 Assessment files (item types, rubrics, answer keys, validation, etc.)
+
+**Math Common (12 files) - ALL math programs use:**
+- 8 Math Language Routines (MLR1-MLR8)
+- Math vocabulary guidelines, problem-solving framework
+
+**ELA Common (5 files) - ALL ELA programs use:**
+- Close Reading, Think-Pair-Share, Annotation, Turn-and-Talk
+
+**Science Common (2 files) - ALL NGSS states use:**
+- NGSS alignment, Science Practices Framework (8 SEPs)
+
+**District-Wide (9 files) - ALL subjects in that state use:**
+- Texas: IPACC, SBOE, ELPS, compliance checklist
+- California: Adoption criteria, ELD Standards
+- Florida: Adoption criteria, ESOL/WIDA, statutory compliance
+
+**Subject-District (7 files) - State + subject specific:**
+- TEKS Math/ELA, CCSS-M, MAFS alignments
+
+### How Claude Code Should Use This
+
+**When generating state/subject-specific content:**
+
+1. **Check for curriculum config** in `/config/curriculum/`
+   - `hmh-math-tx.json`, `hmh-math-ca.json`, `hmh-math-fl.json`, `hmh-ela-tx.json`
+
+2. **Follow resolution order** defined in config to find relevant knowledge files
+   - Start with most specific (program-specific)
+   - Fall back to more general levels as needed
+   - Combine knowledge from multiple levels
+
+3. **Apply combined knowledge** when creating content
+   - Universal frameworks (UDL, DOK, WCAG) + Subject routines (MLRs) + State standards (TEKS) + State compliance (SBOE)
+
+4. **Leverage knowledge reuse**
+   - 85-97% of content guidance comes from reusable files
+   - Only 3-15% needs to be state/program-specific
+
+**Example Query**: "Create a 5th grade Texas Math lesson on fractions"
+
+**Resolution Process**:
+1. Load `hmh-math-tx.json` config
+2. Gather knowledge from:
+   - `/subjects/mathematics/common/mlr/` (all 8 MLRs)
+   - `/subjects/mathematics/common/vocab-guidelines.md`
+   - `/subjects/mathematics/districts/texas/teks-math-alignment.md` (5th grade fractions standards)
+   - `/districts/texas/language/elps-alignment.md` (language scaffolding)
+   - `/districts/texas/compliance/sboe-quality-rubric.md`
+   - `/universal/frameworks/udl-principles-guide.md`
+   - `/universal/frameworks/eb-scaffolding-guide.md`
+   - `/universal/assessment/item-types-reference.md`
+3. Combine guidance to create lesson aligned to TEKS, ELPS, SBOE standards with MLRs and UDL
+
+### Adding New States/Subjects
+
+**For Engineers**: See [`USER_GUIDE.md`](USER_GUIDE.md) for step-by-step instructions, templates, and examples.
+
+**Quick Summary**:
+- **CCSS/NGSS State**: 2-3 files (90-95% reuse)
+- **State-Specific Standards**: 5-6 files (85-90% reuse)
+- **New Subject**: 8-10 subject-common files + 1-2 per state
+
+### Known Gaps
+
+**See**: [`INCOMPLETE_ANALYSIS.md`](INCOMPLETE_ANALYSIS.md) for complete analysis.
+
+**Critical (easy fixes):**
+- 3 configs still use old `/reference/hmh-knowledge/` paths (should be `hmh-knowledge-v2`)
+- Program-specific directories referenced but don't exist yet
+
+**Moderate (small gaps):**
+- ELA California/Florida subject-district files missing
+- Science state-specific files missing (TX/CA/FL)
+
+**Future expansion:**
+- High school (9-12)
+- 7+ additional subjects (Social Studies, CS, Arts, PE, World Languages, etc.)
+- 48 additional states/districts
+- Estimated 245-310 total files for complete national coverage
 
 ---
 
