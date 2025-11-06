@@ -20,6 +20,8 @@ body:
 
         **Agent:** `assessment-designer` creates complete assessment systems
 
+        **Need guidance?** See [AUTHOR_GUIDE.md](../../AUTHOR_GUIDE.md) Section 4 for the complete Assessment Authoring Workflow (4 phases over 2-4 days).
+
   - type: dropdown
     id: assessment_type
     attributes:

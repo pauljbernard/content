@@ -18,6 +18,8 @@ body:
 
         **Agent:** `scorm-validator` ensures compatibility
 
+        **Need guidance?** See [PRODUCTION_GUIDE.md](../../PRODUCTION_GUIDE.md) Section 3 for complete SCORM production workflows and validation steps.
+
   - type: input
     id: content_path
     attributes:

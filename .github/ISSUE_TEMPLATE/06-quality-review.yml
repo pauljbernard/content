@@ -19,6 +19,8 @@ body:
 
         **Agents:** `pedagogical-reviewer`, `quality-assurance`
 
+        **Need guidance?** See [EDITOR_GUIDE.md](../../EDITOR_GUIDE.md) Section 3 for the comprehensive 8-section review checklist covering all 7 quality pillars.
+
   - type: input
     id: content_path
     attributes:

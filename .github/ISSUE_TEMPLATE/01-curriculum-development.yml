@@ -19,6 +19,8 @@ body:
 
         **Agent:** `curriculum-architect` orchestrates the complete workflow
 
+        **Need guidance?** See [AUTHOR_GUIDE.md](../../AUTHOR_GUIDE.md) Section 4 for complete authoring workflows, or [AUTHOR_GUIDE.md](../../AUTHOR_GUIDE.md) Section 5 for AI assistance details.
+
   - type: input
     id: topic
     attributes:

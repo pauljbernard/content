@@ -1,6 +1,13 @@
 # Professor Framework Issue Templates
 
-These issue templates provide structured ways to request content development using the complete Professor framework (97 skills, 18 agents) through GitHub Actions automation.
+These issue templates provide structured ways to request content development using the complete Professor framework (92 skills, 22 agents) integrated with the HMH Multi-Curriculum Knowledge Base through GitHub Actions automation.
+
+**Need guidance?** See the complete documentation suite:
+- **[AUTHOR_GUIDE.md](../../AUTHOR_GUIDE.md)** - Content authoring workflows and AI assistance
+- **[EDITOR_GUIDE.md](../../EDITOR_GUIDE.md)** - Editorial review and quality checks
+- **[PRODUCTION_GUIDE.md](../../PRODUCTION_GUIDE.md)** - Multi-format production and delivery
+- **[ENGINEER_GUIDE.md](../../ENGINEER_GUIDE.md)** - System architecture and extension
+- **[USER_GUIDE.md](../../USER_GUIDE.md)** - Overview and navigation
 
 ## How It Works
 
@@ -279,13 +286,23 @@ See existing templates for structure examples.
 
 ## Support
 
+**Documentation by Role:**
+- **Content Authors**: See [AUTHOR_GUIDE.md](../../AUTHOR_GUIDE.md) - AI assistance covered in Section 5
+- **Content Editors**: See [EDITOR_GUIDE.md](../../EDITOR_GUIDE.md) - Review workflows and checklists
+- **Production Staff**: See [PRODUCTION_GUIDE.md](../../PRODUCTION_GUIDE.md) - Packaging and delivery
+- **Engineers**: See [ENGINEER_GUIDE.md](../../ENGINEER_GUIDE.md) - System extension and configs
+
+**Technical Resources:**
 - **Workflow Issues**: Check `.github/workflows/professor-automation.yml`
 - **Template Issues**: Check individual template files
-- **Professor Skills**: See `.claude/skills/README.md`
-- **Professor Agents**: See `.claude/agents/README.md`
+- **Professor Skills**: See `.claude/skills/README.md` (if available)
+- **Professor Agents**: See `.claude/agents/README.md` (if available)
+- **HMH Knowledge Base**: See [ENGINEER_GUIDE.md](../../ENGINEER_GUIDE.md) for architecture
 
 ## Version
 
-**Templates Version:** 1.0.0
-**Professor Version:** 2.0.0 (97 skills, 18 agents)
-**Last Updated:** 2025-11-03
+**Templates Version:** 1.1.0
+**Professor Version:** 2.0.0 (92 skills, 22 agents)
+**HMH Knowledge Base:** 50 files, 85-97% reuse
+**Documentation Suite:** v3.0.0 (3,785 lines)
+**Last Updated:** 2025-11-06

@@ -257,13 +257,30 @@ If you need to reconfigure without reinstalling:
 1. Create an issue with action type "Reconfigure with Professor"
 2. This will re-clone Professor and update configurations
 
+## Documentation
+
+For comprehensive guidance on using this system, see the complete documentation suite:
+
+**By Role:**
+- **[AUTHOR_GUIDE.md](../AUTHOR_GUIDE.md)** - Complete authoring workflows, AI assistance, quality standards
+- **[EDITOR_GUIDE.md](../EDITOR_GUIDE.md)** - Editorial workflow, review checklists, feedback templates
+- **[PRODUCTION_GUIDE.md](../PRODUCTION_GUIDE.md)** - Multi-format production, asset management, delivery
+- **[ENGINEER_GUIDE.md](../ENGINEER_GUIDE.md)** - System architecture, extending the knowledge base
+- **[USER_GUIDE.md](../USER_GUIDE.md)** - Overview and navigation for all roles
+
+**HMH Multi-Curriculum Knowledge Base:**
+- 50 knowledge files with 85-97% reuse across curricula
+- 5-level hierarchical resolution system
+- Complete workflows for authoring, editorial, and production
+
 ## Support
 
 For issues or questions:
 1. Check the troubleshooting section above
 2. Review workflow run logs for detailed error messages
-3. Create an issue in this repository
-4. Refer to [Claude Code documentation](https://github.com/anthropics/claude-code)
+3. Consult the appropriate guide for your role (see Documentation section)
+4. Create an issue in this repository
+5. Refer to [Claude Code documentation](https://github.com/anthropics/claude-code)
 
 ## License
 

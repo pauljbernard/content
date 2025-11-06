@@ -78,7 +78,8 @@ jobs:
               body: `## 🤖 Professor Framework Activated\n\n` +
                     `**Request Type:** ${{ steps.issue.outputs.request_type }}\n` +
                     `**Requested by:** @${{ steps.issue.outputs.issue_user }}\n\n` +
-                    `Setting up Professor framework with 97 skills and 18 agents...\n\n` +
+                    `Setting up Professor framework with 92 skills and 22 agents...\n\n` +
+                    `**Need guidance?** See our [complete documentation suite](../../#documentation-roadmap)\n\n` +
                     `[View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
             });
 

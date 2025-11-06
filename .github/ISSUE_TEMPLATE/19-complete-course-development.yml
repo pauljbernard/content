@@ -21,6 +21,11 @@ body:
 
         **Agent:** `curriculum-architect` (autonomous mode) coordinates all agents
 
+        **Need guidance?** See [USER_GUIDE.md](../../USER_GUIDE.md) for the complete content lifecycle diagram, or reference individual guides:
+        - [AUTHOR_GUIDE.md](../../AUTHOR_GUIDE.md) for content creation
+        - [EDITOR_GUIDE.md](../../EDITOR_GUIDE.md) for quality review
+        - [PRODUCTION_GUIDE.md](../../PRODUCTION_GUIDE.md) for packaging/delivery
+
   - type: input
     id: course_title
     attributes:
