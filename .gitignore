@@ -1,23 +1,23 @@
-# Claude Code configuration
-# Track: commands, skills, agents, framework (team-shared)
-# Ignore: user settings, cache, logs (local only)
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
 
-# User-specific settings
-.claude/settings.local.json
-.claude/*.local.*
+# Thumbnails
+._*
 
-# Temporary files and caches
-.claude/cache/
-.claude/logs/
-.claude/temp/
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
 
-# Environment and secrets
-.claude/.env
-.claude/**/.env
-.claude/**/secrets.json
-
-# But DO track these directories:
-!.claude/commands/
-!.claude/skills/
-!.claude/agents/
-!.claude/framework/
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk

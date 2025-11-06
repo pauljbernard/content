@@ -1,0 +1,49 @@
+{
+  "id": "hmh-into-math-ca",
+  "name": "HMH Into Math California Edition",
+  "publisher": "hmh",
+  "program": "into-math",
+  "subject": "mathematics",
+  "district": "california",
+  "grades": ["K", "1", "2", "3", "4", "5", "6", "7", "8"],
+  "version": "2024",
+
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/mathematics/districts/california/into-math/",
+      "/reference/hmh-knowledge/subjects/mathematics/districts/california/",
+      "/reference/hmh-knowledge/subjects/mathematics/common/",
+      "/reference/hmh-knowledge/districts/california/",
+      "/reference/hmh-knowledge/publishers/hmh/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+
+  "standards": {
+    "content": "CCSS-M",
+    "language": "ELD Standards",
+    "accessibility": "WCAG 2.1 AA"
+  },
+
+  "compliance": {
+    "required": [
+      "CCSS-M alignment",
+      "ELD alignment",
+      "California adoption criteria",
+      "Content diversity standards"
+    ]
+  },
+
+  "features": {
+    "mlr": true,
+    "emergent_bilingual_support": true,
+    "udl": true,
+    "digital_print_parity": true
+  },
+
+  "metadata": {
+    "adoption_cycle": "2025",
+    "contact": "curriculum-dev@hmh.com",
+    "documentation": "/docs/hmh-math-ca/"
+  }
+}

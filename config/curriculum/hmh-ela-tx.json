@@ -1,0 +1,50 @@
+{
+  "id": "hmh-into-reading-tx",
+  "name": "HMH Into Reading Texas Edition",
+  "publisher": "hmh",
+  "program": "into-reading",
+  "subject": "ela",
+  "district": "texas",
+  "grades": ["K", "1", "2", "3", "4", "5", "6", "7", "8"],
+  "version": "2024",
+
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/ela/districts/texas/into-reading/",
+      "/reference/hmh-knowledge/subjects/ela/districts/texas/",
+      "/reference/hmh-knowledge/subjects/ela/common/",
+      "/reference/hmh-knowledge/districts/texas/",
+      "/reference/hmh-knowledge/publishers/hmh/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+
+  "standards": {
+    "content": "TEKS ELA",
+    "language": "ELPS",
+    "accessibility": "WCAG 2.1 AA"
+  },
+
+  "compliance": {
+    "required": [
+      "TEKS ELA alignment",
+      "ELPS alignment",
+      "SBOE quality rubric",
+      "IPACC suitability",
+      "CEID diversity standards"
+    ]
+  },
+
+  "features": {
+    "literacy_routines": true,
+    "emergent_bilingual_support": true,
+    "udl": true,
+    "digital_print_parity": true
+  },
+
+  "metadata": {
+    "adoption_cycle": "2024",
+    "contact": "curriculum-dev@hmh.com",
+    "documentation": "/docs/hmh-ela-tx/"
+  }
+}
