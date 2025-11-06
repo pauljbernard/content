@@ -1,0 +1,178 @@
+Into Math TX - Content Block Output List
+
+Notes to help guide output format are highlighted in yellow.
+
+Content Block        Output
+
+Learning Goal        Student Edition:
+
+                     · Student content
+
+                     Teacher Edition:
+
+                     · Learning Goal
+                     · Teacher's Guide
+
+Before You Teach     Teacher's Edition:
+
+                     · What should I understand about the math? bulleted list
+                     · Prior Learning bulleted list
+                     · Focus Standard
+                     · ELPS
+                     · Learning Objective
+                     · Language Objective
+                     · Future Connections bulleted list
+
+Spark Your Learning  Student Edition:
+                         · SE Written Manuscript (no anno)
+                         · Spec Description
+                         · Spec Type (art, photo, or tech art)
+
+                     Teacher's Edition:
+                         · TEACHER CONTENT (Three Reads routine with anno,
+                              followed by restating the SE Written manuscript question,
+                              and then include SE anno here.)
+                         · Spark Discussions 1st Paragraph
+                         · Spark Discussions Addressing Common Errors (student
+                              column)
+                         · Spark Discussions Addressing Common Errors (teach
+                              scripting)
+                         · Spark Discussions Addressing Common Errors Spec
+                              description (if necessary)
+                         · Spark Discussions Addressing Common Errors Spec type:
+                              (art, photo, or tech art) (if necessary)
+      · Spark Discussions Deepening Student Thinking (student
+
+      column
+
+      · Spark Discussions Deepening Student Thinking (teacher
+
+      scripting)
+
+      · Spark Discussions Deepening Student Thinking Spec
+
+      description (if necessary)
+
+      · Spark Discussions Deepening Student Thinking Spec type:
+
+      (art, photo, or tech art) (if necessary)
+
+      Student Edition:
+
+      · Turn and Talk SE Manuscript with anno
+
+      · Turn and Talk Spec Description (if necessary)
+
+      · Turn and Talk Spec Type (art, photo, or tech art) (if
+
+      necessary)
+
+      Teacher Edition:
+
+      · SYL Turn and Talk Teacher Guide
+
+      Teacher Edition:
+
+      · Language Proficiency Level: Emerging
+
+      · Scaffolded Examples: Emerging
+
+      · Language Proficiency Level: Expanding
+
+      · Scaffolded Examples: Expanding
+
+      · Language Proficiency Level: Bridging
+
+      · Scaffolded Examples: Bridging
+
+Task  Student Edition:
+
+      · Problem
+
+      · New Vocabulary (if necessary)
+
+      · Item A SE Manuscript with Anno
+
+      · Item A Spec type (art, photo, or tech art) (if necessary)
+
+      · Item A Spec Description (if necessary)
+
+      · Item A Alt text (if necessary)
+
+      · Item B SE Manuscript with Anno
+
+      · Item B Spec type (art, photo, or tech art) (if necessary)
+
+      · Item B Spec Description (if necessary)
+
+      · Item B Alt text (if necessary)
+
+      Continue this format for as many Items as necessary
+
+      · Turn and Talk SE Manuscript with Anno (as necessary)
+
+      Teacher Edition: every SE item should have a TG question with
+      anno up to 5 max.
+
+          · WTL, MLR Three Read, or boilerplate
+          · Item A TG Question with Anno
+          · Item B TG Question with Anno
+          · Item C TG Question with Anno
+Review Spark Your         · NOW, have student solve the problem
+Learning                  · MLR (aligned to last Item)
+                          · Turn and Talk TG Manuscript (as necessary)
+Quick Check               · ML/UDL/Common Error (list Item alignment with strategy
+
+Differentiation and            in separate line)
+Practice
+Practice on Your Own  Teacher Edition Task 1 only:
+                          · DOK Leveled Questions Level 1: Recall
+                          · DOK Leveled Questions Level 2: Basic Application of Skills &
+                               Concepts
+                          · DOK Leveled Questions Level 1: Strategic Thinking and
+                               Complex Reasoning
+
+                      Student Edition:
+                          · SE Written Manuscript (same as SYL)
+                          · Spec Description (same as SYL)
+                          · Spec Type (art, photo, or tech art) (same as SYL)
+                          · Alt text (same as SYL)
+
+                      Teacher Edition:
+                          · place Teacher Guide content, no addition subsection
+
+                      Student Edition:
+                          · Interaction 1 SE Manuscript with Anno
+                          · Interaction 1 Spec type (art, photo, or tech art) (if
+                               necessary)
+                          · Interaction 1 Spec Description (if necessary)
+                          · Interaction 1 Spec Alt Text (if necessary)
+                          · Interaction 2 SE Manuscript with Anno
+                          · Interaction 2 Spec type (art, photo, or tech art) (if
+                               necessary)
+                          · Interaction 2 Spec Description (if necessary)
+                          · Interaction 2 Spec Alt Text (if necessary)
+
+                      Continue this format for as many problems as necessary
+
+                      Teacher Edition:
+                          · Teaching Strategy: Multilingual Learners
+
+                      NOT WORTH ADDRESSING
+
+                      Student Edition:
+                          · Interaction 1 SE Manuscript with Anno
+                          · Interaction 1 Spec type (art, photo, or tech art) (if
+                               necessary)
+    · Interaction 1 Spec Description (if necessary)
+    · Interaction 2 SE Manuscript with Anno
+    · Interaction 2 Spec type (art, photo, or tech art) (if
+
+         necessary)
+    · Interaction 2 Spec Description (if necessary)
+Continue this format for as many problems as necessary
+
+Teacher Edition:
+    · Item Guide
+    · Item Rubric(s)
+

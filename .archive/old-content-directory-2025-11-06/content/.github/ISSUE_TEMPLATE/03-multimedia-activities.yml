@@ -1,0 +1,84 @@
+name: 🎬 Multimedia & Interactive Activities
+description: Create multimedia scripts, games, simulations, and interactive activities
+title: "[Multimedia] "
+labels: ["multimedia-activities", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Multimedia & Activities Request
+
+        **Skills Used:**
+        - `curriculum.develop-multimedia` - Create multimedia scripts
+        - `learning.game-designer` - Design educational games
+        - `learning.simulation-designer` - Design simulations
+        - `learning.collaborative-project` - Design collaborative activities
+
+  - type: dropdown
+    id: activity_type
+    attributes:
+      label: Activity Type
+      options:
+        - Video script
+        - Audio script/podcast
+        - Interactive simulation
+        - Educational game
+        - Virtual lab
+        - Collaborative project
+        - Interactive activity
+        - XR/VR experience
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: learning_objectives
+    attributes:
+      label: Learning Objectives
+      description: What should students learn from this activity?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: educational_level
+    attributes:
+      label: Educational Level
+      options:
+        - K-5 (Elementary)
+        - 6-8 (Middle School)
+        - 9-12 (High School)
+        - Undergraduate
+        - Graduate
+        - Professional Learning
+    validations:
+      required: true
+
+  - type: textarea
+    id: activity_description
+    attributes:
+      label: Activity Description
+      description: Describe the multimedia or activity concept
+      placeholder: |
+        - What happens in the activity?
+        - How do students interact?
+        - What is the learning experience?
+    validations:
+      required: true
+
+  - type: input
+    id: duration
+    attributes:
+      label: Duration/Length
+      placeholder: "e.g., 5-minute video, 30-minute activity"
+    validations:
+      required: true
+
+  - type: input
+    id: output_location
+    attributes:
+      label: Output Location
+      value: "multimedia/"
+    validations:
+      required: true

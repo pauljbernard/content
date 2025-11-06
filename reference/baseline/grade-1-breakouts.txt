@@ -1,0 +1,420 @@
+Math, Grade 1(IMRA)
+
+Subject: Mathematics
+Grade: 01
+Expectations: 50
+Breakouts: 174
+
+(a) Introduction.
+
+     1. The desire to achieve educational excellence is the driving force behind the Texas essential knowledge and skills for
+          mathematics, guided by the college and career readiness standards. By embedding statistics, probability, and finance, while
+          focusing on computational thinking, mathematical fluency, and solid understanding, Texas will lead the way in mathematics
+          education and prepare all Texas students for the challenges they will face in the 21st century.
+
+     2. The process standards describe ways in which students are expected to engage in the content. The placement of the
+          process standards at the beginning of the knowledge and skills listed for each grade and course is intentional. The process
+          standards weave the other knowledge and skills together so that students may be successful problem solvers and use
+          mathematics efficiently and effectively in daily life. The process standards are integrated at every grade level and course.
+          When possible, students will apply mathematics to problems arising in everyday life, society, and the workplace. Students
+          will use a problem-solving model that incorporates analyzing given information, formulating a plan or strategy, determining
+          a solution, justifying the solution, and evaluating the problem-solving process and the reasonableness of the solution.
+          Students will select appropriate tools such as real objects, manipulatives, algorithms, paper and pencil, and technology and
+          techniques such as mental math, estimation, number sense, and generalization and abstraction to solve problems. Students
+          will effectively communicate mathematical ideas, reasoning, and their implications using multiple representations such as
+          symbols, diagrams, graphs, computer programs, and language. Students will use mathematical relationships to generate
+          solutions and make connections and predictions. Students will analyze mathematical relationships to connect and
+          communicate mathematical ideas. Students will display, explain, or justify mathematical ideas and arguments using precise
+          mathematical language in written or oral communication.
+
+     3. For students to become fluent in mathematics, students must develop a robust sense of number. The National Research
+          Council's report, "Adding It Up," defines procedural fluency as "skill in carrying out procedures flexibly, accurately,
+          efficiently, and appropriately." As students develop procedural fluency, they must also realize that true problem solving
+          may take time, effort, and perseverance. Students in Grade 1 are expected to perform their work without the use of
+          calculators.
+
+     4. The primary focal areas in Grade 1 are understanding and applying place value, solving problems involving addition and
+          subtraction, and composing and decomposing two-dimensional shapes and three-dimensional solids.
+
+                a. Students use relationships within the numeration system to understand the sequential order of the counting
+                     numbers and their relative magnitude.
+
+                b. Students extend their use of addition and subtraction beyond the actions of joining and separating to include
+                     comparing and combining. Students use properties of operations and the relationship between addition and
+                     subtraction to solve problems. By comparing a variety of solution strategies, students use efficient, accurate, and
+                     generalizable methods to perform operations.
+
+                c. Students use basic shapes and spatial reasoning to model objects in their environment and construct more
+                     complex shapes. Students are able to identify, name, and describe basic two-dimensional shapes and three-
+                     dimensional solids.
+
+     5. Statements that contain the word "including" reference content that must be mastered, while those containing the phrase
+          "such as" are intended as possible illustrative examples.
+
+Math, Grade 1(IMRA) (03/20/2024)
+
+Page 1 of 10
+(b) Knowledge and Skills Statements
+     (1) Mathematical process standards. The student uses mathematical processes to acquire and demonstrate mathematical
+          understanding. The student is expected to:
+                (A) apply mathematics to problems arising in everyday life, society, and the workplace;
+                        (i) apply mathematics to problems arising in everyday life
+                       (ii) apply mathematics to problems arising in society
+                       (iii) apply mathematics to problems arising in the workplace
+                (B) use a problem-solving model that incorporates analyzing given information, formulating a plan or strategy,
+                     determining a solution, justifying the solution, and evaluating the problem-solving process and the reasonableness
+                     of the solution;
+                        (i) use a problem-solving model that incorporates analyzing given information, formulating a plan or
+                                strategy, determining a solution, justifying the solution, and evaluating the problem-solving process
+                       (ii) use a problem-solving model that incorporates analyzing given information, formulating a plan or
+                                strategy, determining a solution, justifying the solution, and evaluating the reasonableness of the solution
+                (C) select tools, including real objects, manipulatives, paper and pencil, and technology as appropriate, and
+                     techniques, including mental math, estimation, and number sense as appropriate, to solve problems;
+                        (i) select tools, including real objects as appropriate, to solve problems
+                       (ii) select tools, including manipulatives as appropriate, to solve problems
+                       (iii) select tools, including paper and pencil as appropriate, to solve problems
+                       (iv) select tools, including technology as appropriate, to solve problems
+                        (v) select techniques, including mental math as appropriate, to solve problems
+                       (vi) select techniques, including estimation as appropriate, to solve problems
+                      (vii) select techniques, including number sense as appropriate, to solve problems
+                (D) communicate mathematical ideas, reasoning, and their implications using multiple representations, including
+                     symbols, diagrams, graphs, and language as appropriate;
+                        (i) communicate mathematical ideas using multiple representations, including symbols as appropriate
+                       (ii) communicate mathematical ideas using multiple representations, including diagrams as appropriate
+                       (iii) communicate mathematical ideas using multiple representations, including graphs as appropriate
+                       (iv) communicate mathematical ideas using multiple representations, including language as appropriate
+                        (v) communicate mathematical reasoning using multiple representations, including symbols as appropriate
+                       (vi) communicate mathematical reasoning using multiple representations, including diagrams as appropriate
+                      (vii) communicate mathematical reasoning using multiple representations, including graphs as appropriate
+                     (viii) communicate mathematical reasoning using multiple representations, including language as appropriate
+                       (ix) communicate [mathematical ideas'] implications using multiple representations, including symbols as
+                                appropriate
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 2 of 10
+                        (x) communicate [mathematical ideas'] implications using multiple representations, including diagrams as
+                                appropriate
+
+                       (xi) communicate [mathematical ideas'] implications using multiple representations, including graphs as
+                                appropriate
+
+                      (xii) communicate [mathematical ideas'] implications using multiple representations, including language as
+                                appropriate
+
+                     (xiii) communicate [mathematical reasoning's] implications using multiple representations, including symbols
+                                as appropriate
+
+                      (xiv) communicate [mathematical reasoning's] implications using multiple representations, including diagrams
+                                as appropriate
+
+                      (xv) communicate [mathematical reasoning's] implications using multiple representations, including graphs as
+                                appropriate
+
+                      (xvi) communicate [mathematical reasoning's] implications using multiple representations, including language
+                                as appropriate
+
+                (E) create and use representations to organize, record, and communicate mathematical ideas;
+                        (i) create representations to organize mathematical ideas
+                       (ii) use representations to organize mathematical ideas
+                       (iii) create representations to record mathematical ideas
+                       (iv) use representations to record mathematical ideas
+                        (v) create representations to communicate mathematical ideas
+                       (vi) use representations to communicate mathematical ideas
+
+                (F) analyze mathematical relationships to connect and communicate mathematical ideas; and
+                        (i) analyze mathematical relationships to connect mathematical ideas
+                       (ii) analyze mathematical relationships to communicate mathematical ideas
+
+                (G) display, explain, and justify mathematical ideas and arguments using precise mathematical language in written or
+                     oral communication.
+                        (i) display mathematical ideas using precise mathematical language in written or oral communication
+                       (ii) display mathematical arguments using precise mathematical language in written or oral communication
+                       (iii) explain mathematical ideas using precise mathematical language in written or oral communication
+                       (iv) explain mathematical arguments using precise mathematical language in written or oral communication
+                        (v) justify mathematical ideas using precise mathematical language in written or oral communication
+                       (vi) justify mathematical arguments using precise mathematical language in written or oral communication
+
+     (2) Number and operations. The student applies mathematical process standards to represent and compare whole numbers,
+          the relative position and magnitude of whole numbers, and relationships within the numeration system related to place
+          value. The student is expected to:
+                (A) recognize instantly the quantity of structured arrangements;
+                        (i) recognize instantly the quantity of structured arrangements
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 3 of 10
+                (B) use concrete and pictorial models to compose and decompose numbers up to 120 in more than one way as so
+                     many hundreds, so many tens, and so many ones;
+                        (i) use concrete models to compose numbers up to 120 in more than one way as so many hundreds, so many
+                                tens, and so many ones
+                       (ii) use concrete models to decompose numbers up to 120 in more than one way as so many hundreds, so
+                                many tens, and so many ones
+                       (iii) use pictorial models to compose numbers up to 120 in more than one way as so many hundreds, so many
+                                tens, and so many ones
+                       (iv) use pictorial models to decompose numbers up to 120 in more than one way as so many hundreds, so
+                                many tens, and so many ones
+
+                (C) use objects, pictures, and expanded and standard forms to represent numbers up to 120;
+                        (i) use objects to represent numbers up to 120
+                       (ii) use pictures to represent numbers up to 120
+                       (iii) use expanded form to represent numbers up to 120
+                       (iv) use standard form to represent numbers up to 120
+
+                (D) generate a number that is greater than or less than a given whole number up to 120;
+                        (i) generate a number that is greater than or less than a given whole number up to 120
+
+                (E) use place value to compare whole numbers up to 120 using comparative language;
+                        (i) use place value to compare whole numbers up to 120 using comparative language
+
+                (F) order whole numbers up to 120 using place value and open number lines; and
+                        (i) order whole numbers up to 120 using place value
+                       (ii) order whole numbers up to 120 using open number lines
+
+                (G) represent the comparison of two numbers to 100 using the symbols >,
+                        (i) represent the comparison of two numbers to 100 using the symbols >, <, or =
+
+     (3) Number and operations. The student applies mathematical process standards to develop and use strategies for whole
+          number addition and subtraction computations in order to solve problems. The student is expected to:
+                (A) use concrete and pictorial models to determine the sum of a multiple of 10 and a one-digit number in problems up
+                     to 99;
+                        (i) use concrete models to determine the sum of a multiple of 10 and a one-digit number in problems up to
+                                99
+                       (ii) use pictorial models to determine the sum of a multiple of 10 and a one-digit number in problems up to
+                                99
+                (B) use objects and pictorial models to solve word problems involving joining, separating, and comparing sets within
+                     20 and unknowns as any one of the terms in the problem such as 2 + 4 = [ ]; 3 + [ ] = 7; and 5 = [ ] - 3;
+                        (i) use objects to solve word problems involving joining sets within 20 and unknowns as any one of the terms
+                                in the problem
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 4 of 10
+                       (ii) use objects to solve word problems involving separating sets within 20 and unknowns as any one of the
+                                terms in the problem
+
+                       (iii) use objects to solve word problems involving comparing sets within 20 and unknowns as any one of the
+                                terms in the problem
+
+                       (iv) use pictorial models to solve word problems involving joining sets within 20 and unknowns as any one of
+                                the terms in the problem
+
+                        (v) use pictorial models to solve word problems involving separating sets within 20 and unknowns as any one
+                                of the terms in the problem
+
+                       (vi) use pictorial models to solve word problems involving comparing sets within 20 and unknowns as any one
+                                of the terms in the problem
+
+                (C) compose 10 with two or more addends with and without concrete objects;
+                        (i) compose 10 with two or more addends with concrete objects
+                       (ii) compose 10 with two or more addends without concrete objects
+
+                (D) apply basic fact strategies to add and subtract within 20, including making 10 and decomposing a number leading
+                     to a 10;
+                        (i) apply basic fact strategies to add within 20, including making 10
+                       (ii) apply basic fact strategies to add within 20, including decomposing a number leading to a 10
+                       (iii) apply basic fact strategies to subtract within 20, including making 10
+                       (iv) apply basic fact strategies to subtract within 20, including decomposing a number leading to a 10
+
+                (E) explain strategies used to solve addition and subtraction problems up to 20 using spoken words, objects, pictorial
+                     models, and number sentences; and
+                        (i) explain strategies used to solve addition problems up to 20 using spoken words
+                       (ii) explain strategies used to solve addition problems up to 20 using objects
+                       (iii) explain strategies used to solve addition problems up to 20 using pictorial models
+                       (iv) explain strategies used to solve addition problems up to 20 using number sentences
+                        (v) explain strategies used to solve subtraction problems up to 20 using spoken words
+                       (vi) explain strategies used to solve subtraction problems up to 20 using objects
+                      (vii) explain strategies used to solve subtraction problems up to 20 using pictorial models
+                     (viii) explain strategies used to solve subtraction problems up to 20 using number sentences
+
+                (F) generate and solve problem situations when given a number sentence involving addition or subtraction of
+                     numbers within 20.
+                        (i) generate problem situations when given a number sentence involving addition or subtraction of numbers
+                                within 20
+                       (ii) solve problem situations when given a number sentence involving addition or subtraction of numbers
+                                within 20
+
+     (4) Number and operations. The student applies mathematical process standards to identify coins, their values, and the
+          relationships among them in order to recognize the need for monetary transactions. The student is expected to:
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 5 of 10
+                (A) identify U.S. coins, including pennies, nickels, dimes, and quarters, by value and describe the relationships among
+                     them;
+                        (i) identify U.S. coins, including pennies, by value
+                       (ii) identify U.S. coins, including nickels, by value
+                       (iii) identify U.S. coins, including dimes, by value
+                       (iv) identify U.S. coins, including quarters, by value
+                        (v) describe the relationships among [U.S. coins, including pennies, nickels, dimes, and quarters]
+
+                (B) write a number with the cent symbol to describe the value of a coin; and
+                        (i) write a number with the cent symbol to describe the value of a coin
+
+                (C) use relationships to count by twos, fives, and tens to determine the value of a collection of pennies, nickels, and/or
+                     dimes.
+                        (i) use relationships to count by twos to determine the value of a collection of pennies, nickels, and/or dimes
+                       (ii) use relationships to count by fives to determine the value of a collection of pennies, nickels, and/or dimes
+                       (iii) use relationships to count by tens to determine the value of a collection of pennies, nickels, and/or dimes
+
+     (5) Algebraic reasoning. The student applies mathematical process standards to identify and apply number patterns within
+          properties of numbers and operations in order to describe relationships. The student is expected to:
+                (A) recite numbers forward and backward from any given number between 1 and 120;
+                        (i) recite numbers forward from any given number between 1 and 120
+                       (ii) recite numbers backward from any given number between 1 and 120
+                (B) skip count by twos, fives, and tens to determine the total number of objects up to 120 in a set;
+                        (i) skip count by twos to determine the total number of objects up to 120 in a set
+                       (ii) skip count by fives to determine the total number of objects up to 120 in a set
+                       (iii) skip count by tens to determine the total number of objects up to 120 in a set
+                (C) use relationships to determine the number that is 10 more and 10 less than a given number up to 120;
+                        (i) use relationships to determine the number that is 10 more than a given number up to 120
+                       (ii) use relationships to determine the number that is 10 less than a given number up to 120
+                (D) represent word problems involving addition and subtraction of whole numbers up to 20 using concrete and
+                     pictorial models and number sentences;
+                        (i) represent word problems involving addition of whole numbers up to 20 using concrete models
+                       (ii) represent word problems involving addition of whole numbers up to 20 using pictorial models
+                       (iii) represent word problems involving addition of whole numbers up to 20 using number sentences
+                       (iv) represent word problems involving subtraction of whole numbers up to 20 using concrete models
+                       (v) represent word problems involving subtraction of whole numbers up to 20 using pictorial models
+                       (vi) represent word problems involving subtraction of whole numbers up to 20 using number sentences
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 6 of 10
+                (E) understand that the equal sign represents a relationship where expressions on each side of the equal sign
+                     represent the same value(s);
+                        (i) understand that the equal sign represents a relationship where expressions on each side of the equal sign
+                                represent the same value(s)
+
+                (F) determine the unknown whole number in an addition or subtraction equation when the unknown may be any one
+                     of the three or four terms in the equation; and
+                        (i) determine the unknown whole number in an addition or subtraction equation when the unknown may be
+                                any one of the three or four terms in the equation
+
+                (G) apply properties of operations to add and subtract two or three numbers.
+                        (i) apply properties of operations to add two or three numbers
+                       (ii) apply properties of operations subtract two or three numbers
+
+     (6) Geometry and measurement. The student applies mathematical process standards to analyze attributes of two-dimensional
+          shapes and three-dimensional solids to develop generalizations about their properties. The student is expected to:
+                (A) classify and sort regular and irregular two-dimensional shapes based on attributes using informal geometric
+                     language;
+                        (i) classify regular two-dimensional shapes based on attributes using informal geometric language
+                       (ii) classify irregular two-dimensional shapes based on attributes using informal geometric language
+                       (iii) sort regular two-dimensional shapes based on attributes using informal geometric language
+                       (iv) sort irregular two-dimensional shapes based on attributes using informal geometric language
+                (B) distinguish between attributes that define a two-dimensional or three-dimensional figure and attributes that do
+                     not define the shape;
+                        (i) distinguish between attributes that define a two-dimensional or three-dimensional figure and attributes
+                                that do not define the shape
+                (C) create two-dimensional figures, including circles, triangles, rectangles, and squares, as special rectangles,
+                     rhombuses, and hexagons;
+                        (i) create two-dimensional figures, including circles
+                       (ii) create two-dimensional figures, including triangles
+                       (iii) create two-dimensional figures, including rectangles
+                       (iv) create two-dimensional figures, including squares, as special rectangles
+                       (v) create two-dimensional figures, including rhombuses
+                       (vi) create two-dimensional figures, including hexagons
+                (D) identify two-dimensional shapes, including circles, triangles, rectangles, and squares, as special rectangles,
+                     rhombuses, and hexagons and describe their attributes using formal geometric language;
+                        (i) identify two-dimensional shapes, including circles
+                       (ii) describe [circles'] attributes using formal geometric language
+                       (iii) identify two-dimensional shapes, including triangles
+                       (iv) describe [triangles'] attributes using formal geometric language
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 7 of 10
+                        (v) identify two-dimensional shapes, including rectangles
+                       (vi) describe [rectangle'] attributes using formal geometric language
+                      (vii) identify two-dimensional shapes, including squares, as special rectangles
+                     (viii) describe [squares'] attributes using formal geometric language
+                       (ix) identify two-dimensional shapes, including rhombuses
+                        (x) describe [rhombuses'] attributes using formal geometric language
+                       (xi) identify two-dimensional shapes, including hexagons
+                      (xii) describe [hexagons'] attributes using formal geometric language
+                (E) identify three-dimensional solids, including spheres, cones, cylinders, rectangular prisms (including cubes), and
+                     triangular prisms, and describe their attributes using formal geometric language;
+                        (i) identify three-dimensional solids, including spheres
+                       (ii) describe [spheres'] attributes using formal geometric language
+                       (iii) identify three-dimensional solids, including cones
+                       (iv) describe [cones'] attributes using formal geometric language
+                        (v) identify three-dimensional solids, including cylinders
+                       (vi) describe [cylinders'] attributes using formal geometric language
+                      (vii) identify three-dimensional solids, including rectangular prisms (including cubes)
+                     (viii) describe [rectangular prisms' (including cubes)] attributes using formal geometric language
+                       (ix) identify three-dimensional solids, including triangular prisms
+                        (x) describe [triangular prisms'] attributes using formal geometric language
+                (F) compose two-dimensional shapes by joining two, three, or four figures to produce a target shape in more than one
+                     way if possible;
+                        (i) compose two-dimensional shapes by joining two, three, or four figures to produce a target shape in more
+
+                                than one way if possible
+                (G) partition two-dimensional figures into two and four fair shares or equal parts and describe the parts using words;
+
+                     and
+                        (i) partition two-dimensional figures into two fair shares or equal parts
+                       (ii) partition two-dimensional figures into four fair shares or equal parts
+                       (iii) describe the [two equal] parts using words
+                       (iv) describe the [four equal] parts using words
+
+                (H) identify examples and non-examples of halves and fourths.
+                        (i) identify examples of halves
+                       (ii) identify examples of fourths
+                       (iii) identify non-examples of halves
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 8 of 10
+                       (iv) identify non-examples of fourths
+     (7) Geometry and measurement. The student applies mathematical process standards to select and use units to describe
+
+          length and time. The student is expected to:
+                (A) use measuring tools to measure the length of objects to reinforce the continuous nature of linear measurement;
+                        (i) use measuring tools to measure the length of objects to reinforce the continuous nature of linear
+                                measurement
+                (B) illustrate that the length of an object is the number of same-size units of length that, when laid end-to-end with no
+                     gaps or overlaps, reach from one end of the object to the other;
+                        (i) illustrate that the length of an object is the number of same-size units of length that, when laid end-to-
+                                end with no gaps or overlaps, reach from one end of the object to the other
+                (C) measure the same object/distance with units of two different lengths and describe how and why the
+                     measurements differ;
+                        (i) measure the same object/distance with units of two different lengths
+                       (ii) describe how the measurements differ
+                       (iii) describe why the measurements differ
+                (D) describe a length to the nearest whole unit using a number and a unit; and
+                        (i) describe a length to the nearest whole unit using a number and a unit
+                (E) tell time to the hour and half hour using analog and digital clocks.
+                        (i) tell time to the hour using analog clocks
+                       (ii) tell time to the hour using digital clocks
+                       (iii) tell time to half hour using analog clocks
+                       (iv) tell time to the half hour using digital clocks
+
+     (8) Data analysis. The student applies mathematical process standards to organize data to make it useful for interpreting
+          information and solving problems. The student is expected to:
+                (A) collect, sort, and organize data in up to three categories using models/representations such as tally marks or T-
+                     charts;
+                        (i) collect data in up to three categories using models/representations
+                       (ii) sort data in up to three categories using models/representations
+                       (iii) organize data in up to three categories using models/representations
+                (B) use data to create picture and bar-type graphs; and
+                        (i) use data to create picture graphs
+                       (ii) use data to create bar-type graphs
+                (C) draw conclusions and generate and answer questions using information from picture and bar-type graphs.
+                        (i) draw conclusions using information from picture graphs
+                       (ii) draw conclusions using information from bar-type graphs
+                       (iii) generate questions using information from picture graphs
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 9 of 10
+                       (iv) generate questions using information from bar-type graphs
+                        (v) answer questions using information from picture graphs
+                       (vi) answer questions using information from bar-type graphs
+     (9) Personal financial literacy. The student applies mathematical process standards to manage one's financial resources
+          effectively for lifetime financial security. The student is expected to:
+                (A) define money earned as income;
+                        (i) define money earned as income
+                (B) identify income as a means of obtaining goods and services, oftentimes making choices between wants and needs;
+                        (i) identify income as a means of obtaining goods, oftentimes making choices between wants and needs
+                       (ii) identify income as a means of obtaining services, oftentimes making choices between wants and needs
+                (C) distinguish between spending and saving; and
+                        (i) distinguish between spending and saving
+                (D) consider charitable giving.
+                        (i) consider charitable giving
+
+Math, Grade 1(IMRA) (03/20/2024)
+Page 10 of 10
+

@@ -1,0 +1,244 @@
+name: 'Setup Professor Framework'
+description: 'Configures Claude Code CLI with the complete Professor framework (92 skills, 22 agents, framework components)'
+author: 'Paul Bernard'
+
+inputs:
+  professor_branch:
+    description: 'Branch of professor repository to use'
+    required: false
+    default: 'master'
+  github_token:
+    description: 'GitHub token for cloning private professor repository'
+    required: true
+  merge_with_local:
+    description: 'Merge professor configs with local .claude configs'
+    required: false
+    default: 'true'
+
+outputs:
+  skills_count:
+    description: 'Number of skills configured'
+    value: ${{ steps.validate.outputs.skills_count }}
+  agents_count:
+    description: 'Number of agents configured'
+    value: ${{ steps.validate.outputs.agents_count }}
+  commands_count:
+    description: 'Number of commands configured'
+    value: ${{ steps.validate.outputs.commands_count }}
+  professor_version:
+    description: 'Version of Professor framework'
+    value: ${{ steps.info.outputs.version }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Get Professor framework info
+      id: info
+      shell: bash
+      run: |
+        echo "Preparing to integrate Professor framework..."
+        echo "version=2.0.0" >> $GITHUB_OUTPUT
+
+    - name: Clone Professor repository
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.github_token }}
+      run: |
+        echo "Cloning Professor repository (branch: ${{ inputs.professor_branch }})..."
+        git clone --depth 1 --branch "${{ inputs.professor_branch }}" \
+          https://x-access-token:${GH_TOKEN}@github.com/pauljbernard/professor.git \
+          /tmp/professor-framework
+
+        # The actual content is in the professor/ subdirectory
+        if [ -d "/tmp/professor-framework/professor" ]; then
+          echo "Found professor subdirectory, using that as root"
+          mv /tmp/professor-framework/professor /tmp/professor
+          rm -rf /tmp/professor-framework
+          mv /tmp/professor /tmp/professor-framework
+        fi
+
+        echo "✓ Professor repository cloned successfully"
+
+    - name: Create Claude Code configuration directories
+      shell: bash
+      run: |
+        echo "Creating Claude Code configuration directories..."
+        mkdir -p ~/.claude/skills
+        mkdir -p ~/.claude/commands
+        mkdir -p ~/.claude/agents
+        mkdir -p ~/.claude/framework
+        echo "✓ Directories created"
+
+    - name: Configure Professor skills
+      shell: bash
+      run: |
+        echo "Configuring Professor skills (92 skills)..."
+
+        if [ -d "/tmp/professor-framework/skills" ]; then
+          # Copy all skills
+          cp -r /tmp/professor-framework/skills/* ~/.claude/skills/ 2>/dev/null || true
+
+          SKILLS_COUNT=$(find ~/.claude/skills -type f -name "*.md" | wc -l)
+          echo "✓ Configured $SKILLS_COUNT skills"
+        else
+          echo "⚠ No skills directory found in professor framework"
+        fi
+
+    - name: Configure Professor agents
+      shell: bash
+      run: |
+        echo "Configuring Professor agents (22 agents)..."
+
+        if [ -d "/tmp/professor-framework/agents" ]; then
+          # Copy all agents
+          cp -r /tmp/professor-framework/agents/* ~/.claude/agents/ 2>/dev/null || true
+
+          AGENTS_COUNT=$(find ~/.claude/agents -type d -mindepth 1 -maxdepth 1 | wc -l)
+          echo "✓ Configured $AGENTS_COUNT agents"
+        else
+          echo "⚠ No agents directory found in professor framework"
+        fi
+
+    - name: Configure spec-kit commands
+      shell: bash
+      run: |
+        echo "Configuring spec-kit commands..."
+
+        if [ -d "/tmp/professor-framework/.claude/commands" ]; then
+          # Copy spec-kit commands
+          cp -r /tmp/professor-framework/.claude/commands/* ~/.claude/commands/ 2>/dev/null || true
+
+          COMMANDS_COUNT=$(find ~/.claude/commands -type f -name "*.md" | wc -l)
+          echo "✓ Configured $COMMANDS_COUNT commands"
+        else
+          echo "⚠ No commands directory found in professor framework"
+        fi
+
+    - name: Configure framework components
+      shell: bash
+      run: |
+        echo "Configuring framework components..."
+
+        if [ -d "/tmp/professor-framework/framework" ]; then
+          # Copy framework components
+          cp -r /tmp/professor-framework/framework/* ~/.claude/framework/ 2>/dev/null || true
+          echo "✓ Framework components configured"
+        else
+          echo "⚠ No framework directory found in professor framework"
+        fi
+
+    - name: Configure .specify framework
+      shell: bash
+      run: |
+        echo "Configuring .specify framework..."
+
+        if [ -d "/tmp/professor-framework/.specify" ]; then
+          mkdir -p ~/.specify
+          cp -r /tmp/professor-framework/.specify/* ~/.specify/ 2>/dev/null || true
+          echo "✓ .specify framework configured"
+        else
+          echo "⚠ No .specify directory found in professor framework"
+        fi
+
+    - name: Copy architecture documentation
+      shell: bash
+      run: |
+        echo "Copying architecture documentation..."
+
+        if [ -f "/tmp/professor-framework/AGENT_ARCHITECTURE.md" ]; then
+          cp /tmp/professor-framework/AGENT_ARCHITECTURE.md ~/.claude/AGENT_ARCHITECTURE.md
+          echo "✓ Agent architecture documentation copied"
+        fi
+
+        if [ -f "/tmp/professor-framework/README.md" ]; then
+          cp /tmp/professor-framework/README.md ~/.claude/PROFESSOR_README.md
+          echo "✓ Professor README copied"
+        fi
+
+    - name: Merge with local configurations
+      if: inputs.merge_with_local == 'true'
+      shell: bash
+      run: |
+        echo "Merging with local configurations..."
+
+        # Copy local configs (will overwrite professor configs where they overlap)
+        if [ -d "$GITHUB_WORKSPACE/.claude/skills" ]; then
+          cp -r $GITHUB_WORKSPACE/.claude/skills/* ~/.claude/skills/ 2>/dev/null || true
+          echo "✓ Local skills merged"
+        fi
+
+        if [ -d "$GITHUB_WORKSPACE/.claude/commands" ]; then
+          cp -r $GITHUB_WORKSPACE/.claude/commands/* ~/.claude/commands/ 2>/dev/null || true
+          echo "✓ Local commands merged"
+        fi
+
+        if [ -d "$GITHUB_WORKSPACE/.claude/agents" ]; then
+          cp -r $GITHUB_WORKSPACE/.claude/agents/* ~/.claude/agents/ 2>/dev/null || true
+          echo "✓ Local agents merged"
+        fi
+
+        # Copy repository CLAUDE.md to user home
+        if [ -f "$GITHUB_WORKSPACE/CLAUDE.md" ]; then
+          cp $GITHUB_WORKSPACE/CLAUDE.md ~/.claude/CLAUDE.md
+          echo "✓ Repository CLAUDE.md copied"
+        fi
+
+    - name: Validate configuration
+      id: validate
+      shell: bash
+      run: |
+        echo "Validating Professor configuration..."
+
+        SKILLS_COUNT=$(find ~/.claude/skills -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+        AGENTS_COUNT=$(find ~/.claude/agents -type d -mindepth 1 -maxdepth 1 2>/dev/null | wc -l | tr -d ' ')
+        COMMANDS_COUNT=$(find ~/.claude/commands -type f -name "*.md" 2>/dev/null | wc -l | tr -d ' ')
+
+        echo "skills_count=$SKILLS_COUNT" >> $GITHUB_OUTPUT
+        echo "agents_count=$AGENTS_COUNT" >> $GITHUB_OUTPUT
+        echo "commands_count=$COMMANDS_COUNT" >> $GITHUB_OUTPUT
+
+        echo ""
+        echo "═══════════════════════════════════════"
+        echo "  Professor Framework Configuration"
+        echo "═══════════════════════════════════════"
+        echo "  Skills:   $SKILLS_COUNT"
+        echo "  Agents:   $AGENTS_COUNT"
+        echo "  Commands: $COMMANDS_COUNT"
+        echo "═══════════════════════════════════════"
+        echo ""
+
+        if [ "$SKILLS_COUNT" -lt 50 ]; then
+          echo "⚠ Warning: Expected ~92 skills, found $SKILLS_COUNT"
+        fi
+
+        if [ "$AGENTS_COUNT" -lt 15 ]; then
+          echo "⚠ Warning: Expected ~22 agents, found $AGENTS_COUNT"
+        fi
+
+        echo "✓ Configuration validation complete"
+
+    - name: List configured components
+      shell: bash
+      run: |
+        echo ""
+        echo "Configured Skills (first 10):"
+        ls -1 ~/.claude/skills/ 2>/dev/null | head -10 || echo "  No skills found"
+
+        echo ""
+        echo "Configured Agents (first 10):"
+        ls -1 ~/.claude/agents/ 2>/dev/null | head -10 || echo "  No agents found"
+
+        echo ""
+        echo "Configured Commands:"
+        ls -1 ~/.claude/commands/ 2>/dev/null || echo "  No commands found"
+
+    - name: Cleanup
+      shell: bash
+      run: |
+        echo "Cleaning up temporary files..."
+        rm -rf /tmp/professor-framework
+        echo "✓ Cleanup complete"
+
+branding:
+  icon: 'book-open'
+  color: 'blue'

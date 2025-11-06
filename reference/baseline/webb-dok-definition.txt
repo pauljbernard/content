@@ -1,0 +1,150 @@
+   WebbAlign®/Dr. Norman Webb © 2015. All rights Reserved. Revised September 2014
+
+                               Mathematics DOK Definitions
+
+DOK 1 (Recall)
+
+DOK 1 is defined by the rote recall of information or performance of a simple, routine
+procedure. For example, repeating a memorized fact, definition, or term, performing a simple
+algorithm, rounding a number, or applying a formula are DOK 1 performances.
+Performing a one-step computation or operation, executing a well-defined multi-step procedure
+or a direct computational algorithm are also included in this category. Examples of well-defined
+multi-step procedures include finding the mean or median or performing long division. Reading
+information directly from a graph, plugging data into an electronic device to derive an answer, or
+simple paraphrasing are all tasks that are considered a level of complexity comparable to recall.
+A student answering a Level 1 item either knows the answer or does not: that is, the item does
+not need to be "figured out" or "solved."
+
+At a DOK 1, problems in context are straightforward and the solution path is obvious. For
+example, the problem may contain a keyword that indicates the operation needed. Other DOK 1
+examples include plotting points on a coordinate system, using coordinates with the distance
+formula, or drawing lines of symmetry of geometric figures.
+At more advanced levels of mathematics, symbol manipulation and solving a quadratic equation
+or a system of two linear equations with two unknowns are considered comparable to recall
+assuming students are expected or likely to use well-known procedures (e.g. factoring,
+completing the square, substitution, or elimination) to derive a solution. Operating on
+polynomials or radicals, using the laws of exponents, or simplifying rational expressions are
+considered rote procedures.
+Verbs should not be classified as any category without considering what the verb is acting upon
+or the verb's direct object. "Identify attributes of a polygon" is recall, but "identify the rate of
+change for an exponential function" requires a more complex analysis. To describe by listing the
+steps used to solve a problem is recall (i.e, Show your work) whereas to describe by providing a
+mathematical argument or rationale for a solution is more complex.
+
+Webb, N. L. Alignment study in language arts, mathematics, science, and social studies of state
+standards and assessments for four states. A study of the State Collaborative on Assessment &
+Student Standards (SCASS) Technical Issues in Large-Scale Assessment (TILSA). Washington,
+D. C.: Council of Chief State School Officers, December 2002. Revised in 2014 by Norman
+Webb, Sara Christopherson with the help of Lynn Raith.
+
+      WebbAlign offers alignment studies and DOK professional development training.
+ Please contact WCEPS at webbalign@wceps.org or 1-877-249-4211 for more information.
+   WebbAlign®/Dr. Norman Webb © 2015. All rights Reserved. Revised September 2014
+
+DOK 2 (Skill/Concept)
+
+DOK 2 involves engaging in some mental processing beyond a habitual response as well as
+decision-making about how to approach the problem or activity. This category can require
+conceptual understanding and/or demonstrating conceptual knowledge by explaining thinking in
+terms of concepts.
+
+DOK 2 tasks includes distinguishing among mathematical ideas, processing information about
+the underlying structure, drawing relationships among ideas, deciding among and performing
+appropriate skills, applying properties or conventions within a relevant and necessary context,
+transforming among different representations, interpreting and solving problems and/or graphs.
+When given a problem statement, formulating an equation or inequality, deriving a solution, and
+reporting the solution in the context of the problem fit within DOK 2. Processes such as
+classifying, organizing, and estimating that involve attending to multiple attributes, features, or
+properties also fall into this category.
+
+Verifying that the number of objects in one set is larger or fewer than the number of objects in a
+second set by matching pairs or forming equivalent groups is a DOK 2 activity for a
+kindergartener. A first grader modeling a joining or separating situation pictorially or physically
+also is in this category.
+
+Skills and concepts include constructing a graph and interpreting the meaning of critical features
+of a function, beyond just identifying or finding such features as well as describing the effects of
+parameter changes. Note, however, that using a well-defined procedure to find features of a
+standard function, such as the slope of a linear function with one variable or a quadratic, is a
+DOK 1. Graphing higher order or irregular functions is a DOK 2. Basic computation, as well as
+converting between different units of measurement, are generally a Category 1, but illustrating a
+computation by different representations (e.g. equations and a base-ten model) to explain the
+results is a DOK 2. Computing measures of central tendency (applying set procedures) is a DOK
+1, but interpreting such measures for a data set within its context or using measures to compare
+multiple data sets is a DOK 2. Performing original formal proofs is beyond DOK 2, but
+explaining in one's own words the reasons for an action or application of a property is
+comparable to a DOK 2. Activities at a DOK 2 are not limited only to number skills, but may
+involve visualization skills (e.g. mentally rotating a 3D figure or transforming a figure) and
+probability skills requiring more than simple counting (e.g. determining a sample space or
+probability of a compound event). Other activities at this category include detecting or describing
+non-trivial patterns, explaining the purpose and use of experimental procedures, and carrying out
+experimental procedures.
+
+      WebbAlign offers alignment studies and DOK professional development training.
+ Please contact WCEPS at webbalign@wceps.org or 1-877-249-4211 for more information.
+   WebbAlign®/Dr. Norman Webb © 2015. All rights Reserved. Revised September 2014
+DOK 3 (Strategic Thinking)
+DOK 3 requires reasoning and analyzing using mathematical principles, ideas, structure, and
+practices. DOK 3 includes solving involved problems; conjecturing; creating novel solutions and
+forms of representation; devising original proofs, mathematical arguments, and critiques of
+arguments; constructing mathematical models; and forming robust inferences and predictions.
+Although DOK 2 also involves some problem solving, DOK 3 includes situations that are non-
+routine, more demanding, more abstract, and more complex than DOK 2. Such activities are
+characterized by producing sound and valid mathematical arguments when solving problems,
+verifying answers, developing a proof, or drawing inferences. Note that the sophistication of a
+mathematical argument that would be considered DOK 3 depends on the prior knowledge and
+experiences of the person. For example, primary school student arguments for number problems
+can be a DOK 3 activity (e.g. counting number of combinations, finding shortest route from
+home to school, computing with large numbers) as can abstract reasoning in developing a logical
+argument by students in higher grades. DOK 3 problems are those for which it is not evident
+from the first reading what is needed to derive a solution and so require demanding reasoning to
+work through. Such problems usually can be solved in different ways and may even have more
+than one correct solution based on different stated assumptions. Paraphrasing in one's own words
+or reproducing a proof that was previously demonstrated is a DOK 2. Applying properties and
+producing arguments in proving a theorem or identity not previously seen is a DOK 3. Also in
+the DOK 3 category is making sense of the mathematics in a situation, creating a mathematical
+model of a situation considering contextual constraints, deriving a new formula, designing and
+conducting an experiment, and interpreting findings.
+
+      WebbAlign offers alignment studies and DOK professional development training.
+ Please contact WCEPS at webbalign@wceps.org or 1-877-249-4211 for more information.
+   WebbAlign®/Dr. Norman Webb © 2015. All rights Reserved. Revised September 2014
+
+DOK 4 (Extended Thinking)
+DOK 4 demands are at least as complex as those of DOK 3, but a main factor that distinguishes
+the two categories is the need to perform activities over days and weeks (DOK 4) rather than in
+one sitting (DOK 3). The extended time that accompanies this type of activity allows for creation
+of original work and requires metacognitive awareness that typically increases the complexity of
+a DOK 4 task overall, in comparison with DOK 3 activities. Category 4 activities require
+complex reasoning, planning, research, and verification of work. Conducting a research project,
+performance activity, an experiment, and a design project as well as creating a new theorem and
+proof fit under Category 4. The extended time period is not a distinguishing factor if the required
+work is only repetitive and does not require applying significant conceptual understanding and
+higher-order thinking. For example, collecting water temperature from a river each day for a
+month and then reporting the findings by constructing a graph is a DOK 2 activity. Developing a
+mathematical model of the flow of water in a river for all four seasons using a number of
+variables would be a DOK 4 activity. It is likely that a DOK 4 activity will require making
+connections among a number of ideas or variables within the area of mathematics or among a
+number of content areas. Category 4 activities require selecting an appropriate approach among
+many alternatives to produce a product, conclusion, or finding, such as critiquing a body of
+work, synthesizing ideas in a new way, or creating an original model.
+
+                                   General Guidelines for Assigning DOK:
+    · The DOK definitions can be applied to mathematics standards, tasks, or activities.
+    · Consider the complexity of the mathematical demands, not the difficulty for students.
+    · Consider the mathematical experience (prior knowledge) and grade-level expectations of
+
+         a typical student.
+    · Do not rely on verbs (describe, explain, evaluate, etc.). Instead, consider the content
+
+         complexity required for an adequate response.
+    · For multiple-choice assessment items, consider the item as a whole--including
+
+         distractors--to judge complexity.
+    · An expectation or item that is confusing due to error or wording does not reflect
+
+         increased content complexity--it simply means the statement needs revisions.
+
+      WebbAlign offers alignment studies and DOK professional development training.
+ Please contact WCEPS at webbalign@wceps.org or 1-877-249-4211 for more information.
+

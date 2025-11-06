@@ -1,0 +1,217 @@
+name: Automated Content Development with Professor
+
+# This workflow allows you to trigger automated content development tasks
+# using the complete Professor framework (92 skills, 22 agents)
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_description:
+        description: 'Describe the content development task'
+        required: true
+        type: string
+      educational_level:
+        description: 'Target educational level'
+        required: false
+        type: choice
+        options:
+          - 'K-5 (Elementary)'
+          - '6-8 (Middle School)'
+          - '9-12 (High School)'
+          - 'Undergraduate'
+          - 'Graduate'
+          - 'Post-graduate'
+          - 'Professional Learning'
+        default: '9-12 (High School)'
+      standards:
+        description: 'Educational standards to align to (e.g., NGSS, CCSS)'
+        required: false
+        type: string
+        default: ''
+      output_path:
+        description: 'Where to save the generated content'
+        required: false
+        type: string
+        default: 'drafts/'
+      create_pr:
+        description: 'Create a pull request with the generated content'
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  develop-content:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Create output directory
+        run: |
+          mkdir -p "${{ inputs.output_path }}"
+
+      - name: Setup Professor Framework
+        id: setup-professor
+        uses: ./.github/actions/setup-professor
+        with:
+          professor_branch: 'master'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_with_local: 'true'
+
+      - name: Display Professor Configuration
+        run: |
+          echo "## Professor Framework Configured" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Skills**: ${{ steps.setup-professor.outputs.skills_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Agents**: ${{ steps.setup-professor.outputs.agents_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commands**: ${{ steps.setup-professor.outputs.commands_count }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.setup-professor.outputs.professor_version }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Prepare task specification
+        run: |
+          cat > task-specification.md << 'EOF'
+          # Content Development Task
+
+          ## Task Description
+          ${{ inputs.task_description }}
+
+          ## Educational Context
+          - **Level**: ${{ inputs.educational_level }}
+          - **Standards**: ${{ inputs.standards || 'None specified - use best judgment' }}
+          - **Output Path**: ${{ inputs.output_path }}
+
+          ## Requirements
+          - Use Professor framework skills and agents
+          - Follow CLAUDE.md guidelines for quality standards
+          - Create pedagogically sound, accessible content
+          - Align to specified standards
+          - Generate appropriate supporting materials (assessments, activities, etc.)
+
+          ## Workflow to Follow
+          1. Research the topic and relevant standards
+          2. Design clear, measurable learning objectives
+          3. Develop comprehensive content
+          4. Review for quality, pedagogy, and accessibility
+          5. Package in appropriate format(s)
+
+          ## Deliverables
+          Save all generated content to: `${{ inputs.output_path }}`
+
+          ## Context
+          - **Repository**: ${{ github.repository }}
+          - **Branch**: ${{ github.ref_name }}
+          - **Triggered by**: ${{ github.actor }}
+          - **Run ID**: ${{ github.run_id }}
+          EOF
+
+          echo "Task specification created"
+          cat task-specification.md
+
+      - name: Execute content development with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: |
+            Please complete the content development task specified in task-specification.md.
+
+            You have access to the complete Professor framework with 92 skills and 22 agents.
+            Follow the workflow in the task specification and use appropriate Professor skills.
+
+            Task: ${{ inputs.task_description }}
+            Level: ${{ inputs.educational_level }}
+            Standards: ${{ inputs.standards }}
+            Output: ${{ inputs.output_path }}
+
+            Use Professor skills like:
+            - /curriculum.research for topic research
+            - /curriculum.design for learning objectives
+            - /curriculum.develop-content for content creation
+            - /curriculum.review-pedagogy for quality review
+            - /curriculum.review-accessibility for accessibility check
+
+            Generate high-quality educational content following all standards in CLAUDE.md.
+          claude_args: '--max-turns 20'
+
+      - name: Create Pull Request
+        if: inputs.create_pr && success()
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            Add automated content: ${{ inputs.task_description }}
+
+            Generated using Professor framework v${{ steps.setup-professor.outputs.professor_version }}
+            Level: ${{ inputs.educational_level }}
+            Standards: ${{ inputs.standards }}
+
+            🤖 Generated with Claude Code + Professor Framework
+          title: '[Professor] ${{ inputs.task_description }}'
+          body: |
+            ## 📚 Automated Content Development
+
+            **Task**: ${{ inputs.task_description }}
+            **Level**: ${{ inputs.educational_level }}
+            **Standards**: ${{ inputs.standards || 'None specified' }}
+            **Output Path**: `${{ inputs.output_path }}`
+
+            ### Professor Framework Used
+            - ✅ Skills: ${{ steps.setup-professor.outputs.skills_count }}
+            - ✅ Agents: ${{ steps.setup-professor.outputs.agents_count }}
+            - ✅ Version: ${{ steps.setup-professor.outputs.professor_version }}
+
+            ### Generated Content
+            This PR contains educational content automatically generated using the Professor framework.
+            All content has been created following learning engineering best practices.
+
+            ### Review Checklist
+            - [ ] Content accuracy and pedagogical soundness
+            - [ ] Learning objectives are clear and measurable
+            - [ ] Standards alignment is correct
+            - [ ] Accessibility requirements met (WCAG 2.1)
+            - [ ] Age-appropriate language and complexity
+            - [ ] Assessments align with objectives
+            - [ ] No bias or cultural insensitivity
+            - [ ] All supporting materials included
+
+            ### Next Steps
+            1. Review the generated content
+            2. Test with target audience if possible
+            3. Make any necessary adjustments
+            4. Approve and merge when ready
+
+            ---
+            🤖 Generated with [Claude Code](https://claude.com/claude-code) + [Professor Framework](https://github.com/pauljbernard/professor)
+          branch: professor/content-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            automated-content
+            professor-generated
+            needs-review
+            ${{ inputs.educational_level }}
+
+      - name: Generate workflow summary
+        if: always()
+        run: |
+          echo "## 📊 Content Development Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Task**: ${{ inputs.task_description }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Level**: ${{ inputs.educational_level }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Standards**: ${{ inputs.standards || 'None specified' }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Output Path**: \`${{ inputs.output_path }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Status**: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ "${{ inputs.create_pr }}" = "true" ]; then
+            echo "✅ Pull request created with generated content" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "ℹ️ No pull request created (create_pr=false)" >> $GITHUB_STEP_SUMMARY
+          fi

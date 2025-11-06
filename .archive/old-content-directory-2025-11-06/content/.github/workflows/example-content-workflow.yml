@@ -1,0 +1,66 @@
+name: Example - Content Development with Professor
+
+# This is an example workflow showing how to use the Professor content development workflow
+# You can customize this for your specific content development needs
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_type:
+        description: 'Type of content task'
+        required: true
+        type: choice
+        options:
+          - Create new article
+          - Update existing content
+          - Review and improve content
+          - Generate documentation
+          - Custom task
+      task_details:
+        description: 'Detailed task description'
+        required: true
+        type: string
+      target_path:
+        description: 'Path to content (e.g., content/articles/)'
+        required: false
+        type: string
+        default: 'content'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  prepare-task:
+    runs-on: ubuntu-latest
+    outputs:
+      formatted_task: ${{ steps.format.outputs.task }}
+
+    steps:
+      - name: Format task description
+        id: format
+        run: |
+          TASK="${{ inputs.task_type }}: ${{ inputs.task_details }}"
+          echo "task=$TASK" >> $GITHUB_OUTPUT
+
+  develop-content:
+    needs: prepare-task
+    uses: ./.github/workflows/professor-content-development.yml
+    with:
+      task_description: ${{ needs.prepare-task.outputs.formatted_task }}
+      content_path: ${{ inputs.target_path }}
+      professor_branch: 'main'
+      create_pr: true
+    secrets:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+  notify-completion:
+    needs: develop-content
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Report results
+        run: |
+          echo "Content development workflow completed"
+          echo "Results: ${{ needs.develop-content.outputs.result_summary }}"

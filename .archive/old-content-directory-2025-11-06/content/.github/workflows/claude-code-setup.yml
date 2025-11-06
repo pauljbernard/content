@@ -1,0 +1,327 @@
+name: Claude Code CLI Setup with Professor
+
+on:
+  issues:
+    types: [opened, reopened]
+  workflow_dispatch:
+    inputs:
+      action_type:
+        description: 'Action to perform'
+        required: true
+        type: choice
+        options:
+          - install
+          - update
+          - reconfigure
+          - reinstall
+        default: 'install'
+      professor_branch:
+        description: 'Professor repository branch'
+        required: false
+        default: 'main'
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  setup-claude-code:
+    # Only run if issue has the claude-code label or triggered manually
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'claude-code')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out content repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Parse issue body
+        if: github.event_name == 'issues'
+        id: parse-issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const body = issue.body || '';
+
+            // Extract form values (GitHub issue forms create structured data)
+            const actionMatch = body.match(/### Action Type\s*\n\s*(.+)/);
+            const branchMatch = body.match(/### Professor Branch\s*\n\s*(.+)/);
+            const customBranchMatch = body.match(/### Custom Branch Name\s*\n\s*(.+)/);
+
+            const action = actionMatch ? actionMatch[1].trim().toLowerCase() : 'install';
+            let branch = branchMatch ? branchMatch[1].trim() : 'main';
+
+            if (branch === 'custom (specify below)' && customBranchMatch) {
+              branch = customBranchMatch[1].trim();
+            }
+
+            core.setOutput('action_type', action.includes('install') ? 'install' :
+                                         action.includes('update') ? 'update' :
+                                         action.includes('reconfigure') ? 'reconfigure' : 'reinstall');
+            core.setOutput('professor_branch', branch);
+
+            return { action_type: action, branch: branch };
+
+      - name: Set workflow variables
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "action_type=${{ inputs.action_type }}" >> $GITHUB_OUTPUT
+            echo "professor_branch=${{ inputs.professor_branch }}" >> $GITHUB_OUTPUT
+          else
+            echo "action_type=${{ steps.parse-issue.outputs.action_type }}" >> $GITHUB_OUTPUT
+            echo "professor_branch=${{ steps.parse-issue.outputs.professor_branch }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Add initial comment to issue
+        if: github.event_name == 'issues'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## 🚀 Claude Code Setup Started\n\n` +
+                    `**Action:** ${{ steps.vars.outputs.action_type }}\n` +
+                    `**Professor Branch:** ${{ steps.vars.outputs.professor_branch }}\n\n` +
+                    `Setting up Claude Code CLI with Professor framework...\n\n` +
+                    `[View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
+            });
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check for existing Claude Code installation
+        id: check-claude
+        run: |
+          if command -v claude &> /dev/null; then
+            echo "installed=true" >> $GITHUB_OUTPUT
+            echo "version=$(claude --version 2>&1 || echo 'unknown')" >> $GITHUB_OUTPUT
+          else
+            echo "installed=false" >> $GITHUB_OUTPUT
+            echo "version=none" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install/Update Claude Code CLI
+        if: steps.vars.outputs.action_type != 'reconfigure'
+        run: |
+          echo "Current installation status: ${{ steps.check-claude.outputs.installed }}"
+          echo "Current version: ${{ steps.check-claude.outputs.version }}"
+
+          if [ "${{ steps.vars.outputs.action_type }}" = "reinstall" ]; then
+            echo "Performing full reinstall..."
+            npm uninstall -g @anthropic-ai/claude-code 2>/dev/null || true
+          fi
+
+          echo "Installing/updating Claude Code CLI..."
+          npm install -g @anthropic-ai/claude-code@latest
+
+          # Verify installation
+          claude --version
+
+      - name: Get new Claude Code version
+        id: new-version
+        run: |
+          VERSION=$(claude --version 2>&1 || echo 'unknown')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Clone Professor repository
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Cloning Professor repository (branch: ${{ steps.vars.outputs.professor_branch }})..."
+
+          # Clone the private repository using GitHub token
+          git clone --depth 1 --branch "${{ steps.vars.outputs.professor_branch }}" \
+            https://x-access-token:${GH_TOKEN}@github.com/pauljbernard/professor.git \
+            professor-framework
+
+          cd professor-framework
+          echo "Professor repository cloned successfully"
+          ls -la
+
+      - name: Configure Claude Code with Professor framework
+        run: |
+          echo "Configuring Claude Code with Professor framework..."
+
+          # Create Claude Code config directory structure
+          mkdir -p ~/.claude/skills
+          mkdir -p ~/.claude/commands
+          mkdir -p ~/.claude/agents
+
+          # Copy skills from Professor
+          if [ -d "professor-framework/.claude/skills" ]; then
+            echo "Copying skills..."
+            cp -r professor-framework/.claude/skills/* ~/.claude/skills/ 2>/dev/null || true
+          elif [ -d "professor-framework/skills" ]; then
+            echo "Copying skills from root..."
+            cp -r professor-framework/skills/* ~/.claude/skills/ 2>/dev/null || true
+          fi
+
+          # Copy commands from Professor
+          if [ -d "professor-framework/.claude/commands" ]; then
+            echo "Copying commands..."
+            cp -r professor-framework/.claude/commands/* ~/.claude/commands/ 2>/dev/null || true
+          elif [ -d "professor-framework/commands" ]; then
+            echo "Copying commands from root..."
+            cp -r professor-framework/commands/* ~/.claude/commands/ 2>/dev/null || true
+          fi
+
+          # Copy sub-agents from Professor
+          if [ -d "professor-framework/.claude/agents" ]; then
+            echo "Copying sub-agents..."
+            cp -r professor-framework/.claude/agents/* ~/.claude/agents/ 2>/dev/null || true
+          elif [ -d "professor-framework/agents" ]; then
+            echo "Copying agents from root..."
+            cp -r professor-framework/agents/* ~/.claude/agents/ 2>/dev/null || true
+          fi
+
+          # Copy CLAUDE.md if it exists
+          if [ -f "professor-framework/CLAUDE.md" ]; then
+            echo "Copying CLAUDE.md configuration..."
+            cp professor-framework/CLAUDE.md ~/.claude/CLAUDE.md
+          elif [ -f "professor-framework/.claude/CLAUDE.md" ]; then
+            cp professor-framework/.claude/CLAUDE.md ~/.claude/CLAUDE.md
+          fi
+
+          # Copy any other configuration files
+          if [ -f "professor-framework/.claude/config.json" ]; then
+            echo "Copying config.json..."
+            cp professor-framework/.claude/config.json ~/.claude/config.json
+          fi
+
+          echo "Configuration complete!"
+
+      - name: Validate configuration
+        id: validate
+        run: |
+          echo "Validating Claude Code configuration..."
+
+          # Count configured components
+          SKILLS_COUNT=$(find ~/.claude/skills -type f 2>/dev/null | wc -l)
+          COMMANDS_COUNT=$(find ~/.claude/commands -type f 2>/dev/null | wc -l)
+          AGENTS_COUNT=$(find ~/.claude/agents -type f 2>/dev/null | wc -l)
+
+          echo "skills_count=$SKILLS_COUNT" >> $GITHUB_OUTPUT
+          echo "commands_count=$COMMANDS_COUNT" >> $GITHUB_OUTPUT
+          echo "agents_count=$AGENTS_COUNT" >> $GITHUB_OUTPUT
+
+          echo "Configuration Summary:"
+          echo "  Skills: $SKILLS_COUNT"
+          echo "  Commands: $COMMANDS_COUNT"
+          echo "  Sub-agents: $AGENTS_COUNT"
+
+          # List installed components
+          echo "=== Installed Skills ==="
+          ls -1 ~/.claude/skills 2>/dev/null || echo "No skills found"
+
+          echo "=== Installed Commands ==="
+          ls -1 ~/.claude/commands 2>/dev/null || echo "No commands found"
+
+          echo "=== Installed Agents ==="
+          ls -1 ~/.claude/agents 2>/dev/null || echo "No agents found"
+
+      - name: Create configuration artifact
+        run: |
+          echo "Creating configuration snapshot..."
+          mkdir -p artifacts
+
+          # Create a summary of the configuration
+          cat > artifacts/configuration-summary.md << 'EOF'
+          # Claude Code Configuration Summary
+
+          **Generated:** $(date -u +"%Y-%m-%d %H:%M:%S UTC")
+          **Action:** ${{ steps.vars.outputs.action_type }}
+          **Professor Branch:** ${{ steps.vars.outputs.professor_branch }}
+          **Claude Code Version:** ${{ steps.new-version.outputs.version }}
+
+          ## Installed Components
+
+          - **Skills:** ${{ steps.validate.outputs.skills_count }} files
+          - **Commands:** ${{ steps.validate.outputs.commands_count }} files
+          - **Sub-agents:** ${{ steps.validate.outputs.agents_count }} files
+
+          ## Skills
+          EOF
+
+          ls -1 ~/.claude/skills 2>/dev/null >> artifacts/configuration-summary.md || echo "None" >> artifacts/configuration-summary.md
+
+          echo -e "\n## Commands" >> artifacts/configuration-summary.md
+          ls -1 ~/.claude/commands 2>/dev/null >> artifacts/configuration-summary.md || echo "None" >> artifacts/configuration-summary.md
+
+          echo -e "\n## Sub-agents" >> artifacts/configuration-summary.md
+          ls -1 ~/.claude/agents 2>/dev/null >> artifacts/configuration-summary.md || echo "None" >> artifacts/configuration-summary.md
+
+          # Copy the entire configuration
+          cp -r ~/.claude artifacts/claude-config
+
+      - name: Upload configuration artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: claude-code-configuration
+          path: artifacts/
+          retention-days: 30
+
+      - name: Update issue with success
+        if: github.event_name == 'issues' && success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summary = fs.readFileSync('artifacts/configuration-summary.md', 'utf8');
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## ✅ Claude Code Setup Complete\n\n` +
+                    summary + `\n\n` +
+                    `### Next Steps\n\n` +
+                    `The Professor framework has been successfully configured! You can now:\n\n` +
+                    `1. Use Claude Code CLI with Professor skills and commands\n` +
+                    `2. Trigger content development workflows that utilize the Professor agent\n` +
+                    `3. Reference the configuration artifact for details\n\n` +
+                    `[Download Configuration Artifact](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
+            });
+
+            // Close the issue
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed',
+              labels: ['claude-code', 'setup', 'completed']
+            });
+
+      - name: Update issue with failure
+        if: github.event_name == 'issues' && failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `## ❌ Claude Code Setup Failed\n\n` +
+                    `The setup process encountered an error. Please check the ` +
+                    `[workflow logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) ` +
+                    `for details.\n\n` +
+                    `Common issues:\n` +
+                    `- Professor repository access denied (check permissions)\n` +
+                    `- Invalid branch name\n` +
+                    `- Missing configuration files in Professor repository`
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              labels: ['failed']
+            });

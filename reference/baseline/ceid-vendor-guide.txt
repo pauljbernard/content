@@ -1,0 +1,1610 @@
+Content Equity, Inclusion & Diversity
+Guidance: Vendor Reference Guide
+
+Version 3.0
+Copyright Houghton Mifflin Harcourt, 2020
+
+    CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+    ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+                                                            CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Contents
+
+            Pledge ............................................................................................................. 5
+            Introduction.................................................................................................... 6
+
+                        Goals of This Document ............................................................................................... 6
+                        Philosophy and Tensions.............................................................................................. 6
+                        Structure ...................................................................................................................... 7
+                        Previous Versions......................................................................................................... 8
+                        Using These Guidelines ................................................................................................ 8
+
+            1 Age Equality and Physical Appearance ................................................. 9
+            2 Disability.............................................................................................. 10
+
+                        2.1 Overview and Representation........................................................................ 10
+                        2.2 Text Considerations ........................................................................................ 10
+                        2.3 Image Considerations ..................................................................................... 11
+
+            3 Ethnicity, Nationality, and Race .......................................................... 12
+
+                        3.1 Overview and Representation........................................................................ 12
+                        3.2 Text Considerations ........................................................................................ 13
+                        3.3 Terms for Ethnicity, Nationality, and Race ..................................................... 13
+
+            4 Family Structure .................................................................................. 17
+            5 Gender Equality and Sexual Orientation ............................................ 18
+
+                        5.1 Gender Representation .................................................................................. 18
+                                5.1.1 Overview and Representation ............................................................ 18
+                                5.1.2 Text Considerations............................................................................ 18
+                                5.1.3 Use of "They" as a Singular Inclusive Pronoun .................................. 19
+                                5.1.4 Image Considerations ........................................................................ 21
+
+                        5.2 Sexual Orientation .......................................................................................... 21
+                                5.2.1 Overview ............................................................................................ 21
+                                5.2.2 Image Considerations ........................................................................ 21
+
+            6 Global and Social Issues ...................................................................... 22
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 2 OF 39
+                                             CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+        6.1 Colonization and Indigenous Peoples ............................................................ 22
+                 6.1.1 Text and Image Considerations .......................................................... 22
+                 6.1.2 Practices to Avoid ............................................................................... 22
+
+        6.2 Genocide......................................................................................................... 23
+                 6.2.1 Overview ............................................................................................ 23
+                 6.2.2 Text and Image Considerations ......................................................... 23
+                 6.2.3 Practices to Avoid .............................................................................. 24
+
+        6.3 Immigration, Refugees, and Migration .......................................................... 24
+                 6.3.1 Text Considerations............................................................................ 24
+                 6.3.2 Image Considerations ........................................................................ 25
+                 6.3.3 Practices to Avoid .............................................................................. 25
+
+        6.4 Slavery ............................................................................................................ 25
+                 6.4.1 Overview ............................................................................................ 25
+                 6.4.2 Representation.................................................................................. 25
+                 6.4.3 Text Considerations........................................................................... 26
+                 6.4.4 Image Considerations ....................................................................... 26
+                 6.4.5 Practices to Avoid.............................................................................. 26
+
+7 Health, Safety, and Environment ........................................................ 27
+
+        7.1 Food, Drink, and Drugs ................................................................................... 27
+                 7.1.1 Overview ............................................................................................. 27
+                 7.1.2 Food .................................................................................................... 27
+                 7.1.3 Alcohol and Drugs .............................................................................. 27
+
+        7.2 Health and Safety ........................................................................................... 28
+                 7.2.1 Overview............................................................................................. 28
+                 7.2.2 Text and Image Considerations ......................................................... 28
+                 7.2.3 Environment ...................................................................................... 28
+
+8 Localization ......................................................................................... 29
+
+        8.1 International Views ........................................................................................ 29
+        8.2 United States .................................................................................................. 29
+        8.3 Animals ........................................................................................................... 29
+
+9 Mental Health ..................................................................................... 31
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 3 OF 39
+                                             CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+        9.1 Mental Illness and Disorders .......................................................................... 31
+                 9.1.1 Overview ............................................................................................. 31
+                 9.1.2 Text Considerations............................................................................ 31
+                 9.1.3 Image Considerations......................................................................... 32
+
+        9.2 Traumatic Experiences ................................................................................... 32
+                 9.2.1 Overview ............................................................................................ 32
+                 9.2.2 Image Considerations ........................................................................ 33
+                 9.2.3 Traumatic Topics in Assessment Content ......................................... 33
+
+10 Religion, Morality, and Politics ........................................................... 34
+
+        10.1 Religion ........................................................................................................... 34
+                 10.1.1 General Guidelines ............................................................................ 34
+                 10.1.2 Practices to Avoid ............................................................................. 35
+
+        10.2 Morality .......................................................................................................... 35
+        10.3 Politics ............................................................................................................ 36
+
+                 10.3.1 General Guidelines ........................................................................... 36
+                 10.3.2 Practices to Avoid ............................................................................ 36
+
+11 Socioeconomic Status ......................................................................... 37
+
+        11.1 Representation and Inclusion......................................................................... 37
+        11.2 Socioeconomic Contexts ................................................................................ 37
+
+Appendix: List of Special Topics ................................................................... 39
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 4 OF 39
+1.
+2.
+3.
+4.
+5.
+               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Introduction
+
+Goals of This Document
+
+The Content Guidance for Inclusion and Diversity has several related goals:
+
+· To integrate and standardize the support available to content developers across subject areas and
+     content types
+
+· To highlight a wide range of possible concerns so that content developers are able to notice and work
+     past the personal blinders we all have
+
+· To guide content developers in making decisions when they identify concerns
+
+The term "content developers" in this case means not only those who plan and write materials, but also
+those who design materials, acquire and commission text and images, and review content in all its
+formats.
+
+This document is intended to help drive learning and support the implementation of the Content Equity,
+Inclusion, and Diversity Pledge. If you have a question about content inclusiveness and sensitivity, please
+continue to ask, research, and talk to your colleagues across functions and discipline, as well as those on
+the Content Review Panel. Learn more at HMH Today.
+
+Philosophy and Tensions
+
+These guidelines reflect several tensions that content developers encounter when striving for inclusion
+and diversity. One is the tension between diversity and inclusion--wanting to show a wide array of people
+and experiences without stereotyping or making anyone feel left out or that they are lacking the
+background to understand the instruction. Rather than limiting representation to experiences common
+among all students, look for alternative ways of depicting access and ensure variety across the
+component. In addition, provide background information when needed.
+
+For example, students might sometimes be depicted in their school library, although not all schools have
+their own libraries. That doesn't mean libraries or even school libraries should be avoided, however. One
+way to adjust would be to refer to a library rather than specifying the school library. Another option is to
+refer to the school library in one story or example, and depict students using a public library elsewhere in
+the component. Similarly, in a math problem about public library late fees, it should be made clear how
+library late fees are calculated, as some students might not have that experience.
+
+Another tension is between realistic and aspirational representation. Rudine Sims Bishop (1990) described
+how books can be windows, "offering views of worlds that may be real or imagined, familiar or strange"--
+but also, at times, mirrors, reflecting our experiences back to us, acting as a "means of self-affirmation"
+that we are seen, understood, and considered important. HMH materials should not try to be only
+realistic mirrors of students' lives; they should also present new possibilities, showing that HMH believes
+students are capable not only of achieving their dreams but of imagining new dreams.
+
+Finally, there is a tension between presenting relevant, engaging content and avoiding what is
+controversial or disturbing. Content creators should not necessarily avoid controversial or dramatic topics
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 6 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+but should weigh the instructional purpose carefully and also ensure that the content format allows
+support from teachers or choice by teachers or students about how to use that content. Controversial
+topics should be addressed factually and in appropriate contexts that promote civil discourse.
+
+The intention is that this document will alert content developers to possible issues and provide
+suggestions. HMH content has a wide array of contexts--fiction and informational, realistic and
+hypothetical, historical and present-era, permissioned and newly created, across subject areas, grade
+levels, and content types. Language that might be appropriate in a classroom discussion on literature
+might be distracting or disturbing in a reading assessment or a math item. The creators of this document
+have tried to avoid being overly prescriptive or prohibitive, while still providing rigor and support.
+
+  Representation and Sensitivity
+
+HMH strives for both representation and sensitivity in our content. Representation means showing a wide
+range of people in realistic and aspirational contexts. Sensitivity means making sure each representation
+avoids negative connotations and stereotypes. While creating or reviewing content, consider
+representation not only at a program or grade level, but within components, even possibly down to a
+single unit test. For example, it is OK to have a character who is a female nurse, as long as women are also
+shown in less-traditional roles in that instructional unit.
+
+However, images and text are sometimes seen out of context. If an image or depiction could be seen as
+extremely negative, stereotypical, or exoticizing, consider replacing it to avoid detracting from the lesson
+or offending a student.
+
+Finally, whenever possible, image teams should ensure that photographs of people are authentic in terms
+of demography and identification. That is, an image of a person using a wheelchair should feature a model
+who does use a wheelchair; an image illustrating a particular culture or religion should feature models of
+that culture or religion, not models putting on the apparatus of another identity or culture. Image teams
+accomplish this by working with specialty agencies and by doing photo shoots. Other content developers
+then work closely with image teams to ensure that captions are accurate.
+
+  Naming and Self-Identification
+
+In most cases when discussing real people, content should refer to them as they refer to themselves,
+whether that is their name, ethnic identity, gender, or pronouns. A person's preferred self-identification
+typically overrides other lists of terminology. There may be content-specific exceptions and nuances.
+
+Structure
+
+Section organization Each section of the Guidance document highlights one to three related topics.
+Topics typically include an overview of considerations, guidance on language and text, and guidance on
+images.
+
+Special Topics Special Topics are HMH-created documents that go into more depth on a particular
+subject. They can vary in length and format. Further Special Topics will continue to be developed. Users
+are welcome to propose and draft these for consideration. Links to relevant Special Topics are found at
+the end of each major document section. A list of Special Topics is in the Appendix.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 7 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Previous Versions
+
+This is Version 3.0, released in 2020. See the Change Log to find the document history, see recent updates
+made from the previous version, and submit suggestions.
+
+See the Content Guidance Change Log
+
+Using These Guidelines
+
+These guidelines are intended to be read in their entirety during project training or vendor onboarding as
+appropriate. With an awareness of the common issues introduced here, content developers can then
+come back to this document as a reference during their work.
+This document does not provide specific breakdowns of representation demographics. HMH will
+determine demographics at a product level based on market needs and state requirements.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 8 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+1 Age Equality and Physical Appearance
+
+Show people of all ages with a diversity of physical characteristics, such as hair that is straight, curly,
+short, long, brown, blond, black, red, white, and gray as well as balding and nonbalding; and body types
+that are thin, heavy, short, and tall. Consider including people with albinism, vitiligo, and alopecia, across
+all races.
+
+Where possible, avoid drawing attention to people's physical attributes as examples of difference.
+Consider showing attributes and interests students can control or attributes in nature. For example,
+rather than using children's heights or hair color in examples of data displays, consider heights of trees or
+children's favorite colors.
+
+Show people who are older with the same range of emotions, attitudes, abilities, and self-sufficiency that
+people who are younger have. Avoid representations of people who are older as dependent or mentally
+incompetent.
+
+When depicting people who are older, show a variety of attributes, possibly including white or gray hair or
+balding, but not exclusively so. Show people who are older with a diversity of assistive devices, such as
+canes or eyeglasses, but not exclusively so. Show people who are older engaged in diverse activities such
+as working, shopping, driving, exercising, playing sports, enjoying entertainment, and learning new skills.
+In general, be judicious in showing people who are older taking part in stereotypical activities, such as
+playing bingo.
+
+When appropriate, show the aging process as a continuous process spanning an entire lifetime.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 9 OF 39
+               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+2 Disability
+
+HMH is committed to ensuring all of our materials are not only inclusive and representative, but also
+accessible to students with disabilities. To learn more about HMH's work to ensure all content is
+accessible to students with disabilities, please explore this page on Sharepoint.
+
+2.1 Overview and Representation
+
+In general, emphasize the humanity of people with disabilities, not their disabilities. Show people with
+disabilities expressing a range of emotions and talents and leading active, meaningful lives. Avoid
+overtones of fear, distrust, amusement, ridicule, contempt, or pity.
+
+One in four U.S. adults--61 million Americans--have a disability that impacts major life activities
+(CDC.gov, 2018). Keep in mind it is likely that most, if not all, students know somebody with a disability.
+
+2.2 Text Considerations
+
+· Focus on a person's individuality, inclusion, and ability rather than level of disability.
+
+· Portray successful people with disabilities in a balanced way, not as heroic or superhuman.
+     Stereotypes may raise false expectations that everyone with a disability is or should be an inspiration.
+
+· Avoid labels that generalize or stereotype, such as the deaf or the disabled.
+
+· Do not group similar disabilities under the most severe degree of impairment. For example, use
+     person with a visual impairment and person who is blind, as appropriate.
+
+· Avoid these terms: afflicted, suffer, sufferer, and victim of.
+
+· Avoid terms that can be considered condescending: differently abled, challenged, handi-capable, or
+     special.
+
+· Some people with disabilities prefer person-first language, e.g., person who is deaf; person with
+     diabetes, and others prefer identity-first language, e.g., Deaf person. Use the language that the
+     person with the disability prefers. When the person's preference is unknown, use person-first
+     language.
+
+· People with disabilities can be healthy, although they may have a chronic condition such as diabetes.
+
+· Only refer to someone with a disability as a patient when their relationship with a health care
+     provider is under discussion.
+
+· Use due diligence when naming a disease or syndrome; note that sometimes these labels change
+     (e.g., Down syndrome rather than Down's Syndrome). Check current online resources created for and
+     by members of the community whenever possible.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 10 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+2.3 Image Considerations
+
+· Show people with disabilities as active participants of society, in the same social and work
+     environments as people without disabilities.
+
+· Ensure that images within a given program or project represent a diverse cross-section of people with
+     disabilities. Images should portray real people with disabilities engaged in the context. Images of
+     signs and iconography should be sourced carefully, using the latest, ADA-compliant versions.
+
+Special Topic: Acceptable Terms for People with Disabilities
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 11 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+3 Ethnicity, Nationality, and Race
+
+3.1 Overview and Representation
+
+Nationality, ethnicity, and race are social constructs that are similar, but not the same. Nationality refers
+to the status of belonging to a particular place or nation by origin, birth, or
+naturalization. Ethnicity relates to groups of people who share a common cultural identity or expression,
+including linguistic, religious, or national heritage. Race refers to a group of people identified as distinct
+from other groups based on perceived physical characteristics. Race is often incorrectly associated with
+biology, and linked with traits such as skin color or hair texture. While it is true that humans have some
+genetic variations that were once associated with ancestry from different parts of the world, the concept
+of race has no genetic basis. In fact, today's racial categories arose long before the field of genetics, and
+have been used to justify all manner of discrimination and violence.
+
+In text and visuals, avoid content that stereotypes ethnic, racial, or national groups in negative or positive
+ways (e.g., model minority, hostile Indians). Do not single out any ethnic group as being quaint, backward,
+uncivilized, or strange.
+
+  Classroom activities
+
+Content developers should be very careful in crafting role-playing exercises, to ensure that all roles are
+appropriate for all students. Consideration should be given to issues of power dynamics, stereotypes, and
+trauma. In particular, problems may occur when a disadvantaged group is asked to take the perspective of
+and defend the view of an advantaged group.
+
+  Accessibility
+
+Do not add race information to text alternatives (alt text) unless it is part of the lesson. For example, if it is
+a segment on Martin Luther King Jr., his race is vital to appreciate his photograph. If it's stock
+photography you can say, e.g., a man and a woman. Most of the intentional diversity we introduce in our
+imagery is to subconsciously influence the sighted student, so that over time they absorb the fact there
+are all kinds of people. To recreate that effect for the blind student, we simply fail to mention race at all,
+unless it is fundamental to the instructional purpose of the image.
+
+If skin color must be included in alt text--for example, to differentiate among digital avatars--consider
+using color words that do not evoke race. For example, use beige instead of pale or flesh tone. Avoid using
+food descriptions for darker skin colors; see this Tumblr post for more ideas.
+
+Copyediting Pedagogical Text Alternatives for Static Images
+
+Please be sure to refer to program-specific style guides, standards, or any sensitivity guidelines provided
+by states or school districts to ensure that content requirements are satisfactorily met.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 12 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+3.2 Text Considerations
+
+Avoid all slurs as well as potentially insulting terms. For example, avoid terms such as primitive and
+Oriental. Generally avoid the terms tribe and tribal in discussions of Africa and indigenous people, unless
+they are the only appropriate terms.
+
+When ascribing a race or ethnicity to any one person or group, always defer to how that person or group
+prefers to be identified. Specify race, ethnicity, and nationality only where relevant to the content. Be as
+accurate as possible; reference specific countries of origin rather than continents or regions, if the
+information is known.
+
+When choosing names for fictional characters, include a diverse spectrum of names with varied origins
+and spellings. Names do not need to match a person's perceived culture or gender, but consider if the
+person's culture is central to the lesson and a traditional name would be appropriate.
+
+Do not hyphenate ethnic group names, for example African American, Italian American, and Chinese
+American.
+
+Be careful not to use ethnic identifiers interchangeably with religious identifiers. For example, Arab
+American is not the same as Muslim American; Indian American is not the same as Hindu American.
+
+Use parallel terms for ethnic, racial, national, and geographic identifiers. For example: Italian Americans
+and African Americans (not Italians and African Americans); schools in China and Kenya (not schools in
+China and Africa).
+
+Avoid using the term minority as a synonym for a racial or ethnic designation. One possibility is to use
+person of color or people of color when appropriate.
+
+Avoid terms rooted in outdated or scientifically unfounded racial classification schemes such as
+Caucasian, Negroid, and Mongoloid.
+
+See also Immigration, Refugees, and Migration
+
+3.3 Terms for Ethnicity, Nationality, and Race
+
+The section below lists preferred terms and style points for ethnicity, nationality, and race in the United
+States.
+
+Wherever possible, use terms specific to nation of origin: Egyptian American, Filipino American, German
+American, Indian American, Irish American, Italian American, Korean American, Kuwaiti American,
+Pakistani American, Samoan American, Saudi American, Syrian American.
+
+  African American, Black
+
+The terms African American and Black are considered equally acceptable adjectives. If it is known that an
+American traces their heritage to Africa, since the founding of the United States, use African American;
+otherwise Black (capitalized) is preferred. The soldier was Black; African American people became soldiers.
+The term Black should never be used as a noun; avoid both the Blacks and the whites in this form.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 13 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+An exception to the above rule for usage of African American versus Black is the term free Blacks. Free
+Blacks is the historically accurate term used to describe free people of African descent in the pre-Civil War
+period.
+Sources may differ on their capitalization of Black (and capitalization of white may be inconsistent). When
+quoting a source, follow their capitalization format.
+Use the term enslaved Africans to refer to Africans who were brought to the Americas against their will.
+Use enslaved African Americans to refer to enslaved people of African ancestry who were born in the
+Americas.
+Note that some Black people in immigrant communities of the United States do not identify as African
+American, even if their ancestry is from countries on the African continent. Wherever possible or
+preferred, be specific about nation of origin: Haitian American, Nigerian American.
+Avoid Afro American, colored people, and Negro, except in some limited historical contexts.
+
+  American, U.S. citizen
+Use Americans to refer to permanent residents or citizens (native-born or naturalized) of the United
+States.
+Note: Be aware of the potential for geographic bias when using the term American (and America).
+American may refer to a resident or citizen of any country in North, Central, or South America. In this
+broader regional context, use either the people of the United States or U.S. citizens.
+
+  Arab American
+Use Arab Americans to refer to Americans who trace their heritage to Arabic-speaking countries in
+northern Africa and southwestern Asia.
+
+  Asian American
+Use Asian Americans as an umbrella term for Americans who trace their heritage to the Far East,
+Southeast Asia, or the Indian subcontinent.
+
+  biracial, multiracial
+Use the terms biracial and multiracial to describe a person or group with more than one racial heritage.
+Use biracial for people with two heritages and multiracial for people with more than two.
+Where relevant, be specific about an individual's heritage. For example: He has an African American
+father and a Scandinavian mother.
+Avoid the terms mixed race, half breed, mulatto (except in very limited historical contexts).
+
+  Hispanic American
+Hispanic Americans is the preferred term for Americans who trace their heritage to Spanish-speaking
+countries. Do not use Hispanic as a noun, it is an adjective. Hispanic relates to Spain or Spanish-speaking
+Latin America.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 14 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Latinos (use as a generic term and for males) and Latinas (for females) are also acceptable terms but they
+are generally used with less frequency. Use Latino or Latina if a person self-identifies as such; name the
+specific country of origin if it is known; otherwise, use Hispanic.
+
+Hispanic emphasizes language (Spanish) and Latino emphasizes place of origin (Spanish-speaking
+Caribbean countries, South America, and most of Central America; there is debate about including Belize,
+Suriname, or Guyana under Latino due to distinct cultural differences).
+
+The term Latin American is also acceptable to refer to the people of Central America, South America, and
+the Caribbean who speak languages of Latin origin, predominantly Spanish, Portuguese, and French.
+
+Latinx, which is gender neutral, is not broadly used but it is gaining currency in higher education,
+academia, journalistic situations, and among younger, more progressive Hispanic Americans. It can be
+used in specific contemporary contexts, but Latinos or Hispanic Americans outside of these circles may
+not identify with the term Latinx.
+
+Wherever possible, avoid pan-ethnic terms and use terms specific to nation of origin: Dominican
+American, Cuban American, Mexican American, and so forth are preferred. However, Puerto Rican is the
+complete term, and is not followed by American. If a character or person's nation of origin is known, also
+use this rule for descriptions, such as Mexican culture, instead of Latino culture or Hispanic culture.
+
+Mexican Americans is the preferred term for Americans who trace their heritage to Mexico.
+Chicano/Chicana refers only to Mexican Americans, and may be used in some limited historical and
+cultural contexts related to the civil rights movement of the 1940s through the 1970s.
+
+  Jewish American
+
+Typically, use Jewish Americans to refer to contemporary Americans who are Jewish by descent or
+religion; Jewish identity has both religious and ethnic components (Encyclopaedia Britannica, 2018). The
+adjective Jewish is also acceptable. For example: a Jewish American leader, a Jewish teacher.
+
+It is sometimes appropriate to use Jew as a noun in discussions of religion and world history (e.g., Russian
+Jews).
+
+See also Religion
+
+  Native American
+
+Native American is the preferred term for people who inhabited land in the Americas before the arrival of
+Europeans. This term Native American should be used first and most frequently.
+
+The following terms are also acceptable: American Indian, Native Peoples, indigenous Americans,
+indigenous peoples, First Nations (Canada), Alaska Native, Hawaiian Native (Thomas & Hirsch, 2016).
+Please also refer to state guidelines or reach out to HMH with any inquiries.
+
+Wherever possible use the names that groups use for themselves, and specific names of Native American
+groups (Hopi, Lakota, Navajo). Note that some of these are exonyms and did not originate from the
+groups themselves.
+
+Use the term Arctic peoples for the native populations living in the Arctic regions of Greenland and North
+America. Wherever possible, use the names of specific groups such as Inuit, Inupiat, Yupik, Yuit (not
+interchangeable).
+
+Avoid the term Anasazi, the preferred term is Ancestral Puebloans.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 15 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Avoid the term Eskimo, except in some limited historical contexts and in the official names of groups.
+Avoid the term aborigine. However, aboriginal may be used as an adjective when speaking of the
+indigenous people of Australia.
+
+Avoid the term Indian, unless referring to a person from India. Avoid the terms brave, redskins, and
+squaw. The term squaw is particularly offensive.
+
+Avoid showing sports teams that have Native American mascots.
+Do not use the term tribe to describe Native Americans or Africans, unless it is the only correct word in a
+particular context. Use the terms nation, society, or people instead.
+
+  Pacific Islander American
+
+Use Pacific Islander to refer to people who trace their heritage to Hawaii, Guam, Samoa, and other Pacific
+Islands.
+Use Native Hawaiian or Hawaiian Native to refer to the native populations of Hawaii.
+
+Use Filipino Americans to refer to Americans who trace their heritage to the Philippines. Note Filipinos are
+ethnically both Asian and Pacific Islanders.
+
+  White
+Use the term white (lowercase) as an adjective to describe people who identify as white racially, and
+some people with light-colored skin who trace their heritage to Europe: for example, white people, white
+northerners, white Americans. Avoid using white or whites as a noun. Carefully consider how depictions of
+white people, or whiteness as a race or culture, are juxtaposed with other content--avoid implications
+that whiteness is the norm or the default. Avoid implications that race, ethnicity, and cultural heritage are
+nonwhite concepts.
+The term European American is also acceptable, but note that it is not common and is not
+interchangeable with white.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 16 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+4 Family Structure
+
+According to the Pew Research Center (2015), two-parent households are on the decline and there is no
+longer one dominant family form in the United States. 32% of children in the U.S. live with single or
+unmarried (cohabiting) parents (Pew, 2017), and according to the 2018 U.S. Census, 4% of children live in
+a household without a biological parent. Children live within a variety of family structures. Some live with
+both biological parents, parents of the same gender, or in blended families. Others live with a single
+parent, with grandparents, or other extended family members, in multigenerational homes, or with other
+children and unrelated adults in a group setting. Still other children live with adoptive parents or foster
+families.
+
+     · Note that the term adopt should only be used to describe a person (or pet) who becomes part of
+          a family permanently. Use the word sponsor to describe donations or short-term charitable
+          support.
+
+To reflect this diversity, strive to represent a variety of family members and forms. Show family members
+of varying ages, including parents who are older and parents who are younger, as well as single-parent
+families, same-sex couples, and families that include more than one race or ethnicity. Avoid stereotypical
+representations of families. Consider avoiding activities that assume that students live in a traditional
+family, such as referencing a father-son picnic or asking students to create a family tree.
+
+To reflect these demographics, many school districts no longer refer to mother, father, or parent but
+instead use guardian(s) when referring to the adults in a child's life.
+
+Guardians and caregivers may include grandparents, siblings, extended family members, and non-family
+members. Similarly, family relationships (e.g., sisters, aunts, cousins) may include a wide variety of family
+and non-family members.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 17 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+5 Gender Equality and Sexual Orientation
+
+Promote the concept of gender equality, especially with regard to individuals' roles, capabilities, and
+potential. When feasible, include content, language, and images that represent LGBTQ+ people in various
+contexts.
+As guidance, follow these three key principles:
+· Learn when gender matters. It's less often than you think. Gender matters quite a bit in terms of
+
+     understanding various aspects of human experience across space and time. However, if an
+     individual's gender is not important to the content, don't mention it. Beyond gender equality, strive
+     to represent that biological sex, gender identity, gender expression, and/or sexual orientation should
+     not be defining attributes of an individual, their circumstances, or their experiences--unless by that
+     individual's choice.
+· Expand your concept of diversity. Gender identities and gender expressions should be incorporated
+     into your concept of diversity. Where it's appropriate, go beyond representing men and women, and
+     represent nonbinary and LGBTQ+ individuals as well. Demonstrate awareness and respect for the
+     diversity of gender identities and expressions, which are personal, dynamic, overlapping, and unique.
+· Use the correct terminology. Convey that biological sex, sexual orientation, gender identity, and
+     gender expression are distinct concepts. Be aware that the language surrounding gender, sex, and
+     sexual orientation in U.S. culture is rapidly and constantly evolving.
+
+5.1 Gender Representation
+
+     5.1.1 Overview and Representation
+
+Wherever feasible, represent men and women (as well as boys and girls) in a variety of roles and in
+roughly equal numbers in leading and subordinate roles. Avoid stereotypical representations, whether by
+activity (such as a mother cleaning as a father leaves home for work; a boy playing guitar as a girl cares for
+a younger child) or by attribute (boys as troublemakers, girls as passive). This is especially relevant for
+HMH-created contemporary content, such as reading comprehension passages, math problems, and in-
+house imagery.
+
+     5.1.2 Text Considerations
+
+Two approaches to gender equality in text are using equality-advocating language and using gender-
+neutral language.
+
+  Equality-Advocating Language and Images
+When addressing a topic that is traditionally associated with a specific gender, consider using the less
+conventional gender's pronouns and selecting less stereotypical images.
+For example:
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 18 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+· Consider using she and images of women for soldiers, mechanics, plumbers, construction workers,
+     and engineers.
+
+· Consider using he and images of men for clerical workers, librarians, nurses, supermodels, and stay-
+     at-home parents.
+
+This method must be used with careful attention to context, especially historical. For example, when
+covering the landowners or railway barons in U.S. history, using she pronouns or illustrating women
+becomes a factual error. Use your discretion to ensure that equality-advocating depiction is used when
+the instruction will not be compromised.
+
+Ensure that women and men are referred to in the same manner, whether by last name, with honorifics,
+etc. Specific naming style will vary by content type and grade level.
+
+     5.1.3 Use of "They" as a Singular Inclusive Pronoun
+
+  When referencing a person in real life
+· Individuals in HMH materials should reflect current U.S. demographics and include males, females,
+
+     nonbinary people, and transgender people across different races, ages, and socioeconomic statuses.
+· Male and female individuals using the pronouns he or she will continue to be represented in HMH
+
+     content.
+· Always defer to an individual's personal pronoun preference.
+· If a person has transitioned genders, be considerate of the person's preference for using or avoiding
+
+     references to a past name or gender.
+
+  Special circumstances
+· Some markets limit or prohibit references to LGBTQ+ individuals. In these markets, the use of singular
+
+     they may be considered to be representation of LGBTQ+ individuals, and could be restricted by the
+     state or local governing body.
+· LGBTQ+ individuals and those whose gender is nonbinary, agender, or bigender should still be
+     positively represented and included in HMH content.
+· References to real LGBTQ+ persons in HMH content should not be removed, adapted, or limited.
+· HMH content should continue to use preferred pronouns for all individuals, regardless of their gender
+     identity.
+
+  When a person's gender is not relevant or is unknown, avoid gendered language
+· Avoid using the binary phrases he or she, his or hers, him or her.
+· The singular they is a more inclusive way to talk about individuals of unknown or unspecified gender.
+
+     He or she implies that there are only two options, and many people today consider that unnecessarily
+     limiting. The pronoun they is gaining popularity as a way to avoid this binary restriction. Note that
+     they is not exclusively a nonbinary, queer, or transgender pronoun--it is an all-inclusive pronoun.
+· Individuals in HMH materials should reflect current U.S. demographics (under age 18).
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 19 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+  When representing a fictional person
+· When creating fictional characters, aim for the same balance of inclusivity we promote throughout all
+
+     HMH materials.
+· Include and positively represent LQBTQ+ characters in HMH content.
+· HMH recommends the singular pronoun they to promote inclusivity and avoid gendered language in
+
+     Grades 6-12.
+· Use of they as a singular pronoun is not recommended for grades K-5. This threshold is intended to
+
+     avoid contradicting existing state standards through Grade 5 with specific pronoun/antecedent and
+     singular/plural instructional requirements.
+· HMH supports the occasional representation of nonbinary individuals for Grades 6-12 (according to
+     current U.S. demographics). Consider using support language if clarification is needed.
+
+  Examples of support language in student materials
+· "Luz and her teammate Suzanne, who prefers the pronouns they/them/theirs, practice daily."
+· "Suzanne skinned their knee today (Suzanne uses the pronouns they/them/theirs)."
+
+  Examples of support language in teacher materials
+· "Explain to students that the pronoun they is being used per Suzanne's stated preference."
+· "Explain to students that the pronoun they is being used because the author does not say what
+
+     gender the person is."
+· "The pronoun they is usually plural, but it can sometimes be used informally to refer to a single
+
+     person, if a person chooses, or if a person's gender is unknown or irrelevant."
+
+Consider the use of existing third-party content or classroom library materials to introduce nonbinary or
+transgender characters, especially if it is possible to include authentic content created by members of the
+LGBTQ+ community.
+
+  Special Considerations for Intervention Students or English Language Learners
+
+Content developers should consider the target age of the students, as well as their English grammar
+proficiency, and adjust the recommended Grade 6 threshold accordingly.
+
+  Special Considerations for Assessments
+
+It is necessary to include folks of all gender representation in all aspects of HMH curricula. The assessment
+team should strategize ways to include gender nonbinary characters and individuals in its texts based on
+project needs. In these instances, gender should be ancillary to the main point of the text unless it is
+important to the development of a character or an individual in history.
+
+Since assessment is an independent activity, care should be taken to ensure balance between
+representation and student understanding. Possible approaches include, but are not limited to:
+
+· Using a passage introduction to clarify use of singular they pronouns
+· Representing gender nonbinary characters visually in illustrations
+· Not including gendered pronouns if they are not necessary (often this makes for the most concise
+
+     item stem when gender is unknown)
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 20 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+  Special Considerations for Accessibility
+In alt text situations, use of gendered pronouns can sometimes be unavoidable. Just as a picture passively
+includes gendered references, such as hair or clothing styles, alt text must passively mention gender so
+the student who is blind has equitable access to information in the image.
+Gendered words and pronouns in text alternatives serve as the first, and possibly only, declaration of
+gender the student will encounter, and that text functions in the same way an image might for a student
+who is sighted. After both the sighted and blind students have equitable exposure, we can fairly apply the
+"gender is irrelevant" rule. As such, any text-based content should follow best practices for gender
+inclusion and representation.
+
+     5.1.4 Image Considerations
+
+When gender is not specified by instructional content, seek to represent people in activities and jobs
+outside of traditional gender roles. Maintain an equal balance of gender in individual images and as a
+whole.
+
+5.2 Sexual Orientation
+
+     5.2.1 Overview
+
+In addition to promoting gender equality, wherever possible promote the equality and visibility of LGBTQ+
+people. LGBT stands for lesbian, gay, bisexual, and transgender and is a standard shorthand for referring
+to those groups.
+The LGBT population constitutes 4.5% of the total U.S. population (Newport, 2018). Of that, 8% identify as
+transgender, and over 80% identify as either gay or bisexual. Now expand the acronym to LGBTQ+ (Q
+stands for queer or questioning). The addition of Q+ is intended to go beyond traditional notions of
+gender identity and sexual orientation to include a limitless remix of gender attributes and orientations.
+
+     5.2.2 Image Considerations
+
+When feasible, represent people interacting with a variety of other people in pairs and groups, with a
+diversity of gender expressions and in a variety of situations. Avoid stereotypical scenarios and negative
+or exoticizing depictions.
+See also Representation and Sensitivity
+
+Special Topic: Gender-Inclusive Language
+
+Special Topic: Glossary of Gender and Sexual Identity
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 21 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+6 Global and Social Issues
+
+This section addresses historical and contemporary issues at a global level that affect or have affected
+large numbers of people, often in traumatic ways. For these topics, wherever possible, emphasize the
+resilience and agency of people and societies. Be aware that students may have firsthand or family
+experience with some of these issues, and any discussion of them will be emotionally charged.
+
+6.1 Colonization and Indigenous Peoples
+
+     6.1.1 Text and Image Considerations
+
+Wherever possible, emphasize the resilience and agency of indigenous people and other societies that
+have lived under colonial rule. Use documents (texts, oral histories, photographs) to represent diverse
+perspectives.
+Use specific names for cultural and social groups. Give preference to the names that individuals and
+groups use for themselves as well as for their homelands. An example is to use Indigenous Australians and
+the Aboriginal and Torres Strait Islander people to refer to the original inhabitants of Australia. Be as
+specific as possible (e.g., avoid using America to refer only to the United States; the term the Americas
+should be used to describe the continents). Be aware of geographical terms that are in flux.
+See also Terms for Ethnicity, Nationality, and Race
+In discussions of indigenous peoples, the terms oral tradition and traditional stories are generally
+preferred to folklore and myths. The term legend is acceptable for a story about a legendary past event.
+Give proper credit to individuals or groups for text selections and images of material culture. Ensure that
+images, captions, and graphics are fair and accurate in their depictions.
+
+     6.1.2 Practices to Avoid
+
+Do not use discover or discovery to describe the arrival of Europeans in places or regions already occupied
+by other people (discovering America, discovering the Grand Canyon).
+When writing about European explorers, write factually and avoid overgeneralizing their
+accomplishments. Many of the explorers who made great gains in geography, cartography, and science
+also had enormous negative impacts on people and societies they encountered; avoid referring to them in
+broadly heroic terms.
+Avoid stereotypes and slurs. Also, do not use value-laden terms when referring to individuals, groups, and
+nations. In most cases, avoid using outdated and value-laden terms such as culturally deprived, backward,
+underdeveloped, civilized, uncivilized, Third World, savage, primitive, Orient, Oriental.
+Take care to avoid text and visual content that inadvertently reproduces attitudes used to justify
+colonization, including language that communicates racial or cultural superiority (of colonizers) or
+paternalistic attitudes (toward those who were colonized). When primary sources are shown that
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 22 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+illustrate racist or colonialist beliefs, care should be taken to explain their relevance and context. A
+problematic primary source should not be the only depiction of a people or culture.
+
+6.2 Genocide
+
+     6.2.1 Overview
+
+Genocide is intentional action to destroy a people, in whole or in part. HMH content may cover instances
+of genocide in various contexts--for example, in history programs, in a biographical sketch, or in a
+literature selection.
+Because of its very nature, genocide leads to lasting wounds for a whole culture, including the loss of
+lives, knowledge, and traditions. Be aware that some students and teachers may have personal
+experiences with genocide, perhaps as relatives of survivors, or even as victims or as witnesses.
+For these reasons, HMH content should be sensitive when covering or alluding to genocide, including (but
+not limited to) the Holocaust of the 1940s and other genocides in living memory:
+
+     · Stalin and Soviet Union inflict a famine upon Ukraine: 6-10 million people died (1932-1933)
+     · Japanese Army kills 300,000 Chinese people in Nanking (1937-1938)
+     · Nazi Germany kills 6 million Jewish people (1938-1945)
+     · ~2 million Cambodians killed by Khmer Rouge regime (1974-1979)
+     · 100,000 Iraqi Kurds killed by Saddam Hussein's Iraqi regime (1988)
+     · 100,000 Muslims killed in conflict between Bosnia and Yugoslavia (1992-1995)
+     · 800,000 Rwandan civilians, mostly Tutsis, murdered (1994)
+     · 200,000-500,000 Sudanese people killed in Darfur region (2003-present)
+     · Thousands killed by ISIS (2013-2017)
+     · 3,000 Rohingya (Muslims) killed and 270,000 displaced in Myanmar (ongoing)
+
+     6.2.2 Text and Image Considerations
+
+Take care to introduce key terms, provide accurate facts and statistics, and review the social and historical
+context necessary for students to fully understand the content being studied.
+
+Portray all individuals (victims, perpetrators, witnesses, bystanders, and rescuers) as people capable of
+moral judgment and agency; discuss the social and historical forces that shaped the range of choices
+available to individuals and groups.
+
+Use source materials (texts, photographs, first-hand accounts) to represent the diverse experiences of
+participants, especially of survivors and witnesses.
+
+Describe and depict the positive actions taken by people and nations in the face of genocide. For example,
+describe instances of resistance and resilience.
+
+Capitalize Holocaust when referring to the murder of 6 million Jewish people, along with members of
+several other ethnic groups and religions, people with disabilities, homosexual men, and others, by
+German authorities during World War II. Lowercase in other uses.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 23 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+     6.2.3 Practices to Avoid
+
+Avoid overgeneralizations and comparisons of pain such as All Germans were Nazis or The 1994 mass
+slaughter of Tutsis in Rwanda was the worst genocide in world history.
+
+Avoid simulations and role-playing activities.
+
+Avoid content that implies that an act of genocide was inevitable, or that places blame on victims of
+genocide.
+
+Unless factually accurate, avoid language that implies the total destruction of a people such as The Serbs
+wiped out Bosnian Muslims. Though all genocides involve the intent to destroy a people, few achieve this
+end.
+
+6.3 Immigration, Refugees, and Migration
+
+More than 44.7 million immigrants resided in the United States in 2018 (Migration Policy Institute). Note
+that most immigrants (77%) are in the country legally.
+
+     · In 2017, Mexicans accounted for approximately 25 percent of immigrants in the United States,
+          making them by far the largest foreign-born group. People from India and China (including
+          immigrants from Hong Kong but not Taiwan) were the next two largest groups, each comprising
+          close to 6 percent, followed by Filipinos at 5 percent. Rounding out the top 10 were El Salvador,
+          Vietnam, Cuba, and the Dominican Republic (about 3 percent each); and South Korea and
+          Guatemala (approximately 2 percent). Together, these countries were the origin for 57 percent
+          of the U.S. immigrant population in 2017.
+
+     · Immigrants current make up 13.7 percent of the overall U.S. population (325.7 million people).
+     · 50,000 refugees were admitted to US in 2017. (President Trump slashed the cap for 2017 refugee
+
+          admissions from 110,000 to 50,000, and the amount of refugees admitted during his
+          administration has dropped.)
+     · 4 million individuals were deported between October 2002 and January 2016: 66% Mexican, 16%
+          Other, 10% Guatemalan, and 8% Honduran.
+     · 600,000 deportation cases are currently pending in immigration courts.
+     · Since the creation of the federal Refugee Resettlement Program in 1980, about 3 million
+          refugees have been resettled in the U.S.
+     · In 2017, about 29 million immigrants were working or looking for work in the U.S., making up
+          some 17% of the total civilian labor force.
+     · Under the Deferred Action for Childhood Arrival program (DACA), nearly 700,000 undocumented
+          youth have temporary permission to stay in the U.S., and are eligible to work without being
+          deported.
+
+     6.3.1 Text Considerations
+
+In discussions of immigration, use terms that are legally accurate, such as undocumented immigrant or
+foreign national. Use illegal only to describe activities, such as illegal immigration, not to describe a
+person or people.
+
+Use the term refugees to refer to people forced to leave their homelands to escape persecution, violence,
+war, or human or natural disasters. People escaping and people fleeing are also acceptable.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 24 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Use the term migrant to refer to a person who moves for economic opportunity. Use displaced person or
+forced migrant to refer to a person who has been displaced within a home country by violence,
+development projects, or disaster. Avoid using the term migrant to refer to refugees or forced migrations.
+
+     6.3.2 Image Considerations
+
+Be sensitive when selecting images of war and natural disaster and the people affected. When
+determining whether to use an image of people and populated areas, consider both the dignity of the
+people affected and the effect on students.
+Keep in mind that refugees and immigrants, undocumented or otherwise, can come from anywhere in the
+world. Avoid depicting them only as people of color.
+
+     6.3.3 Practices to Avoid
+
+Avoid simulations and role-playing activities about illegal immigration or forced migrations. Avoid
+politically charged language such as illegal alien, illegals, and anchor babies.
+
+6.4 Slavery
+
+     6.4.1 Overview
+
+In all coverage of slavery, take care to use terms, language, and content that emphasize the humanity of
+those who were held in servitude (SPLC, 2017). Keep in mind that slavery and human trafficking is not
+only a historical issue or one limited to the United States but is an issue that continues, if in less
+institutionalized forms, throughout the world (Tutton, 2017).
+
+     · 40.3 million people are in modern slavery across the world
+     · 10 million children are in slavery across the world
+     · 30.4 million people are in slavery in the Asia-Pacific region, mostly in bonded labor
+     · 9.1 million people are in slavery in Africa
+     · 2.1 million people are in slavery in The Americas
+     · 1.5 million people are in slavery in developed economies
+     · 16 million slavery victims are exploited in economic activities
+     · 4.8 million people are in forced into sexual exploitation
+     · 99% of people trafficked for sexual exploitation are women and girls
+     · 4.1 million people in slavery are exploited by governments
+     · $150 billion in illegal profits are generated annually by forced labor in the private economy
+
+     6.4.2 Representation
+
+In discussions and depictions of U.S. slavery, wherever possible:
+        · Use historical documents (texts, oral histories, photographs) to represent the diverse
+              perspectives and experiences of enslaved people.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 25 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+        · Describe or depict daily and family life.
+        · Underscore the centrality of slavery to the U.S. economy and the contributions made by
+
+              enslaved people.
+        · Tell about or depict the lasting contributions enslaved people made to American culture
+
+              (including musical, culinary, and artistic traditions).
+        · Connect slavery to ideologies of race and white supremacy.
+        · Describe acts of resistance, resilience, and rebellion.
+        · Tell about the efforts of Black abolitionists.
+
+     6.4.3 Text Considerations
+
+When possible, observe the following language guidelines for writing about the practice of slavery and
+enslaved people.
+· The terms enslaved person, enslaved people, enslaved Native American, enslaved African, or enslaved
+
+     African American are preferred to slave or slaves. For example: a woman enslaved by the Washington
+     family, not a Washington family slave; Tubman recruited formerly enslaved people, not Tubman
+     recruited former slaves.
+· As a noun, the term slave may be used in correct and limited historical contexts. When a term for
+     enslaved people is used several times in a short space, you may substitute slaves for some instances,
+     but not the first one and not in most cases.
+· As an adjective, slave is acceptable--for example, slave states, slave traders, slave ship, slave laws.
+· Use the term slaveholder to refer to those who owned enslaved people. The terms master and owner
+     may be used in limited historical contexts.
+· The term free Blacks is the historically accurate term for free African Americans before the Civil War.
+
+     6.4.4 Image Considerations
+
+Be mindful of the date and context of any image of slavery. Sometimes images of sharecroppers in the
+late 1800s are used, inaccurately, to depict slavery. Images should be appropriately and accurately
+captioned and contextualized.
+
+     6.4.5 Practices to Avoid
+
+Avoid simulations and role-playing activities that have students act as enslaved people or as slaveholders.
+Avoid portraying romanticized images of slavery. At the same time, avoid focusing solely on the brutality
+of slavery or the suffering of enslaved people.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 26 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+7 Health, Safety, and Environment
+
+Promote a responsible attitude to the following:
+
+· Food, drink, and drugs
+· Health and safety
+· The environment
+
+Some states have specific requirements or legislation pertaining to these topics that should be considered
+when developing programs.
+
+In addition, some disciplines may require that specific issues be addressed, for example in a literary or
+historical context. Use discretion in such cases, and treat content factually, without judgment, while
+keeping the content engaging for the learner.
+
+7.1 Food, Drink, and Drugs
+
+     7.1.1 Overview
+
+Where food and drink are used, for example in math problems or in reading passages, focus on nutritious
+products and on a healthy attitude toward food and drink.
+
+     7.1.2 Food
+
+Aim to include a balance of healthy foods. References to and images of foods and drinks that have a high
+amount of sugar or fat--including candy, cookies, ice cream, fries, and carbonated drinks--should be used
+sparingly. Cite fresh foods from all food groups rather than processed foods, unless the latter are
+necessary for the educational content.
+
+An example of when a less-nutritious food may be necessary for educational content is a math context
+using a pizza to assess knowledge of fractions. Content owners should use their judgment in such
+situations.
+
+     7.1.3 Alcohol and Drugs
+
+Mention alcohol and drugs only where essential to a specific subject or topic. Coverage of alcohol and
+drug use should be factual and nonjudgmental and should not endorse or glamorize alcohol or drug
+consumption.
+
+Avoid text and visual content of the following, unless necessary for instruction:
+
+· Alcoholic beverages, including beer, wine, and liquor
+· Products with tobacco or nicotine, including cigarettes, e-cigarettes (vaping), cigars, and pipes
+· Recreational drugs, such as marijuana, cannabis, cocaine, and heroin. As a reminder, at the time of
+
+     this writing, marijuana is legal for adults in some states and illegal in others.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020               P A G E 27 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+· Over-the-counter drugs that may be subject to abuse, such as painkillers and cough syrup
+· Prescription drugs used irresponsibly or illegally, such as antidepressants, tranquilizers, and
+
+     amphetamines
+
+7.2 Health and Safety
+
+     7.2.1 Overview
+
+Promote physical activity whenever possible and appropriate, focusing on sports and activities that are
+relevant to the age group and culture of the audience.
+
+     7.2.2 Text and Image Considerations
+
+Describe and show as appropriate the use of safety equipment, such as helmets on cyclists and the use of
+seatbelts in cars and life jackets in boats. When depicting people, especially children, doing potentially
+dangerous activities, consider the following:
+· What is the age of the person shown doing the activity? (How young is too young to scuba dive or to
+
+     use an electric push lawnmower?)
+· What is the age of the audience for that program/component?
+· How dangerous is the activity?
+· What are some accepted safety guidelines for that activity (per child safety groups or organizations
+
+     dedicated to that activity)?
+· How prevalent versus idealistic are the safety guidelines for that activity? For example, wearing a
+
+     helmet while riding a bike is more common than wearing goggles while mowing the lawn.
+
+     7.2.3 Environment
+
+Show responsible treatment of the environment, such as the following:
+· Use of trash containers and recycling bins
+· Cultivation of plants, trees, and flowers
+· Conservation of energy
+· Respect for natural resources
+· Respect for and humane treatment of animals
+Show changes in attitude toward the environment over time and in different places, where relevant and
+appropriate.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 28 OF 39
+                CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+8 Localization
+
+This section seeks to raise awareness of common regional differences and definitions. It is an overview
+and not to be deemed as a comprehensive summary of the intricacies expressed in each region outlined.
+It is informational in its intent and is not written to be prescriptive.
+
+8.1 International Views
+
+Some hand gestures that are common and acceptable in the Western hemisphere may be perceived as
+U.S.-centric or as offensive in other parts of the world. For example, the thumbs-up gesture is considered
+obscene in some areas. Product Managers and Learning Architects will need to balance these
+considerations for each product.
+
+Showing the soles of shoes is considered offensive in Arab cultures and the Middle East (Gammell, 2008;
+Crile, 2011). Both shoe soles and the bottoms of feet are considered unclean in India, China, and other
+Asian countries (Bryant, 2014).
+
+Also, be aware that cultures attach meaning to colors and that these associations are found in political,
+social, religious, and cultural references. For example, white symbolizes purity and marriage in Western
+cultures, but connotes death in Asia and peace in Latin America.
+
+In general, when selecting images, be aware of possible international use of HMH products in addition to
+the diversity of cultures and norms within the United States. Ideally, images should reflect a wide array of
+global diversity and respect the norms of many cultures.
+
+8.2 United States
+
+The United States has plenty of variance regarding what certain gestures, terms, and contexts imply. It is
+important to be cognizant of how content will be received, not just across different countries but within
+different parts of the U.S. as well. Regional diversity extends to language use, demographics, geography,
+history, and economy. Strive to avoid regional stereotypes or assumptions that may appear in content,
+and represent the diversity of daily life in the U.S.
+
+Balance depictions of urban, suburban, and rural areas, especially when portraying students and schools
+in text and images; be aware of the various types of schools that students might attend.
+
+8.3 Animals
+
+Some animals are problematic in certain cultures and regions of the U.S., and we should be considerate
+about how we represent them. Consider if there is a pedagogical basis for including these animals, and
+consider what aspect may be problematic--for example, an anatomical diagram of a pig may be used in a
+science lesson, but it would not be appropriate to depict a Muslim family eating pork in a fiction story. In
+New Mexico and other regions of the U.S., some native students may be uncomfortable with depictions of
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020   P A G E 29 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+owls or snakes. That may not necessitate removing these animals from lessons, but be especially careful
+on high-stakes content like covers, landing pages, or display materials.
+Special Topic: International Hand Gesture Meanings
+Special Topic: Diverse School Types
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 30 OF 39
+                             CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+9 Mental Health
+
+Mental illness and trauma are prevalent, and these situations must be treated without stigma. Any
+treatment of these topics should strive not to stereotype or diminish these conditions.
+
+Specific content areas (health, psychology, sociology) and social and emotional learning curricula will
+require in-depth guidelines for handling the presentation and discussion of mental health.
+
+9.1 Mental Illness and Disorders
+
+     9.1.1 Overview
+
+According to the Child Mind Institute (2015), an estimated 17.1 million children have or have had a
+psychiatric disorder. Half of all psychiatric illness occurs before the age of 14--the most common being
+anxiety disorders, ADHD and disruptive behavior, depression and bipolar disorders, and eating disorders.
+Mental disorders and illnesses vary in nature, severity, and visibility. When creating content related to
+mental health, avoid stigmatizing.
+
+     9.1.2 Text Considerations
+
+Do not use emotionally charged language. Instead, be objective, descriptive, and ultimately neutral.
+
+In order to focus on the individuality and wholeness of people, use people-first language (e.g., an artist
+who has schizophrenia) and avoid prejudicial adjectives (e.g., a schizophrenic artist); that is, avoid using a
+term for a mental health condition as an adjective placed before a person or group.
+
+Consider avoiding language with negative connotations when broaching mental illness. For example, the
+verbs has or lives with are neutral as compared with suffers from or is challenged by. Avoid language that
+can be construed to blame mental illness or disorders on those who have them.
+
+Whether writing about fictional characters or historical figures, try to avoid euphemism or
+overgeneralizing. Aim to be candid, specific, accurate, and kind. And finally, make sure that mental illness
+is relevant to the topic being covered and is both properly grounded and contextualized. Do not include
+elements of mental illness merely to provoke curiosity or interest.
+
+Avoid the phrase committed suicide, which stigmatizes a mental health issue as a criminal act. The
+preferred term is died by suicide. Use the term attempted suicide, rather than unsuccessful suicide, which
+connotes judgement.
+
+Preferred words and phrases       Words and phrases to avoid
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020                                                 P A G E 31 OF 39
+people with mental illnesses             CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+person with a psychiatric disability
+person receiving mental health services  mentally ill people
+experiences, encounters <symptom>        a schizophrenic
+                                         mental health patient
+                                         crazy, insane
+
+For more information on avoiding stigma related to illness or ability, see Disability
+
+     9.1.3 Image Considerations
+
+There are two main approaches to depicting people with mental illness or disorders and their
+experiences.
+
+Metaphorical imagery For example, a picture of gloomy rain clouds could accompany a discussion of
+adolescent depression. This method can be used to avoid undesirable associations or correlations.
+However, as mental illness is so unique and subjective, metaphorical imagery may be alienating or
+discordant to some viewers. Use discretion.
+
+Literal imagery For example, a picture of a teenager with depressive body language could accompany a
+discussion of adolescent depression. This method can be used to communicate diversity by including a
+wide demographic, but risks creating undesirable associations or correlations. Use discretion.
+
+When developing content substantially focused on mental health, determine an appropriate strategy for
+the product, content type, and grade level. If depicting people experiencing mental illness, show
+demographic diversity in terms of age, gender, and ethnicity.
+
+9.2 Traumatic Experiences
+
+     9.2.1 Overview
+
+Examples of traumatic experiences can include car accidents, natural disasters, violent crime, gun
+violence, extreme poverty, domestic violence, sudden or violent loss of a loved one, and war. Be aware
+that many students are likely to have experienced trauma of some sort--according to one study
+(SAMHSA), two-thirds of children reported at least one traumatic event by age 16. Always make sure that
+there is a strong pedagogical reason for including any content coverage of traumatic events. For example,
+it might be appropriate to cover changes in weaponry in content about the Industrial Revolution and the
+American Civil War. It would not, on the other hand, be appropriate to use firearms to illustrate parabolic
+motion.
+
+When difficult content is being covered, it may be helpful to include teacher support so that teachers can
+determine how best to prepare students (e.g., before reading The Diary of Anne Frank or Maya Angelou's
+I Know Why the Caged Bird Sings).
+
+· 1 in 7 children experienced abuse or neglect in the last year (CDC).
+
+· 1 in 5 high school students reported being bullied at school in the last year (CDC).
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020                            P A G E 32 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+· About 7% of students had not gone to school at least 1 day in the last 30 days because they felt they
+     would be unsafe at school (CDC.gov).
+
+· 26% of children in the U.S. will experience a traumatic event before they turn 4
+     (recognizetrauma.org).
+
+· 4 of every 10 children in the U.S. say they experienced physical assault in the past year (JAMA
+     pediatrics).
+
+· 19% of injured and 12% of physically ill youth have post-traumatic stress disorder (SAMHSA.gov).
+For considerations relating to traumatic historical events, see Global and Social Issues.
+
+     9.2.2 Image Considerations
+
+Typically, images should not show the effects of natural disasters on people, cars that have been in
+accidents, gun violence or assault, or other depictions of traumatic events unless there is a strong
+instructional purpose and availability of teacher support. There may be additional discipline-specific or
+state requirements. Note that it is acceptable to show the effects of natural disasters on populated areas,
+for example homes or buildings that have incurred damage, but avoid showing people who are injured. If
+people must be shown, it is best to show them in the context of helping others after a natural disaster, for
+example volunteers handing out supplies.
+
+     9.2.3 Traumatic Topics in Assessment Content
+
+For assessments in particular, avoid difficult or negative topics that might be distracting or upsetting to
+students. The higher the stakes for the assessment, the more negative topics should be avoided. Topics
+and situations that might be perfectly acceptable in other contexts can adversely affect students taking a
+test on their own, with no classroom discussion or caretaker guidance.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 33 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+10 Religion, Morality, and Politics
+
+It is advisable to avoid unnecessary references to religion, morality, and politics in K-12 content unless
+necessary for instruction.
+
+10.1 Religion
+
+     10.1.1 General Guidelines
+
+Content about religion and the role of religion in history, literature, science, and other endeavors should
+promote neither belief nor disbelief.
+When writing about religion, present coverage that helps students understand the following:
+· Religions are internally diverse, not homogenous.
+· Religions are dynamic and change over time.
+· Religions are both shaped by and give shape to culture.
+· Not all people have a belief system founded in religion (e.g., agnosticism, atheism, secularism).
+Present the beliefs, practices, traditions, and members of religious communities in respectful and
+accurate ways. Be mindful that some students don't celebrate birthdays or holidays, including
+national/non-religious holidays.
+When using primary sources from sacred texts, select appropriate sources and translations for the
+context. For example, when writing about Judaism, cite the Hebrew Bible (Torah) rather than the Old
+Testament of the King James Bible.
+Wherever relevant to content, be specific when talking about religious groups or affiliation. For example,
+indicate whether Muslims are Sunni or Shia or whether Christians belong to a specific denomination.
+Avoid using Black Muslim to refer to a follower of the Nation of Islam. The preferred term is member of
+the Nation of Islam.
+Be aware that religious groups may have sensitivities or standards regarding the reference to or use of
+names, images, deities, rituals, sacred texts, and holy days that are central to their faith. Consider how
+members of a religious group might read content or view an image depicting aspects of their faith.
+Consider the social, political, and historical context of religious groups. In presenting religious and ethical
+standards of other times or places, ensure that no group is ridiculed or portrayed as inferior. Show
+information factually, without judgment.
+Where applicable, balance the quality and quantity of coverage, both textual and visual, of the world's
+major religions (Buddhism, Christianity, Hinduism, Islam, Jainism, Judaism, Sikhism). Be mindful that
+discussing or showing negative aspects of one religious group but not others may be perceived as bias.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 34 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+     10.1.2 Practices to Avoid
+
+In text and visuals, avoid content that overgeneralizes or that reinforces stereotypes or religious bigotry.
+For example, avoid depictions of Islam and Muslims as inherently violent, or of Hindus as worshipping
+cows.
+
+Avoid implying that caste-based discrimination and social hierarchy are inherent features of Hinduism.
+
+Be careful not to present religious beliefs and practices as exotic, primitive, or strange.
+
+Avoid puns and jokes about and caricatures of religious beliefs and figures.
+
+Avoid simulations, role-playing, or any activities that have students act as religious figures, reenact
+religious events, wear religious garments, or demonstrate religious ceremonies or practices. Also avoid
+asking students to write out or read aloud selections from prayers or sacred texts. Such activities may
+violate the religious liberty or freedom of consciousness of students.
+
+Avoid activities in which students are called upon to represent and explain their personal religious
+traditions or beliefs to the class.
+
+Avoid quoting literature with a strong religious message unless relevant to content.
+
+Avoid references to the supernatural, including magic, astrology, and so forth, unless relevant to literary
+or historical content. Avoid showing religious symbols in imagery unless there is an appropriate context.
+
+10.2 Morality
+
+Avoid references to death and violence unless necessary for historical accuracy. In such cases, treat the
+subject sensitively and try to use images that will not upset students or cause offense to parents or
+teachers.
+
+See also Traumatic Experiences
+
+Avoid images that show full or partial nudity. Be considerate of context and grade level for images that
+include clothing that may be considered provocative. Be cautious about including fine art (sculptures,
+paintings, etc.) that show partial nudity.
+
+If you reference famous people or depict them as role models, ensure that they are appropriate role
+models for the audience. Be aware that attitudes towards public figures, especially if they are living, can
+change quickly.
+
+Avoid references to activities and objects associated with gambling, such as dominoes, sports betting,
+horse races, greyhound races, casino-style card games, playing cards, pitching quarters, lottery tickets,
+and dice games.
+
+Where necessary for content, refer to dice as number cubes.
+
+Exercise care in referring to raffles. Some groups consider raffles a form of gambling. If the idea of a raffle
+is necessary for content, note that the raffle is voluntary and that all winnings will be for charity, not for
+personal gain.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 35 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+10.3 Politics
+
+     10.3.1 General Guidelines
+
+If coverage of political issues or activism is necessary for content, ensure that coverage is factual,
+informative, sensitive, and unbiased. Strive for balance in coverage of major political parties.
+Use words and phrases that accurately inform students about politics and political issues without
+encouraging them to take sides.
+
+     10.3.2 Practices to Avoid
+
+Avoid quoting literature with a strong political message unless necessary for content.
+Avoid stereotyping political parties or adherents of political philosophies with labels such as liberal or
+conservative voters.
+Avoid unnecessarily polarizing language and war metaphors in discussions of political issues. For example,
+use terms such as criticized, doubted, or challenged instead of attacked, bombarded, or fired back.
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 36 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+11 Socioeconomic Status
+
+Socioeconomic status involves elements of income, wealth, education, and housing (APA). Disparities in
+socioeconomic status have repercussions for access to all kinds of resources at the individual, family, and
+community levels. Strive to be aware of the diversity of access to resources while still depicting a wide
+variety of occupations, housing, and lifestyles.
+
+11.1Representation and Inclusion
+
+In general, show individuals and groups in environments reflecting average economic circumstances in the
+United States--neither rich nor poor. As of 2016, the average U.S. household earns less than $60,000 per
+year (Guzman, 2017). As of 2009, 35% of U.S. households could afford a median-priced home in their area
+(Wilson & Callis, 2013). More than one-fifth of children live in families below the federal poverty level
+(NCCP, 2018). According to the U.S. Department of Agriculture, more than 10% of U.S. households were
+not food-secure throughout 2017.
+
+· Show an equal balance of contemporary living in urban, suburban, and rural settings.
+· Include racial diversity within each socioeconomic setting.
+· When referring to homes, be sensitive to the diversity of housing and family situations, as well as to
+
+     homelessness among students.
+· Be cautious of portraying a flippant attitude toward food and basic living necessities.
+· Do not assume students have their own bedrooms, bathrooms, or closets. Brian was measuring the
+
+     width of a bedroom, not Brian was measuring the width of his bedroom (when possible).
+· Note a simple fix that works sometimes is removing possession (e.g., change Susie's garden to a
+
+     garden or your school's drama club to a drama club).
+· When dealing with other societies or historical periods, depict accurate living situations.
+· Use a mixture of team sports and individual activities that are popular across a wide range of K-12
+
+     students. Examples include football, basketball, volleyball, track, cycling, baseball, softball, soccer,
+     tennis, and cross-country. Be mindful when referring to sports that may exclude some groups
+     because they are cost prohibitive, less common, or because of geography (for instance those who live
+     in landlocked states may not typically go surfing). Examples include skiing, golf, ice skating, lacrosse,
+     and polo.
+
+11.2Socioeconomic Contexts
+
+A key aspect of content development that HMH can control is in the contexts used (e.g., when choosing
+reading passages, developing writing prompts, or writing word problems). On the one hand, writers
+should be careful of employing too many contexts to which students cannot relate, such as activities they
+cannot afford or projects that demand technology they don't own. But on the other hand, content
+developers should have high expectations of what our students will engage with and should provide views
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 37 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+into a wide variety of careers and goals. Be mindful of students with limited resources without limiting
+student ambition.
+Liberally use aspirational careers and goals:
+· Careers and goals that require extensive training (surgeon, concert violinist)
+· Careers and goals that expose unusual and niche endeavors (taste tester, forensic linguist)
+· Careers and goals that are highly engaging (circus performer, hip-hop dancer)
+· Careers and goals that are underrepresented in many places (military pilot, farmer)
+Avoid references to expensive gifts and items (luxury cars, recent gaming consoles). Be judicious in
+referencing expensive sports and hobbies.
+
+Special Topic: Money, Finance, and Consumption
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 38 OF 39
+                                                               CONTENT EQUITY, INCLUSION & DIVERSITY GUIDANCE
+
+Appendix: List of Special Topics
+
+Acceptable Terms for People with Disabilities
+Diverse School Types across the United States
+Gender-Inclusive Language
+Glossary of Gender and Sexual Identity
+International Hand Gesture Meanings
+Money, Finance, and Consumption
+
+CONFIDENTIAL AND PROPRIETARY TO HOUGHTON MIFFLIN HARCOURT. INTERNAL HMH DOCUMENT ONLY. DISCLOSURE TO
+ANY PARTY OUTSIDE OF HMH IS STRICTLY PROHIBITED.
+
+UPDATED: 2020  P A G E 39 OF 39
+

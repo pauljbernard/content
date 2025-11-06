@@ -1,0 +1,128 @@
+name: 📚 Curriculum Development
+description: Create complete curriculum materials - research, design objectives, develop content
+title: "[Curriculum] "
+labels: ["curriculum-development", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Curriculum Development Request
+
+        Use Professor's curriculum development capabilities to research topics, design learning objectives, and create comprehensive curriculum materials.
+
+        **Skills Used:**
+        - `curriculum.research` - Research topics and standards
+        - `curriculum.design` - Design learning objectives (Bloom's Taxonomy)
+        - `curriculum.develop-content` - Create lesson plans and materials
+
+        **Agent:** `curriculum-architect` orchestrates the complete workflow
+
+  - type: input
+    id: topic
+    attributes:
+      label: Topic/Subject
+      description: What topic or subject should the curriculum cover?
+      placeholder: "e.g., Photosynthesis, American Revolution, Quadratic Equations"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: educational_level
+    attributes:
+      label: Educational Level
+      description: Target student level
+      options:
+        - K-5 (Elementary)
+        - 6-8 (Middle School)
+        - 9-12 (High School)
+        - Undergraduate
+        - Graduate
+        - Post-graduate
+        - Professional Learning
+    validations:
+      required: true
+
+  - type: input
+    id: duration
+    attributes:
+      label: Duration
+      description: How long should this curriculum cover?
+      placeholder: "e.g., 1 week, 3 weeks, full semester"
+    validations:
+      required: true
+
+  - type: input
+    id: standards
+    attributes:
+      label: Educational Standards
+      description: Which standards should this align to?
+      placeholder: "e.g., NGSS, CCSS, State standards"
+    validations:
+      required: false
+
+  - type: textarea
+    id: learning_goals
+    attributes:
+      label: Learning Goals
+      description: What should students be able to do after completing this curriculum?
+      placeholder: |
+        - Understand key concepts
+        - Apply skills in context
+        - Demonstrate mastery
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints & Requirements
+      description: Any specific requirements, prerequisites, or constraints?
+      placeholder: |
+        - Prerequisites: Students should know...
+        - Must include: Lab activities, formative assessments
+        - Cannot use: Certain resources or approaches
+    validations:
+      required: false
+
+  - type: dropdown
+    id: deliverables
+    attributes:
+      label: Deliverables Needed
+      description: What materials should be created?
+      multiple: true
+      options:
+        - Lesson plans
+        - Student handouts/worksheets
+        - Formative assessments
+        - Summative assessment
+        - Multimedia content scripts
+        - Activities and exercises
+        - Teacher guide
+        - All of the above
+    validations:
+      required: true
+
+  - type: dropdown
+    id: output_format
+    attributes:
+      label: Output Location
+      options:
+        - drafts/
+        - specs/
+        - published/
+      default: 0
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: autonomous_mode
+    attributes:
+      label: Autonomous Development
+      description: Let the curriculum-architect agent work autonomously?
+      options:
+        - label: "Yes, work autonomously through all phases (research → design → develop → review)"
+          required: false
+        - label: "Create a pull request with generated materials"
+          required: false

@@ -1,0 +1,369 @@
+name: Professor Framework Automation
+
+# This workflow handles all Professor-powered issue templates
+# Triggered by issues with the "professor-auto" label
+
+on:
+  issues:
+    types: [opened, reopened, labeled]
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: 'Issue number to process'
+        required: true
+        type: number
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  process-request:
+    # Only run if issue has the professor-auto label
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'professor-auto')
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get issue details
+        id: issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue_number = context.issue?.number || ${{ inputs.issue_number || 0 }};
+            if (!issue_number) {
+              throw new Error('No issue number found');
+            }
+
+            const { data: issue } = await github.rest.issues.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue_number
+            });
+
+            // Determine request type from labels
+            const labels = issue.labels.map(l => l.name);
+            let requestType = 'general';
+
+            if (labels.includes('curriculum-development')) requestType = 'curriculum-development';
+            else if (labels.includes('assessment-creation')) requestType = 'assessment-creation';
+            else if (labels.includes('quality-review')) requestType = 'quality-review';
+            else if (labels.includes('lms-packaging')) requestType = 'lms-packaging';
+            else if (labels.includes('learning-analytics')) requestType = 'learning-analytics';
+            else if (labels.includes('autonomous-development')) requestType = 'autonomous-development';
+
+            core.setOutput('request_type', requestType);
+            core.setOutput('issue_number', issue_number);
+            core.setOutput('issue_title', issue.title);
+            core.setOutput('issue_body', issue.body);
+            core.setOutput('issue_user', issue.user.login);
+
+            return { requestType, issue_number, title: issue.title };
+
+      - name: Add initial comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.issue.outputs.issue_number }},
+              body: `## 🤖 Professor Framework Activated\n\n` +
+                    `**Request Type:** ${{ steps.issue.outputs.request_type }}\n` +
+                    `**Requested by:** @${{ steps.issue.outputs.issue_user }}\n\n` +
+                    `Setting up Professor framework with 97 skills and 18 agents...\n\n` +
+                    `[View workflow run](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
+            });
+
+      - name: Setup Professor Framework
+        id: setup-professor
+        uses: ./.github/actions/setup-professor
+        with:
+          professor_branch: 'master'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          merge_with_local: 'true'
+
+      - name: Build Professor prompt
+        id: build-prompt
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const requestType = '${{ steps.issue.outputs.request_type }}';
+            const issueBody = `${{ steps.issue.outputs.issue_body }}`;
+            const issueTitle = `${{ steps.issue.outputs.issue_title }}`;
+
+            // Parse issue form data - GitHub issue forms create sections with ### headers
+            const parseFormData = (body) => {
+              const data = {};
+              const sections = body.split('###').slice(1);
+              sections.forEach(section => {
+                const lines = section.trim().split('\n');
+                const key = lines[0].trim();
+                const value = lines.slice(1).join('\n').trim();
+                data[key] = value;
+              });
+              return data;
+            };
+
+            const formData = parseFormData(issueBody);
+
+            // Build prompt based on request type
+            let prompt = '';
+            let claudeArgs = '--max-turns 20';
+
+            if (requestType === 'curriculum-development') {
+              prompt = `# Curriculum Development Request
+
+    ${issueTitle}
+
+    Use Professor framework's curriculum development capabilities to complete this request.
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    1. Use /curriculum.research to research the topic and align to standards
+    2. Use /curriculum.design to create measurable learning objectives (Bloom's Taxonomy)
+    3. Use /curriculum.develop-content to create comprehensive materials
+    4. Use /curriculum.review-pedagogy to validate quality
+    5. Organize all materials in the specified output location
+    6. Create a complete deliverable package
+
+    Use the curriculum-architect agent to orchestrate this workflow autonomously if requested.
+
+    Follow all guidelines in CLAUDE.md for quality standards.`;
+              claudeArgs = '--max-turns 25';
+
+            } else if (requestType === 'assessment-creation') {
+              prompt = `# Assessment Creation Request
+
+    ${issueTitle}
+
+    Use Professor framework's assessment design capabilities to complete this request.
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    1. Use /curriculum.assess-design to create an assessment blueprint
+    2. Use /curriculum.develop-items to generate assessment items
+    3. Create detailed rubrics with performance criteria
+    4. Generate answer key with rationales
+    5. Validate alignment to learning objectives
+    6. Export in requested format(s)
+
+    Use the assessment-designer agent for comprehensive assessment systems.
+
+    Ensure all items are:
+    - Aligned to stated objectives
+    - At appropriate Bloom's levels
+    - Fair and unbiased
+    - Clear and well-written`;
+              claudeArgs = '--max-turns 20';
+
+            } else if (requestType === 'quality-review') {
+              prompt = `# Quality Review Request
+
+    ${issueTitle}
+
+    Use Professor framework's review capabilities to complete this request.
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    1. Use /curriculum.review-pedagogy to review pedagogical soundness
+    2. Use /curriculum.review-accessibility to check WCAG 2.1 compliance
+    3. Use /curriculum.review-bias to detect bias and cultural issues
+    4. Generate detailed review report with specific recommendations
+    5. Flag critical issues that must be addressed
+    6. Provide line-level feedback where applicable
+
+    Use the pedagogical-reviewer and quality-assurance agents.
+
+    Apply the specified strictness level and frameworks.`;
+              claudeArgs = '--max-turns 15';
+
+            } else if (requestType === 'lms-packaging') {
+              prompt = `# LMS Packaging Request
+
+    ${issueTitle}
+
+    Use Professor framework's packaging capabilities to complete this request.
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    1. Use /curriculum.package-lms to create the specified package type
+    2. Include all metadata and configuration
+    3. Use /scorm-validator agent to validate compatibility
+    4. Optimize assets for web delivery
+    5. Test package structure and manifest
+    6. Provide deployment instructions
+
+    Ensure package is compatible with the target LMS.`;
+              claudeArgs = '--max-turns 15';
+
+            } else if (requestType === 'learning-analytics') {
+              prompt = `# Learning Analytics Request
+
+    ${issueTitle}
+
+    Use Professor framework's analytics capabilities to complete this request.
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    1. Use /curriculum.analyze-outcomes to analyze the data
+    2. Use /learning.impact-measurement for effectiveness analysis
+    3. Calculate mastery rates, identify gaps, detect patterns
+    4. Generate visualizations (charts, graphs, dashboards)
+    5. Provide actionable recommendations for improvement
+    6. Create executive summary and detailed report
+
+    Use the learning-analytics agent for comprehensive analysis.
+
+    Answer all specified analysis questions with data-driven insights.`;
+              claudeArgs = '--max-turns 15';
+
+            } else if (requestType === 'autonomous-development') {
+              prompt = `# Autonomous Course Development Request
+
+    ${issueTitle}
+
+    Use Professor framework's AUTONOMOUS WORKFLOW for complete course development.
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    THIS IS AN AUTONOMOUS WORKFLOW. The curriculum-architect agent should:
+
+    Phase 1: Pre-Development
+    - Use /learning.needs-analysis to understand requirements
+    - Use /learning.market-research to gather context
+
+    Phase 2: Research & Design
+    - Use /curriculum.research for topic and standards research
+    - Use /curriculum.design to create learning objectives
+    - Use /curriculum.assess-design to plan assessments
+
+    Phase 3: Development
+    - Use /curriculum.develop-content to create all materials
+    - Use /curriculum.develop-items to create assessments
+    - Use /curriculum.develop-multimedia for multimedia content
+
+    Phase 4: Review & Quality
+    - Use /curriculum.review-pedagogy for quality validation
+    - Use /curriculum.review-accessibility for WCAG compliance
+    - Use /curriculum.review-bias for cultural responsiveness
+
+    Phase 5: Packaging
+    - Use /curriculum.package-lms if SCORM requested
+    - Use /curriculum.package-pdf for print materials
+    - Use /curriculum.package-web for web delivery
+
+    Phase 6: Documentation
+    - Create comprehensive teacher guide
+    - Document all learning materials
+    - Provide implementation guidance
+
+    WORK AUTONOMOUSLY through all phases. Create intermediate reports showing progress.
+    This is a COMPLETE COURSE - create all requested deliverables.`;
+              claudeArgs = '--max-turns 40';
+
+            } else {
+              prompt = `# Professor Framework Request
+
+    ${issueTitle}
+
+    ## Request Details
+    ${issueBody}
+
+    ## Instructions
+    Analyze this request and use appropriate Professor skills and agents to complete it.
+    You have access to 97 skills and 18 agents.
+
+    Follow all guidelines in CLAUDE.md for quality standards.`;
+              claudeArgs = '--max-turns 20';
+            }
+
+            core.setOutput('prompt', prompt);
+            core.setOutput('claude_args', claudeArgs);
+            return { requestType, promptLength: prompt.length };
+
+      - name: Execute with Claude Code + Professor
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          prompt: ${{ steps.build-prompt.outputs.prompt }}
+          claude_args: ${{ steps.build-prompt.outputs.claude_args }}
+
+      - name: Report completion
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.issue.outputs.issue_number }},
+              body: `## ✅ Professor Framework Completed\n\n` +
+                    `**Request Type:** ${{ steps.issue.outputs.request_type }}\n\n` +
+                    `The Professor framework has completed processing your request.\n\n` +
+                    `### Configuration Used\n` +
+                    `- Skills: ${{ steps.setup-professor.outputs.skills_count }}\n` +
+                    `- Agents: ${{ steps.setup-professor.outputs.agents_count }}\n` +
+                    `- Professor Version: ${{ steps.setup-professor.outputs.professor_version }}\n\n` +
+                    `### Next Steps\n` +
+                    `1. Review the generated content and commits\n` +
+                    `2. Check any pull requests that were created\n` +
+                    `3. Test the materials if applicable\n` +
+                    `4. Provide feedback for iterations\n\n` +
+                    `[View full workflow log](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})`
+            });
+
+            // Label issue as completed
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.issue.outputs.issue_number }},
+              labels: ['professor-completed']
+            });
+
+      - name: Report failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.issue.outputs.issue_number }},
+              body: `## ❌ Professor Framework Encountered an Issue\n\n` +
+                    `The workflow encountered an error while processing your request.\n\n` +
+                    `Please check the [workflow logs](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) ` +
+                    `for details.\n\n` +
+                    `Common issues:\n` +
+                    `- Invalid or missing required fields\n` +
+                    `- File paths that don't exist\n` +
+                    `- API rate limits or timeouts\n\n` +
+                    `You can rerun the workflow or provide additional information.`
+            });
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.issue.outputs.issue_number }},
+              labels: ['professor-failed']
+            });

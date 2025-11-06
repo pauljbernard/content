@@ -1,0 +1,249 @@
+name: Professor Content Development
+
+on:
+  workflow_call:
+    inputs:
+      task_description:
+        description: 'Task for Professor to execute'
+        required: true
+        type: string
+      content_path:
+        description: 'Path to content files to work on'
+        required: false
+        type: string
+        default: '.'
+      professor_branch:
+        description: 'Professor framework branch to use'
+        required: false
+        type: string
+        default: 'main'
+      create_pr:
+        description: 'Create a pull request with changes'
+        required: false
+        type: boolean
+        default: false
+    outputs:
+      result_summary:
+        description: 'Summary of the content development task'
+        value: ${{ jobs.develop-content.outputs.summary }}
+    secrets:
+      ANTHROPIC_API_KEY:
+        required: true
+        description: 'Anthropic API key for Claude Code CLI'
+
+  workflow_dispatch:
+    inputs:
+      task_description:
+        description: 'Task for Professor to execute'
+        required: true
+        type: string
+      content_path:
+        description: 'Path to content files to work on'
+        required: false
+        type: string
+        default: '.'
+      professor_branch:
+        description: 'Professor framework branch to use'
+        required: false
+        type: string
+        default: 'main'
+      create_pr:
+        description: 'Create a pull request with changes'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  develop-content:
+    runs-on: ubuntu-latest
+    outputs:
+      summary: ${{ steps.summary.outputs.result }}
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Claude Code CLI
+        run: |
+          echo "Installing Claude Code CLI..."
+          npm install -g @anthropic-ai/claude-code@latest
+          claude --version
+
+      - name: Clone Professor framework
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "Cloning Professor framework..."
+          git clone --depth 1 --branch "${{ inputs.professor_branch }}" \
+            https://x-access-token:${GH_TOKEN}@github.com/pauljbernard/professor.git \
+            professor-framework
+
+      - name: Configure Claude Code with Professor
+        run: |
+          echo "Configuring Claude Code with Professor framework..."
+
+          # Create config directories
+          mkdir -p ~/.claude/skills ~/.claude/commands ~/.claude/agents
+
+          # Copy Professor configurations
+          [ -d "professor-framework/.claude/skills" ] && cp -r professor-framework/.claude/skills/* ~/.claude/skills/ || \
+          [ -d "professor-framework/skills" ] && cp -r professor-framework/skills/* ~/.claude/skills/ || true
+
+          [ -d "professor-framework/.claude/commands" ] && cp -r professor-framework/.claude/commands/* ~/.claude/commands/ || \
+          [ -d "professor-framework/commands" ] && cp -r professor-framework/commands/* ~/.claude/commands/ || true
+
+          [ -d "professor-framework/.claude/agents" ] && cp -r professor-framework/.claude/agents/* ~/.claude/agents/ || \
+          [ -d "professor-framework/agents" ] && cp -r professor-framework/agents/* ~/.claude/agents/ || true
+
+          # Copy main configuration
+          [ -f "professor-framework/CLAUDE.md" ] && cp professor-framework/CLAUDE.md ~/.claude/CLAUDE.md || \
+          [ -f "professor-framework/.claude/CLAUDE.md" ] && cp professor-framework/.claude/CLAUDE.md ~/.claude/CLAUDE.md || true
+
+          echo "Professor configuration complete"
+          echo "Skills: $(find ~/.claude/skills -type f 2>/dev/null | wc -l)"
+          echo "Commands: $(find ~/.claude/commands -type f 2>/dev/null | wc -l)"
+          echo "Agents: $(find ~/.claude/agents -type f 2>/dev/null | wc -l)"
+
+      - name: Set up Anthropic API key
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          # Configure Claude Code with API key
+          mkdir -p ~/.config/claude-code
+          echo "ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}" > ~/.config/claude-code/.env
+
+      - name: Execute content development task
+        id: execute-task
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          echo "Executing task: ${{ inputs.task_description }}"
+          echo "Working in: ${{ inputs.content_path }}"
+
+          cd "${{ inputs.content_path }}"
+
+          # Create a task file for Claude Code
+          cat > .task.md << 'EOF'
+          # Content Development Task
+
+          ${{ inputs.task_description }}
+
+          ## Context
+          - Repository: ${{ github.repository }}
+          - Branch: ${{ github.ref_name }}
+          - Triggered by: ${{ github.actor }}
+          - Workflow: ${{ github.workflow }}
+
+          ## Instructions
+          Please use the Professor framework's skills and commands to complete this task.
+          Ensure all content follows best practices and maintains consistency with existing content.
+          EOF
+
+          # Execute with Claude Code (non-interactive mode)
+          # Note: This is a placeholder - actual implementation depends on Claude Code CLI's batch mode
+          echo "Task file created. Ready for Claude Code execution."
+
+          # For now, we'll create a marker for manual review
+          echo "task_completed=pending_review" >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        id: commit
+        if: success()
+        run: |
+          git config user.name "Professor Bot"
+          git config user.email "professor-bot@github-actions"
+
+          # Check for changes
+          if [ -n "$(git status --porcelain)" ]; then
+            git add .
+            git commit -m "Content development: ${{ inputs.task_description }}
+
+          Automated content development using Professor framework.
+
+          Task: ${{ inputs.task_description }}
+          Path: ${{ inputs.content_path }}
+
+          🤖 Generated with Claude Code + Professor Framework
+
+          Co-Authored-By: Professor <noreply@anthropic.com>"
+
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "commit_sha=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to commit"
+          fi
+
+      - name: Create Pull Request
+        if: inputs.create_pr && steps.commit.outputs.changes == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Content development: ${{ inputs.task_description }}"
+          title: "[Professor] ${{ inputs.task_description }}"
+          body: |
+            ## Content Development Task
+
+            **Task:** ${{ inputs.task_description }}
+            **Content Path:** ${{ inputs.content_path }}
+            **Professor Branch:** ${{ inputs.professor_branch }}
+
+            This PR was automatically created by the Professor content development workflow.
+
+            ### Changes Summary
+            - Automated content development using Professor framework
+            - Task executed by Claude Code CLI with Professor skills
+
+            ### Review Checklist
+            - [ ] Content accuracy and quality
+            - [ ] Formatting and style consistency
+            - [ ] Links and references are valid
+            - [ ] No sensitive information exposed
+
+            🤖 Generated with [Claude Code](https://claude.com/claude-code) + Professor Framework
+          branch: professor/content-${{ github.run_number }}
+          delete-branch: true
+          labels: |
+            automated
+            content
+            professor
+
+      - name: Generate summary
+        id: summary
+        if: always()
+        run: |
+          SUMMARY=$(cat << 'EOF'
+          {
+            "task": "${{ inputs.task_description }}",
+            "content_path": "${{ inputs.content_path }}",
+            "professor_branch": "${{ inputs.professor_branch }}",
+            "changes_made": "${{ steps.commit.outputs.changes }}",
+            "commit_sha": "${{ steps.commit.outputs.commit_sha }}",
+            "status": "${{ job.status }}"
+          }
+          EOF
+          )
+          echo "result=$SUMMARY" >> $GITHUB_OUTPUT
+
+      - name: Upload task results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: professor-task-results
+          path: |
+            .task.md
+            ${{ inputs.content_path }}/**/*.md
+          retention-days: 30

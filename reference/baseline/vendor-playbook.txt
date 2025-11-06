@@ -1,0 +1,117 @@
+Into Math TX -- Vendor Guidelines Playbook
+
+Learning Goals
+
+Purpose: To help students self-assess confidence and to clarify lesson objectives.
+Checklist:
+s Includes I Can statement (student-friendly, bold math vocabulary).
+s Provides rating scale (I don't understand / I need more practice / I've got it).
+s TE starts with boilerplate for routine.
+s Clarifies new vocabulary using glossary definitions.
+s Includes 3-5 steps (read aloud, clarify terms, students self-assess, review results, revisit).
+
+Sample:
+SE Example: I can compose two-dimensional shapes with given properties. TE Example:
+Clarify 'compose' means to put together shapes to form a new one.
+
+Before You Teach
+
+Purpose: To provide teachers with conceptual depth, prerequisite knowledge, objectives, standards,
+and supports.
+Checklist:
+s Contains 'What should I understand about math?' (420 chars, 3 bullets).
+s Includes Prior Learning (3 bullets, lowercase starts).
+s States Focus Standard verbatim (TEKS breakout).
+s Includes ELPS code + text.
+s Lists Learning Objective + Language Objective.
+s Provides 3 Future Connections ('will...' phrasing).
+s Lists Manipulatives (per student, per group, digital).
+
+Sample:
+TE Example: Emphasize attributes such as sides and angles when composing shapes.
+
+Spark Your Learning (SYL)
+
+Purpose: To introduce a lesson concept using prior knowledge and problem-solving routines.
+Checklist:
+s SE problem 120 words, solvable with prior knowledge.
+s Bold math vocabulary, ends with 'Show your thinking'.
+s Include Spec Type, Description, and Alt Text if visual.
+s Turn & Talk included with annotation.
+s TE starts with boilerplate + MLR6 Three Reads.
+s Spark Discussions: Common Error (error + script + 3 ASK Qs).
+s Spark Discussions: Deepening Thinking (correct example + 3 ASK Qs).
+s Turn & Talk TG included.
+s ML scaffolds at 3 proficiency levels (Emerging, Expanding, Bridging).
+s Includes 1 UDL strategy and vocabulary clarification.
+
+Sample:
+SE Example: Maria has 2 triangles and 1 square. How can she make a house shape? TE
+Example: ASK: What numbers are important? Possible answer: 2 triangles, 1 square.
+
+Review Spark Your Learning
+
+Purpose: To revisit the Spark Your Learning problem and guide reflection.
+Checklist:
+s SE restates Spark Your Learning with a reflection Q (e.g., 'How would you check your
+work?').
+s Spec Type, Description, Alt Text included if visual.
+s TE starts with boilerplate 'NOW, review Spark Your Learning'.
+s Includes at least 3 ASK questions about checking work/operations.
+s Closes with feedback guidance.
+s Integrates ML strategy (peer/group sharing, respectful conversation).
+
+Sample:
+TE Example: ASK: What operation would you use to check division? Possible answer:
+Multiplication.
+
+Quick Check
+
+Purpose: To formatively assess mastery of the lesson's Learning Goal and Language Objective.
+Checklist:
+s Interactions numbered (Interaction 1, 2...).
+s Each Interaction includes Manuscript + annotation.
+s Spec Type + Description if visual.
+s TE starts with boilerplate 'NOW, use the Quick Check'.
+s Includes Language Objective reference.
+s ML strategy tied to ELPS included.
+s Optional: UDL or Common Error support.
+
+Sample:
+SE Example: There are 46 swimmers and 7 lanes. How many swimmers per lane? TE
+Example: NOW, use the Quick Check... Ask students to orally explain repeated subtraction.
+Tasks
+
+Purpose: To provide scaffolded practice aligned to TEKS, progressing in rigor, with SE/TE parity.
+Checklist:
+s SE includes problem stem 150 words.
+s Sub-items A, B, C... with annotation.
+s Spec Type, Description, Alt Text included if visual.
+s Turn & Talk included.
+s TE starts with boilerplate + Three Reads.
+s TG Questions match each SE sub-item (5 each).
+s NEXT: Process Standard verbatim + support notes.
+s Ends with boilerplate 'NOW, have students solve the problem'.
+s Supports: Turn & Talk TG, MLR routine, ML/UDL/Common Error.
+s Task 1 only: Includes DOK Levels 1, 2, 3 with annotations.
+
+Sample:
+SE Example: Lisa has $50 to buy goggles that cost $8 each. How many can she buy? TE
+Example: ASK: What numbers are important? Possible answer: 50 and 8.
+
+Practice On Your Own (POYO)
+
+Purpose: To give students independent practice and provide TE with Item Guides and Rubrics.
+Checklist:
+s SE Interactions labeled (Interaction 1, 2...).
+s Each Interaction includes Manuscript + annotation.
+s Spec Type + Description included if visual.
+s TE includes Item Guide (Item #, DOK, Task Alignment).
+s TE includes at least one Rubric (2/1/0 points + sample answers).
+s At least one rubric aligned to a modeling/visual item.
+
+Sample:
+SE Example: Use repeated subtraction to solve 46 ÷ 5. Possible answer: 9 r 1. TE Example:
+Item Guide: 3a -- DOK 2 -- Task 2. Rubric: 2 pts for complete number line model, 1 pt partial,
+0 pts incorrect.
+

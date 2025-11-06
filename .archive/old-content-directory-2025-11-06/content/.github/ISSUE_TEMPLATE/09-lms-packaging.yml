@@ -1,0 +1,98 @@
+name: 📦 LMS Packaging
+description: Package content for learning management systems (SCORM, Canvas, Moodle)
+title: "[LMS Package] "
+labels: ["lms-packaging", "professor-auto"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## LMS Packaging Request
+
+        Use Professor's packaging capabilities to create LMS-compatible content packages.
+
+        **Skills Used:**
+        - `curriculum.package-lms` - Generate SCORM packages
+        - `curriculum.export-qti` - Export QTI assessments
+
+        **Agent:** `scorm-validator` ensures compatibility
+
+  - type: input
+    id: content_path
+    attributes:
+      label: Content to Package
+      description: Path to content directory
+      placeholder: "published/course-name/"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package_type
+    attributes:
+      label: Package Type
+      options:
+        - SCORM 1.2
+        - SCORM 2004
+        - xAPI (Tin Can)
+        - Canvas Course Package
+        - Moodle Backup
+        - QTI (assessments only)
+        - Common Cartridge
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target_lms
+    attributes:
+      label: Target LMS
+      description: Which LMS will this be imported into?
+      options:
+        - Canvas
+        - Moodle
+        - Blackboard
+        - D2L Brightspace
+        - Schoology
+        - Generic SCORM-compliant LMS
+    validations:
+      required: false
+
+  - type: textarea
+    id: package_metadata
+    attributes:
+      label: Package Metadata
+      description: Course information for the package
+      placeholder: |
+        Course Title: Introduction to Biology
+        Course Code: BIO101
+        Description: Comprehensive intro biology course
+        Duration: 16 weeks
+        Credits: 3
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: package_options
+    attributes:
+      label: Package Options
+      options:
+        - label: "Include all multimedia assets"
+          required: false
+        - label: "Include assessment grade passback"
+          required: false
+        - label: "Include completion tracking"
+          required: false
+        - label: "Optimize asset sizes for web delivery"
+          required: false
+        - label: "Validate package compatibility before packaging"
+          required: false
+        - label: "Test import in target LMS (if possible)"
+          required: false
+
+  - type: input
+    id: output_location
+    attributes:
+      label: Output Location
+      value: "published/packages/"
+    validations:
+      required: true

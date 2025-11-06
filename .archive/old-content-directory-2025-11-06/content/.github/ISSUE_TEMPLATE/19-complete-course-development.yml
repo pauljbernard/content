@@ -1,0 +1,181 @@
+name: 🎓 Complete Course Development (Autonomous)
+description: Full autonomous course development - research through delivery
+title: "[Autonomous Course] "
+labels: ["autonomous-development", "professor-auto", "high-priority"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Complete Course Development (Autonomous Mode)
+
+        The **curriculum-architect agent** will work autonomously through the complete development lifecycle:
+        1. Needs analysis and market research
+        2. Topic research and standards alignment
+        3. Learning objectives design
+        4. Content development
+        5. Assessment creation
+        6. Quality review
+        7. Packaging and delivery
+
+        **Agent:** `curriculum-architect` (autonomous mode) coordinates all agents
+
+  - type: input
+    id: course_title
+    attributes:
+      label: Course Title
+      placeholder: "e.g., Introduction to Data Science"
+    validations:
+      required: true
+
+  - type: textarea
+    id: course_description
+    attributes:
+      label: Course Description
+      description: What should this course cover?
+      placeholder: |
+        A comprehensive introduction to data science covering:
+        - Data analysis with Python
+        - Statistical methods
+        - Machine learning fundamentals
+        - Data visualization
+    validations:
+      required: true
+
+  - type: dropdown
+    id: educational_level
+    attributes:
+      label: Educational Level
+      options:
+        - K-5 (Elementary)
+        - 6-8 (Middle School)
+        - 9-12 (High School)
+        - Undergraduate
+        - Graduate
+        - Post-graduate
+        - Professional Learning
+    validations:
+      required: true
+
+  - type: input
+    id: duration
+    attributes:
+      label: Course Duration
+      placeholder: "e.g., 10 weeks, 1 semester, 40 hours"
+    validations:
+      required: true
+
+  - type: input
+    id: standards
+    attributes:
+      label: Standards Alignment
+      description: Educational standards, certifications, or guidelines
+      placeholder: "e.g., ACM CS Guidelines, State Standards, Professional Certification"
+    validations:
+      required: false
+
+  - type: textarea
+    id: target_audience
+    attributes:
+      label: Target Audience
+      description: Who is this course for?
+      placeholder: |
+        - Background: Students with...
+        - Prerequisites: Knowledge of...
+        - Demographics: Age, experience level, etc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: learning_outcomes
+    attributes:
+      label: Learning Outcomes
+      description: What should students be able to do after completing this course?
+      placeholder: |
+        By the end of this course, students will be able to:
+        1. Analyze datasets using Python
+        2. Apply statistical methods to real-world problems
+        3. Build basic machine learning models
+        4. Create effective data visualizations
+    validations:
+      required: true
+
+  - type: dropdown
+    id: delivery_mode
+    attributes:
+      label: Delivery Mode
+      options:
+        - Self-paced online
+        - Instructor-led online
+        - Hybrid (online + in-person)
+        - In-person only
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: deliverables
+    attributes:
+      label: Course Deliverables
+      description: What materials should be created?
+      options:
+        - label: "Complete syllabus"
+          required: false
+        - label: "Weekly lesson plans"
+          required: false
+        - label: "Lecture slides/materials"
+          required: false
+        - label: "Student handouts/worksheets"
+          required: false
+        - label: "Practice exercises/activities"
+          required: false
+        - label: "Formative assessments (weekly)"
+          required: false
+        - label: "Summative assessments (midterm, final)"
+          required: false
+        - label: "Projects with rubrics"
+          required: false
+        - label: "Multimedia content scripts"
+          required: false
+        - label: "Teacher/instructor guide"
+          required: false
+        - label: "SCORM package for LMS"
+          required: false
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Constraints & Special Requirements
+      description: Any specific constraints, requirements, or preferences?
+      placeholder: |
+        - Must include hands-on activities
+        - Should use specific tools (e.g., Python, Jupyter)
+        - Accessibility requirements
+        - Budget constraints
+        - Timeline requirements
+    validations:
+      required: false
+
+  - type: dropdown
+    id: quality_level
+    attributes:
+      label: Quality Level
+      options:
+        - Standard (good quality)
+        - High (thorough review)
+        - Commercial-grade (publication-ready)
+      default: 2
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: autonomous_mode
+    attributes:
+      label: Autonomous Mode Confirmation
+      options:
+        - label: "I understand the agent will work autonomously through all phases"
+          required: true
+        - label: "Create pull request(s) with generated materials for review"
+          required: false
+        - label: "Generate project status updates as the agent progresses"
+          required: false
