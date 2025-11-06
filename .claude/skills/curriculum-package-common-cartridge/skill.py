@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Curriculum.printProductionSkill"""
+"""CurriculumPackageCommonCartridgeSkill"""
 import sys
 from pathlib import Path
 from typing import Dict, List, Any
@@ -7,11 +7,11 @@ framework_path = Path(__file__).parent.parent / "framework"
 sys.path.insert(0, str(framework_path))
 from skill_base import Skill, SkillParameter, register_skill
 
-class Curriculum.printProductionSkill(Skill):
+class CurriculumPackageCommonCartridgeSkill(Skill):
     def __init__(self):
-        super().__init__(skill_id="curriculum.print.production", skill_name="curriculum.print-production",
-                        category="standards" if "standards" in "curriculum.print.production" else "curriculum",
-                        description="curriculum.print.production skill")
+        super().__init__(skill_id="curriculum.package.common.cartridge", skill_name="curriculum-package-common-cartridge",
+                        category="standards" if "standards" in "curriculum.package.common.cartridge" else "curriculum",
+                        description="curriculum.package.common.cartridge skill")
 
     def get_parameters(self) -> List[SkillParameter]:
         return [
@@ -23,7 +23,7 @@ class Curriculum.printProductionSkill(Skill):
         content = parameters["content"]
         framework = parameters.get("standards_framework", "Common Core")
         result = {
-            "skill": "curriculum.print.production",
+            "skill": "curriculum.package.common.cartridge",
             "processed": f"{skill_dir} completed",
             "framework": framework,
             "compliance_status": "Validated",
@@ -31,5 +31,5 @@ class Curriculum.printProductionSkill(Skill):
         }
         return {"data": result, "artifacts": [f"{skill_dir}_output.json"]}
 
-skill_instance = Curriculum.printProductionSkill()
+skill_instance = CurriculumPackageCommonCartridgeSkill()
 register_skill(skill_instance)
