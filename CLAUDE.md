@@ -22,7 +22,12 @@ A **hierarchical knowledge resolution system** that enables creating standards-a
 
 **Location**: `/reference/hmh-knowledge-v2/`
 **Status**: Week 3 Complete (50 files, 94%)
-**Documentation**: See [`USER_GUIDE.md`](USER_GUIDE.md) for complete engineering guide
+**Documentation**: See complete documentation suite:
+- **[USER_GUIDE.md](USER_GUIDE.md)** - Overview and navigation for all roles
+- **[AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)** - Complete authoring workflows (850 lines)
+- **[EDITOR_GUIDE.md](EDITOR_GUIDE.md)** - Editorial review processes (450 lines)
+- **[PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md)** - Multi-format production (450 lines)
+- **[ENGINEER_GUIDE.md](ENGINEER_GUIDE.md)** - System architecture and extension (1700 lines)
 
 ### Current Coverage
 
@@ -103,12 +108,12 @@ Knowledge resolution order (specific → general, first match wins):
 
 ### Adding New States/Subjects
 
-**For Engineers**: See [`USER_GUIDE.md`](USER_GUIDE.md) for step-by-step instructions, templates, and examples.
+**For Engineers**: See [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) for complete step-by-step instructions, templates, and examples.
 
 **Quick Summary**:
-- **CCSS/NGSS State**: 2-3 files (90-95% reuse)
-- **State-Specific Standards**: 5-6 files (85-90% reuse)
-- **New Subject**: 8-10 subject-common files + 1-2 per state
+- **CCSS/NGSS State**: 2-3 files (90-95% reuse) - See ENGINEER_GUIDE.md Section 3
+- **State-Specific Standards**: 5-6 files (85-90% reuse) - See ENGINEER_GUIDE.md Section 3
+- **New Subject**: 8-10 subject-common files + 1-2 per state - See ENGINEER_GUIDE.md Section 4
 
 ### Known Gaps
 
@@ -231,26 +236,45 @@ content/
 
 ### **Workflows to Follow**
 
-**For New Content Creation:**
-1. Use `/speckit.constitution` to establish principles
-2. Use `/speckit.specify` to create detailed specifications
-3. Use `/curriculum.research` to research the topic and standards
-4. Use `/curriculum.design` to create learning objectives
-5. Use `/curriculum.develop-content` to create materials
-6. Use `/curriculum.review-pedagogy` and `/curriculum.review-accessibility` for quality checks
-7. Use `/speckit.implement` to finalize and deliver
+**For Content Authors** - See [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) Section 4 for complete workflows:
 
-**For Content Updates:**
-1. Use `/speckit.clarify` to understand requirements
-2. Make edits maintaining consistency with Professor standards
-3. Use `/curriculum.review-bias` and `/curriculum.review-pedagogy` to validate changes
-4. Use `/curriculum.iterate-feedback` to incorporate feedback
+**Lesson Authoring Workflow** (3-5 days):
+1. Planning - Identify curriculum config, gather knowledge files
+2. Drafting - Use knowledge base guidance, apply instructional routines
+3. Self-Review - Check against 7 Quality Pillars
+4. Submit for Review - Create pull request
 
-**For Assessment Development:**
-1. Use `/curriculum.assess-design` to create assessment blueprints
-2. Use `/curriculum.develop-items` to generate questions/tasks
-3. Use `/curriculum.review-pedagogy` to validate quality
-4. Use `/curriculum.package-lms` to prepare for delivery
+**Assessment Authoring Workflow** (2-4 days):
+1. Design Assessment Blueprint
+2. Write Items (MC, CR, performance tasks)
+3. Create Answer Key and Rubrics
+4. Self-Review and Submit
+
+**AI-Assisted Workflow** - See [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) Section 5:
+- Method 1: GitHub Issues (@claude mentions)
+- Method 2: Command Line (Professor skills)
+- Method 3: Workflow Dispatch (GitHub Actions)
+
+**For Content Editors** - See [EDITOR_GUIDE.md](EDITOR_GUIDE.md) Section 2:
+1. Receive Assignment
+2. Preliminary Review (15-30 minutes)
+3. Detailed Review using 8-section checklist (1-3 hours)
+4. Provide Feedback using templates
+5. Re-Review after author revisions
+6. Approval and Merge
+
+**For Production Staff** - See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) Sections 2-3:
+1. Receive approved content
+2. Choose format(s): PDF, HTML, SCORM, accessible
+3. Manage and optimize assets
+4. Run QA checks
+5. Package and deliver
+
+**For Engineers** - See [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) Sections 3-6:
+- Adding States: Follow state type decision tree
+- Adding Subjects: Create subject-common + subject-district files
+- Creating Configs: Use template, define resolution order
+- Extending Universal: Add frameworks that apply to all curricula
 
 ### **Autonomous Operation**
 
@@ -284,26 +308,41 @@ This repository uses GitHub Actions workflows that:
 
 ## Best Practices
 
-### **When Creating Content:**
-- Always start with clear, measurable learning objectives
-- Align to educational standards (NGSS, CCSS, etc.)
+### **When Creating Content** - See [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) Section 6:
+- Always start with clear, measurable learning objectives (Bloom's Taxonomy)
+- Align to educational standards (TEKS, CCSS, NGSS, etc.)
+- Use knowledge base guidance for instructional routines (MLRs, literacy routines)
 - Consider diverse learner needs (UDL principles)
+- Include scaffolds for emergent bilinguals (ELPS/ELD/ESOL)
+- Apply 7 Quality Pillars before submission
 - Include formative and summative assessment opportunities
-- Provide multiple pathways to demonstrate understanding
 
-### **When Reviewing Content:**
+### **When Reviewing Content** - See [EDITOR_GUIDE.md](EDITOR_GUIDE.md) Section 3:
+- Use the comprehensive 8-section review checklist
 - Check pedagogical soundness (constructive alignment)
-- Verify accessibility (WCAG 2.1 compliance)
-- Detect and eliminate bias (cultural responsiveness)
-- Validate standards alignment
-- Ensure age-appropriate complexity
+- Verify accessibility (WCAG 2.1 AA compliance)
+- Detect and eliminate bias (CEID framework - 11 categories)
+- Validate standards alignment with knowledge base files
+- Ensure age-appropriate complexity and scaffolding
+- Provide specific, actionable feedback with templates
 
-### **When Packaging Content:**
-- Generate multiple formats (web, PDF, SCORM)
-- Include all necessary assets (images, videos, resources)
+### **When Packaging Content** - See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) Sections 3-5:
+- Generate multiple formats (PDF via Pandoc, HTML responsive, SCORM 1.2/2004)
+- Optimize assets (images to 1200x800, videos compressed, audio normalized)
+- Include all necessary metadata and assets
 - Test in target LMS environment
-- Validate SCORM compliance
-- Include metadata and documentation
+- Validate SCORM compliance with imsmanifest.xml
+- Run complete QA checklist before delivery
+- Create accessible versions (large print, screen reader, braille-ready)
+
+### **When Extending the System** - See [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) Sections 7-9:
+- Follow file naming conventions (kebab-case)
+- Use templates and patterns for consistency
+- Maintain DRY principle (no duplicate content)
+- Test knowledge resolution after adding files
+- Validate all cross-references
+- Apply pre-publication checklist
+- Document knowledge reuse percentage
 
 ### **When Analyzing Outcomes:**
 - Use data-driven approaches
@@ -374,20 +413,54 @@ This repository uses GitHub Actions workflows that:
 
 ## Version
 
-**Content Repository**: 1.0.0
+**Content Repository**: v3.0.0 (Complete Documentation Suite)
+**Documentation**: 3,785 lines covering complete content lifecycle
+- AUTHOR_GUIDE.md: 850 lines
+- EDITOR_GUIDE.md: 450 lines
+- PRODUCTION_GUIDE.md: 450 lines
+- ENGINEER_GUIDE.md: 1,700 lines
+- USER_GUIDE.md: 335 lines
+
+**HMH Knowledge Base**: 50 files, 85-97% reuse, 5-level hierarchy
 **Professor Framework**: 2.0.0 (92 skills, 22 agents)
 **Claude Code**: Latest
-**Last Updated**: 2025-11-03
+**Last Updated**: 2025-11-06
 
 ---
 
 ## Support
 
-For questions about:
-- **Professor Framework**: See https://github.com/pauljbernard/professor
-- **Content Repository**: Create an issue in this repository
-- **Claude Code**: See https://docs.claude.com/en/docs/claude-code
+**Documentation by Role:**
+- **Content Authors**: See [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) - Complete authoring workflows, AI assistance, quality standards
+- **Content Editors**: See [EDITOR_GUIDE.md](EDITOR_GUIDE.md) - Editorial workflow, review checklists, feedback templates
+- **Production/Publishers**: See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) - Multi-format production, asset management, delivery
+- **Knowledge Base Engineers**: See [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) - System architecture, adding states/subjects, configs
+- **Overview/Navigation**: See [USER_GUIDE.md](USER_GUIDE.md) - Complete content lifecycle diagram
+
+**Additional Resources:**
+- **Professor Framework**: https://github.com/pauljbernard/professor
+- **Known Issues**: See [INCOMPLETE_ANALYSIS.md](INCOMPLETE_ANALYSIS.md)
+- **Content Repository Issues**: Create an issue in this repository
+- **Claude Code Documentation**: https://docs.claude.com/en/docs/claude-code
 
 ---
 
-**Remember**: You have access to a complete world-class learning engineering platform. Use Professor's skills and agents confidently to create exceptional educational content.
+## Quick Navigation by Task
+
+| I want to... | See this guide | Section |
+|-------------|----------------|---------|
+| Write a lesson | [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) | Section 4 (Lesson Workflow) |
+| Create an assessment | [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) | Section 4 (Assessment Workflow) |
+| Use AI assistance | [AUTHOR_GUIDE.md](AUTHOR_GUIDE.md) | Section 5 (Professor Framework) |
+| Review content quality | [EDITOR_GUIDE.md](EDITOR_GUIDE.md) | Section 3 (Review Checklist) |
+| Provide feedback | [EDITOR_GUIDE.md](EDITOR_GUIDE.md) | Section 4 (Effective Feedback) |
+| Create a PDF | [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) | Section 3 (PDF Production) |
+| Build SCORM package | [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) | Section 3 (SCORM Production) |
+| Optimize assets | [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) | Section 4 (Asset Management) |
+| Add a new state | [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) | Section 3 (Add State/District) |
+| Add a new subject | [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) | Section 4 (Add Subject) |
+| Create curriculum config | [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) | Section 5 (Create Config) |
+
+---
+
+**Remember**: You have access to a complete world-class learning engineering platform with comprehensive documentation for every role in the content lifecycle. Use Professor's skills and agents confidently to create exceptional educational content.
