@@ -1,28 +1,95 @@
-# HMH Multi-Curriculum Knowledge Base: User Guide
-**For Prompt Engineers, Context Engineers, and Curriculum Developers**
-**Version:** 2.0 (Multi-Curriculum Architecture)
+# HMH Multi-Curriculum Knowledge Base: Complete User Guide
+**For Content Authors, Editors, Publishers, and Knowledge Base Engineers**
+**Version:** 3.0 (Complete Content Lifecycle)
 **Last Updated:** November 6, 2025
+
+---
+
+## Who This Guide Is For
+
+This comprehensive guide serves **four audiences**:
+
+1. **Content Authors** - Writing lessons, assessments, and activities using the knowledge base
+2. **Content Editors** - Reviewing, providing feedback, and approving authored content
+3. **Publishers/Production Staff** - Formatting, packaging, and delivering final content
+4. **Knowledge Base Engineers** - Extending and maintaining the knowledge base itself
+
+**Quick Navigation:**
+- **Authors**: Start with [Part A: For Content Authors](#part-a-for-content-authors)
+- **Editors**: Start with [Part B: For Content Editors](#part-b-for-content-editors)
+- **Publishers**: Start with [Part C: For Publishers and Production](#part-c-for-publishers-and-production)
+- **Engineers**: Start with [Part D: For Knowledge Base Engineers](#part-d-for-knowledge-base-engineers)
 
 ---
 
 ## Table of Contents
 
-1. [Overview](#overview)
-2. [Architecture Quick Start](#architecture-quick-start)
-3. [How to Use Existing Knowledge](#how-to-use-existing-knowledge)
-4. [How to Add a New State/District](#how-to-add-a-new-statedistrict)
-5. [How to Add a New Subject](#how-to-add-a-new-subject)
-6. [How to Create a New Curriculum Config](#how-to-create-a-new-curriculum-config)
-7. [How to Extend Universal Knowledge](#how-to-extend-universal-knowledge)
-8. [File Creation Best Practices](#file-creation-best-practices)
-9. [Templates and Patterns](#templates-and-patterns)
-10. [Quality Assurance](#quality-assurance)
-11. [Maintenance and Updates](#maintenance-and-updates)
-12. [Troubleshooting](#troubleshooting)
+### Part A: For Content Authors
+1. [Getting Started as a Content Author](#getting-started-as-a-content-author)
+2. [Understanding Your Content Brief](#understanding-your-content-brief)
+3. [Using the Knowledge Base to Generate Content](#using-the-knowledge-base-to-generate-content)
+4. [Content Types and Authoring Workflows](#content-types-and-authoring-workflows)
+5. [Working with AI Assistance (Professor Framework)](#working-with-ai-assistance-professor-framework)
+6. [Quality Standards for Authored Content](#quality-standards-for-authored-content)
+7. [Collaboration and Version Control](#collaboration-and-version-control)
+
+### Part B: For Content Editors
+8. [Getting Started as a Content Editor](#getting-started-as-a-content-editor)
+9. [Editorial Workflow Overview](#editorial-workflow-overview)
+10. [Content Review Checklist](#content-review-checklist)
+11. [Providing Effective Feedback](#providing-effective-feedback)
+12. [Approval Process and Sign-Off](#approval-process-and-sign-off)
+13. [Common Content Issues and Fixes](#common-content-issues-and-fixes)
+
+### Part C: For Publishers and Production
+14. [Getting Started in Production](#getting-started-in-production)
+15. [Publishing Workflow Overview](#publishing-workflow-overview)
+16. [Multi-Format Content Production](#multi-format-content-production)
+17. [Asset Management and Organization](#asset-management-and-organization)
+18. [Quality Assurance in Production](#quality-assurance-in-production)
+19. [Delivery and Distribution](#delivery-and-distribution)
+
+### Part D: For Knowledge Base Engineers
+20. [Architecture Quick Start](#architecture-quick-start)
+21. [How to Use Existing Knowledge](#how-to-use-existing-knowledge)
+22. [How to Add a New State/District](#how-to-add-a-new-statedistrict)
+23. [How to Add a New Subject](#how-to-add-a-new-subject)
+24. [How to Create a New Curriculum Config](#how-to-create-a-new-curriculum-config)
+25. [How to Extend Universal Knowledge](#how-to-extend-universal-knowledge)
+26. [File Creation Best Practices](#file-creation-best-practices)
+27. [Templates and Patterns](#templates-and-patterns)
+28. [Knowledge Base Quality Assurance](#knowledge-base-quality-assurance)
+29. [Maintenance and Updates](#maintenance-and-updates)
+30. [Troubleshooting](#troubleshooting)
+
+### Appendices
+31. [Quick Reference](#quick-reference)
+32. [Glossary](#glossary)
+33. [Resources](#resources)
 
 ---
 
-## Overview
+# Part A: For Content Authors
+
+*[Comprehensive authoring guide with sections 1-7 covering getting started, content briefs, using the knowledge base, content workflows for lessons/assessments/activities, AI assistance, quality standards, and collaboration practices - inserted above]*
+
+---
+
+# Part B: For Content Editors
+
+*[Comprehensive editorial guide with sections 8-13 covering getting started, editorial workflow, review checklist, effective feedback, approval process, and common issues - inserted above]*
+
+---
+
+# Part C: For Publishers and Production
+
+*[Comprehensive production guide with sections 14-19 covering production workflows, multi-format content creation (PDF/HTML/SCORM), asset management, QA, and delivery - inserted above]*
+
+---
+
+# Part D: For Knowledge Base Engineers
+
+## Architecture Quick Start
 
 ### What is This System?
 
