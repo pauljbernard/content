@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="{{COURSE_ID}}"
+          xmlns="http://www.imsglobal.org/xsd/imsccv1p3/imscp_v1p1"
+          xmlns:lom="http://ltsc.ieee.org/xsd/imsccv1p3/LOM/resource"
+          xmlns:lomimscc="http://ltsc.ieee.org/xsd/imsccv1p3/LOM/manifest"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p3/imscp_v1p1 http://www.imsglobal.org/profile/cc/ccv1p3/ccv1p3_imscp_v1p2_v1p0.xsd
+                              http://ltsc.ieee.org/xsd/imsccv1p3/LOM/resource http://www.imsglobal.org/profile/cc/ccv1p3/LOM/ccv1p3_lomresource_v1p0.xsd
+                              http://ltsc.ieee.org/xsd/imsccv1p3/LOM/manifest http://www.imsglobal.org/profile/cc/ccv1p3/LOM/ccv1p3_lommanifest_v1p0.xsd">
+
+  <!-- Metadata Section -->
+  <metadata>
+    <schema>IMS Common Cartridge</schema>
+    <schemaversion>1.3.0</schemaversion>
+    <lomimscc:lom>
+      <lomimscc:general>
+        <lomimscc:title>
+          <lomimscc:string language="en">{{COURSE_TITLE}}</lomimscc:string>
+        </lomimscc:title>
+        <lomimscc:description>
+          <lomimscc:string language="en">{{COURSE_DESCRIPTION}}</lomimscc:string>
+        </lomimscc:description>
+        <lomimscc:keyword>
+          <lomimscc:string language="en">{{KEYWORDS}}</lomimscc:string>
+        </lomimscc:keyword>
+      </lomimscc:general>
+      <lomimscc:lifeCycle>
+        <lomimscc:contribute>
+          <lomimscc:date>
+            <lomimscc:dateTime>{{CREATION_DATE}}</lomimscc:dateTime>
+          </lomimscc:date>
+        </lomimscc:contribute>
+      </lomimscc:lifeCycle>
+      <lomimscc:rights>
+        <lomimscc:copyrightAndOtherRestrictions>
+          <lomimscc:value>yes</lomimscc:value>
+        </lomimscc:copyrightAndOtherRestrictions>
+        <lomimscc:description>
+          <lomimscc:string language="en">{{COPYRIGHT_INFO}}</lomimscc:string>
+        </lomimscc:description>
+      </lomimscc:rights>
+    </lomimscc:lom>
+  </metadata>
+
+  <!-- Organizations Section - Course Structure -->
+  <organizations>
+    <organization identifier="{{ORG_ID}}" structure="rooted-hierarchy">
+      <item identifier="{{ROOT_ITEM_ID}}">
+        <title>{{COURSE_TITLE}}</title>
+
+        <!-- Module 1 Example -->
+        <item identifier="{{MODULE_1_ID}}" identifierref="{{MODULE_1_RESOURCE_ID}}">
+          <title>{{MODULE_1_TITLE}}</title>
+
+          <!-- Lesson 1 -->
+          <item identifier="{{LESSON_1_ID}}" identifierref="{{LESSON_1_RESOURCE_ID}}">
+            <title>{{LESSON_1_TITLE}}</title>
+          </item>
+
+          <!-- Assessment 1 -->
+          <item identifier="{{ASSESSMENT_1_ID}}" identifierref="{{ASSESSMENT_1_RESOURCE_ID}}">
+            <title>{{ASSESSMENT_1_TITLE}}</title>
+          </item>
+
+          <!-- LTI Tool Link Example -->
+          <item identifier="{{LTI_1_ID}}" identifierref="{{LTI_1_RESOURCE_ID}}">
+            <title>{{LTI_1_TITLE}}</title>
+          </item>
+
+          <!-- Discussion Forum Example -->
+          <item identifier="{{DISCUSSION_1_ID}}" identifierref="{{DISCUSSION_1_RESOURCE_ID}}">
+            <title>{{DISCUSSION_1_TITLE}}</title>
+          </item>
+        </item>
+
+        <!-- Additional modules can be added here -->
+        {{ADDITIONAL_MODULES}}
+
+      </item>
+    </organization>
+  </organizations>
+
+  <!-- Resources Section - All course materials -->
+  <resources>
+
+    <!-- Webcontent Resource (HTML lesson) -->
+    <resource identifier="{{LESSON_1_RESOURCE_ID}}" type="webcontent" href="{{LESSON_1_FILE}}">
+      <file href="{{LESSON_1_FILE}}"/>
+      <!-- Additional files for this lesson -->
+      {{LESSON_1_DEPENDENCIES}}
+      <metadata>
+        <lom:lom>
+          <lom:educational>
+            <lom:learningResourceType>
+              <lom:value>lesson</lom:value>
+            </lom:learningResourceType>
+          </lom:educational>
+        </lom:lom>
+      </metadata>
+    </resource>
+
+    <!-- QTI Assessment Resource -->
+    <resource identifier="{{ASSESSMENT_1_RESOURCE_ID}}" type="imsqti_xmlv1p2/imscc_xmlv1p3/assessment" href="{{ASSESSMENT_1_FILE}}">
+      <file href="{{ASSESSMENT_1_FILE}}"/>
+      <dependency identifierref="{{ASSESSMENT_1_QTI_RESOURCE_ID}}"/>
+      <metadata>
+        <lom:lom>
+          <lom:educational>
+            <lom:learningResourceType>
+              <lom:value>assessment</lom:value>
+            </lom:learningResourceType>
+          </lom:educational>
+        </lom:lom>
+      </metadata>
+    </resource>
+
+    <!-- QTI Assessment Items -->
+    <resource identifier="{{ASSESSMENT_1_QTI_RESOURCE_ID}}" type="associatedcontent/imscc_xmlv1p3/learning-application-resource" href="{{ASSESSMENT_1_QTI_DIR}}">
+      <file href="{{ASSESSMENT_1_QTI_FILE}}"/>
+      {{ASSESSMENT_1_QTI_DEPENDENCIES}}
+    </resource>
+
+    <!-- LTI Link Resource -->
+    <resource identifier="{{LTI_1_RESOURCE_ID}}" type="imsbasiclti_xmlv1p0">
+      <file href="{{LTI_1_XML_FILE}}"/>
+    </resource>
+
+    <!-- Discussion Topic Resource -->
+    <resource identifier="{{DISCUSSION_1_RESOURCE_ID}}" type="imsdt_xmlv1p3">
+      <file href="{{DISCUSSION_1_XML_FILE}}"/>
+    </resource>
+
+    <!-- Web Link Resource -->
+    <resource identifier="{{WEBLINK_1_RESOURCE_ID}}" type="imswl_xmlv1p3">
+      <file href="{{WEBLINK_1_XML_FILE}}"/>
+    </resource>
+
+    <!-- Image/Media Resources -->
+    <resource identifier="{{IMAGE_1_RESOURCE_ID}}" type="webcontent" href="{{IMAGE_1_FILE}}">
+      <file href="{{IMAGE_1_FILE}}"/>
+    </resource>
+
+    <!-- Additional resources -->
+    {{ADDITIONAL_RESOURCES}}
+
+  </resources>
+
+</manifest>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topic xmlns="http://www.imsglobal.org/xsd/imsccv1p3/imsdt_v1p3"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p3/imsdt_v1p3 http://www.imsglobal.org/profile/cc/ccv1p3/ccv1p3_imsdt_v1p3.xsd">
+
+  <!-- Discussion Topic Title -->
+  <title>{{DISCUSSION_TITLE}}</title>
+
+  <!-- Discussion Topic Text/Instructions -->
+  <text texttype="text/html">
+    <![CDATA[
+      {{DISCUSSION_TEXT}}
+    ]]>
+  </text>
+
+  <!-- Discussion Type -->
+  <discussion_type>{{DISCUSSION_TYPE}}</discussion_type>
+  <!-- Options: threaded, side_comment -->
+
+  <!-- Posting Requirements -->
+  <require_initial_post>{{REQUIRE_INITIAL_POST}}</require_initial_post>
+  <!-- true/false - students must post before seeing other responses -->
+
+  <!-- Grading (if discussion is graded) -->
+  <assignment identifier="{{ASSIGNMENT_ID}}">
+    <title>{{DISCUSSION_TITLE}}</title>
+    <points_possible>{{POINTS_POSSIBLE}}</points_possible>
+    <grading_type>points</grading_type>
+    <!-- Options: points, pass_fail, percent, letter_grade, gpa_scale -->
+    <due_at>{{DUE_DATE}}</due_at>
+    <lock_at>{{LOCK_DATE}}</lock_at>
+    <unlock_at>{{UNLOCK_DATE}}</unlock_at>
+  </assignment>
+
+  <!-- Attachments (optional) -->
+  <attachments>
+    <attachment href="{{ATTACHMENT_1_HREF}}">
+      <display_name>{{ATTACHMENT_1_NAME}}</display_name>
+    </attachment>
+    {{ADDITIONAL_ATTACHMENTS}}
+  </attachments>
+
+</topic>

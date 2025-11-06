@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz xmlns="http://canvas.instructure.com/xsd/cccv1p0"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://canvas.instructure.com/xsd/cccv1p0 https://canvas.instructure.com/xsd/cccv1p0.xsd"
+      identifier="{{QUIZ_ID}}">
+
+  <!-- Quiz Title -->
+  <title>{{QUIZ_TITLE}}</title>
+
+  <!-- Quiz Description -->
+  <description>
+    <![CDATA[
+      {{QUIZ_DESCRIPTION}}
+    ]]>
+  </description>
+
+  <!-- Quiz Type -->
+  <quiz_type>{{QUIZ_TYPE}}</quiz_type>
+  <!-- Options: practice_quiz, assignment, graded_survey, survey -->
+
+  <!-- Points Possible -->
+  <points_possible>{{POINTS_POSSIBLE}}</points_possible>
+
+  <!-- Assignment Group -->
+  <assignment_group_identifierref>{{ASSIGNMENT_GROUP_ID}}</assignment_group_identifierref>
+
+  <!-- Timing Settings -->
+  <time_limit>{{TIME_LIMIT}}</time_limit>
+  <!-- Time in minutes, leave empty for no time limit -->
+
+  <allowed_attempts>{{ALLOWED_ATTEMPTS}}</allowed_attempts>
+  <!-- -1 for unlimited attempts -->
+
+  <!-- Scoring Policy -->
+  <scoring_policy>{{SCORING_POLICY}}</scoring_policy>
+  <!-- Options: keep_highest, keep_latest, keep_average -->
+
+  <!-- Access Settings -->
+  <unlock_at>{{UNLOCK_DATE}}</unlock_at>
+  <lock_at>{{LOCK_DATE}}</lock_at>
+  <due_at>{{DUE_DATE}}</due_at>
+
+  <!-- Display Settings -->
+  <hide_results>{{HIDE_RESULTS}}</hide_results>
+  <!-- Options: null (show), always, until_after_last_attempt -->
+
+  <show_correct_answers>{{SHOW_CORRECT_ANSWERS}}</show_correct_answers>
+  <!-- true/false -->
+
+  <show_correct_answers_at>{{SHOW_CORRECT_ANSWERS_DATE}}</show_correct_answers_at>
+  <hide_correct_answers_at>{{HIDE_CORRECT_ANSWERS_DATE}}</hide_correct_answers_at>
+
+  <one_question_at_a_time>{{ONE_AT_A_TIME}}</one_question_at_a_time>
+  <!-- true/false -->
+
+  <cant_go_back>{{CANT_GO_BACK}}</cant_go_back>
+  <!-- true/false - only works if one_question_at_a_time is true -->
+
+  <!-- Security Settings -->
+  <require_lockdown_browser>{{REQUIRE_LOCKDOWN_BROWSER}}</require_lockdown_browser>
+  <!-- true/false -->
+
+  <require_lockdown_browser_for_results>{{LOCKDOWN_BROWSER_RESULTS}}</require_lockdown_browser_for_results>
+  <!-- true/false -->
+
+  <require_lockdown_browser_monitor>{{LOCKDOWN_BROWSER_MONITOR}}</require_lockdown_browser_monitor>
+  <!-- true/false -->
+
+  <lockdown_browser_monitor_data>{{MONITOR_DATA}}</lockdown_browser_monitor_data>
+
+  <access_code>{{ACCESS_CODE}}</access_code>
+  <!-- Quiz password -->
+
+  <ip_filter>{{IP_FILTER}}</ip_filter>
+  <!-- IP address restrictions -->
+
+  <!-- Question Presentation -->
+  <shuffle_answers>{{SHUFFLE_ANSWERS}}</shuffle_answers>
+  <!-- true/false -->
+
+  <published>{{PUBLISHED}}</published>
+  <!-- true/false -->
+
+  <!-- Assignment Settings -->
+  <assignment identifier="{{ASSIGNMENT_ID}}">
+    <title>{{QUIZ_TITLE}}</title>
+    <quiz_identifierref>{{QUIZ_ID}}</quiz_identifierref>
+    <points_possible>{{POINTS_POSSIBLE}}</points_possible>
+  </assignment>
+
+</quiz>

@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<course xmlns="http://canvas.instructure.com/xsd/cccv1p0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://canvas.instructure.com/xsd/cccv1p0 https://canvas.instructure.com/xsd/cccv1p0.xsd"
+        identifier="{{COURSE_ID}}">
+
+  <!-- Course Information -->
+  <title>{{COURSE_TITLE}}</title>
+  <course_code>{{COURSE_CODE}}</course_code>
+  <start_at>{{START_DATE}}</start_at>
+  <conclude_at>{{END_DATE}}</conclude_at>
+  <is_public>false</is_public>
+
+  <!-- Grading Standards -->
+  <grading_standard identifier="{{GRADING_STANDARD_ID}}">
+    <title>{{GRADING_STANDARD_TITLE}}</title>
+    <data>
+      <grading_standard_item>
+        <name>A</name>
+        <value>0.94</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>A-</name>
+        <value>0.90</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>B+</name>
+        <value>0.87</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>B</name>
+        <value>0.84</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>B-</name>
+        <value>0.80</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>C+</name>
+        <value>0.77</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>C</name>
+        <value>0.74</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>C-</name>
+        <value>0.70</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>D+</name>
+        <value>0.67</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>D</name>
+        <value>0.64</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>D-</name>
+        <value>0.61</value>
+      </grading_standard_item>
+      <grading_standard_item>
+        <name>F</name>
+        <value>0.0</value>
+      </grading_standard_item>
+    </data>
+  </grading_standard>
+
+  <!-- Assignment Groups (Gradebook Categories) -->
+  <assignment_groups>
+    <assignment_group identifier="{{ASSIGNMENTS_GROUP_ID}}">
+      <title>Assignments</title>
+      <group_weight>{{ASSIGNMENTS_WEIGHT}}</group_weight>
+      <position>1</position>
+    </assignment_group>
+
+    <assignment_group identifier="{{QUIZZES_GROUP_ID}}">
+      <title>Quizzes</title>
+      <group_weight>{{QUIZZES_WEIGHT}}</group_weight>
+      <position>2</position>
+    </assignment_group>
+
+    <assignment_group identifier="{{DISCUSSIONS_GROUP_ID}}">
+      <title>Discussions</title>
+      <group_weight>{{DISCUSSIONS_WEIGHT}}</group_weight>
+      <position>3</position>
+    </assignment_group>
+
+    <assignment_group identifier="{{EXAMS_GROUP_ID}}">
+      <title>Exams</title>
+      <group_weight>{{EXAMS_WEIGHT}}</group_weight>
+      <position>4</position>
+    </assignment_group>
+  </assignment_groups>
+
+  <!-- Assignments (linked to gradebook) -->
+  <assignments>
+    <!-- Regular Assignment Example -->
+    <assignment identifier="{{ASSIGNMENT_1_ID}}">
+      <title>{{ASSIGNMENT_1_TITLE}}</title>
+      <assignment_group_identifierref>{{ASSIGNMENTS_GROUP_ID}}</assignment_group_identifierref>
+      <points_possible>{{ASSIGNMENT_1_POINTS}}</points_possible>
+      <grading_type>points</grading_type>
+      <due_at>{{ASSIGNMENT_1_DUE_DATE}}</due_at>
+      <lock_at>{{ASSIGNMENT_1_LOCK_DATE}}</lock_at>
+      <unlock_at>{{ASSIGNMENT_1_UNLOCK_DATE}}</unlock_at>
+      <submission_types>
+        <submission_type>online_text_entry</submission_type>
+        <submission_type>online_upload</submission_type>
+      </submission_types>
+    </assignment>
+
+    <!-- Quiz Assignment Example -->
+    <assignment identifier="{{QUIZ_1_ID}}">
+      <title>{{QUIZ_1_TITLE}}</title>
+      <assignment_group_identifierref>{{QUIZZES_GROUP_ID}}</assignment_group_identifierref>
+      <points_possible>{{QUIZ_1_POINTS}}</points_possible>
+      <grading_type>points</grading_type>
+      <due_at>{{QUIZ_1_DUE_DATE}}</due_at>
+      <submission_types>
+        <submission_type>online_quiz</submission_type>
+      </submission_types>
+      <quiz_identifierref>{{QUIZ_1_RESOURCE_ID}}</quiz_identifierref>
+    </assignment>
+
+    <!-- Discussion Assignment Example -->
+    <assignment identifier="{{DISCUSSION_1_ASSIGNMENT_ID}}">
+      <title>{{DISCUSSION_1_TITLE}}</title>
+      <assignment_group_identifierref>{{DISCUSSIONS_GROUP_ID}}</assignment_group_identifierref>
+      <points_possible>{{DISCUSSION_1_POINTS}}</points_possible>
+      <grading_type>points</grading_type>
+      <due_at>{{DISCUSSION_1_DUE_DATE}}</due_at>
+      <submission_types>
+        <submission_type>discussion_topic</submission_type>
+      </submission_types>
+      <discussion_topic_identifierref>{{DISCUSSION_1_RESOURCE_ID}}</discussion_topic_identifierref>
+    </assignment>
+
+    {{ADDITIONAL_ASSIGNMENTS}}
+  </assignments>
+
+  <!-- Module Requirements (Prerequisites and Completion) -->
+  <modules>
+    <module identifier="{{MODULE_1_ID}}">
+      <title>{{MODULE_1_TITLE}}</title>
+      <position>1</position>
+      <unlock_at>{{MODULE_1_UNLOCK_DATE}}</unlock_at>
+      <require_sequential_progress>{{MODULE_1_SEQUENTIAL}}</require_sequential_progress>
+
+      <!-- Module Items -->
+      <items>
+        <item identifier="{{MODULE_ITEM_1_ID}}">
+          <content_type>{{ITEM_1_TYPE}}</content_type>
+          <identifierref>{{ITEM_1_RESOURCE_ID}}</identifierref>
+          <title>{{ITEM_1_TITLE}}</title>
+          <position>1</position>
+
+          <!-- Completion Requirements -->
+          <completion_requirement>
+            <type>must_view</type>
+            <!-- Other types: must_contribute, must_submit, min_score -->
+          </completion_requirement>
+        </item>
+
+        {{ADDITIONAL_MODULE_ITEMS}}
+      </items>
+
+      <!-- Prerequisites -->
+      <prerequisites>
+        <prerequisite_module_identifierref>{{PREREQUISITE_MODULE_ID}}</prerequisite_module_identifierref>
+      </prerequisites>
+    </module>
+
+    {{ADDITIONAL_MODULES}}
+  </modules>
+
+  <!-- Course Settings -->
+  <settings>
+    <allow_student_discussion_topics>{{ALLOW_STUDENT_DISCUSSIONS}}</allow_student_discussion_topics>
+    <allow_student_forum_attachments>{{ALLOW_FORUM_ATTACHMENTS}}</allow_student_forum_attachments>
+    <allow_student_organized_groups>{{ALLOW_STUDENT_GROUPS}}</allow_student_organized_groups>
+    <hide_final_grades>{{HIDE_FINAL_GRADES}}</hide_final_grades>
+    <hide_distribution_graphs>{{HIDE_DISTRIBUTION_GRAPHS}}</hide_distribution_graphs>
+    <allow_student_discussion_editing>{{ALLOW_DISCUSSION_EDITING}}</allow_student_discussion_editing>
+    <grading_standard_enabled>{{GRADING_STANDARD_ENABLED}}</grading_standard_enabled>
+    <grading_standard_identifier_ref>{{GRADING_STANDARD_ID}}</grading_standard_identifier_ref>
+    <restrict_student_past_view>{{RESTRICT_PAST_VIEW}}</restrict_student_past_view>
+    <restrict_student_future_view>{{RESTRICT_FUTURE_VIEW}}</restrict_student_future_view>
+  </settings>
+
+</course>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<webLink xmlns="http://www.imsglobal.org/xsd/imsccv1p3/imswl_v1p3"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p3/imswl_v1p3 http://www.imsglobal.org/profile/cc/ccv1p3/ccv1p3_imswl_v1p3.xsd">
+
+  <!-- Link Title -->
+  <title>{{LINK_TITLE}}</title>
+
+  <!-- Target URL -->
+  <url href="{{LINK_URL}}">
+    <![CDATA[{{LINK_URL}}]]>
+  </url>
+
+  <!-- Link Target Window -->
+  <target>{{LINK_TARGET}}</target>
+  <!-- Options: _blank, _self, _parent, _top -->
+
+  <!-- Link Description (optional) -->
+  <description>
+    <![CDATA[
+      {{LINK_DESCRIPTION}}
+    ]]>
+  </description>
+
+</webLink>

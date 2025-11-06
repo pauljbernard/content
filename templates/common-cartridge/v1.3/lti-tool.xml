@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cartridge_basiclti_link xmlns="http://www.imsglobal.org/xsd/imslticc_v1p0"
+    xmlns:blti="http://www.imsglobal.org/xsd/imsbasiclti_v1p0"
+    xmlns:lticm="http://www.imsglobal.org/xsd/imslticm_v1p0"
+    xmlns:lticp="http://www.imsglobal.org/xsd/imslticp_v1p0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.imsglobal.org/xsd/imslticc_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticc_v1p0.xsd
+    http://www.imsglobal.org/xsd/imsbasiclti_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imsbasiclti_v1p0p1.xsd
+    http://www.imsglobal.org/xsd/imslticm_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticm_v1p0.xsd
+    http://www.imsglobal.org/xsd/imslticp_v1p0 http://www.imsglobal.org/xsd/lti/ltiv1p0/imslticp_v1p0.xsd">
+
+  <!-- Basic Tool Information -->
+  <blti:title>{{LTI_TOOL_TITLE}}</blti:title>
+  <blti:description>{{LTI_TOOL_DESCRIPTION}}</blti:description>
+
+  <!-- Launch URL - Required -->
+  <blti:launch_url>{{LTI_LAUNCH_URL}}</blti:launch_url>
+
+  <!-- Secure Launch URL (HTTPS) - Recommended -->
+  <blti:secure_launch_url>{{LTI_SECURE_LAUNCH_URL}}</blti:secure_launch_url>
+
+  <!-- Tool Icon -->
+  <blti:icon>{{LTI_ICON_URL}}</blti:icon>
+  <blti:secure_icon>{{LTI_SECURE_ICON_URL}}</blti:secure_icon>
+
+  <!-- Vendor Information -->
+  <blti:vendor>
+    <lticp:code>{{VENDOR_CODE}}</lticp:code>
+    <lticp:name>{{VENDOR_NAME}}</lticp:name>
+    <lticp:description>{{VENDOR_DESCRIPTION}}</lticp:description>
+    <lticp:url>{{VENDOR_URL}}</lticp:url>
+    <lticp:contact>
+      <lticp:email>{{VENDOR_EMAIL}}</lticp:email>
+    </lticp:contact>
+  </blti:vendor>
+
+  <!-- Custom Parameters - Sent to tool on launch -->
+  <blti:custom>
+    <lticm:property name="custom_param_1">{{CUSTOM_PARAM_1_VALUE}}</lticm:property>
+    <lticm:property name="custom_param_2">{{CUSTOM_PARAM_2_VALUE}}</lticm:property>
+    {{ADDITIONAL_CUSTOM_PARAMS}}
+  </blti:custom>
+
+  <!-- Extensions - LMS-specific configuration -->
+  <blti:extensions platform="canvas.instructure.com">
+    <!-- Canvas-specific settings -->
+    <lticm:property name="privacy_level">{{PRIVACY_LEVEL}}</lticm:property>
+    <!-- Options: anonymous, name_only, public -->
+
+    <lticm:property name="domain">{{TOOL_DOMAIN}}</lticm:property>
+
+    <lticm:options name="course_navigation">
+      <lticm:property name="enabled">{{COURSE_NAV_ENABLED}}</lticm:property>
+      <lticm:property name="text">{{COURSE_NAV_TEXT}}</lticm:property>
+      <lticm:property name="visibility">{{COURSE_NAV_VISIBILITY}}</lticm:property>
+      <!-- Options: admins, members, public -->
+      <lticm:property name="default">{{COURSE_NAV_DEFAULT}}</lticm:property>
+      <!-- Options: enabled, disabled -->
+      <lticm:property name="windowTarget">{{COURSE_NAV_WINDOW}}</lticm:property>
+      <!-- Options: _blank, _self -->
+    </lticm:options>
+
+    <lticm:options name="assignment_selection">
+      <lticm:property name="enabled">{{ASSIGNMENT_SELECTION_ENABLED}}</lticm:property>
+      <lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
+    </lticm:options>
+
+    <lticm:options name="link_selection">
+      <lticm:property name="enabled">{{LINK_SELECTION_ENABLED}}</lticm:property>
+      <lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
+    </lticm:options>
+
+    <lticm:options name="editor_button">
+      <lticm:property name="enabled">{{EDITOR_BUTTON_ENABLED}}</lticm:property>
+      <lticm:property name="icon_url">{{EDITOR_ICON_URL}}</lticm:property>
+      <lticm:property name="message_type">ContentItemSelectionRequest</lticm:property>
+    </lticm:options>
+  </blti:extensions>
+
+  <!-- Moodle Extensions -->
+  <blti:extensions platform="moodle.org">
+    <lticm:property name="privacy_level">{{PRIVACY_LEVEL}}</lticm:property>
+    <lticm:property name="icon">{{MOODLE_ICON_URL}}</lticm:property>
+    <lticm:property name="secure_icon">{{MOODLE_SECURE_ICON_URL}}</lticm:property>
+  </blti:extensions>
+
+  <!-- Cartridge Bundle (for packaging multiple tools) -->
+  <cartridge_bundle identifierref="{{BUNDLE_RESOURCE_ID}}"/>
+
+  <!-- Cartridge Icon (for the tool in LMS) -->
+  <cartridge_icon identifierref="{{ICON_RESOURCE_ID}}"/>
+
+</cartridge_basiclti_link>
