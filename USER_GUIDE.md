@@ -52,13 +52,13 @@ This documentation suite provides comprehensive guidance for everyone involved i
 → **[PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md)** - Complete guide for publishers and production staff
 
 **You'll learn:**
-- Multi-format production workflows (PDF, HTML, SCORM, accessible formats)
+- Multi-format production workflows (PDF, HTML, SCORM, Common Cartridge, accessible formats)
 - Asset management and optimization (images, videos, audio)
 - Quality assurance checklists for production
 - Delivery and distribution processes
 - Technical specifications and tools
 
-**Start here if you're:** Formatting content, creating PDFs, building SCORM packages, managing assets, or delivering final products.
+**Start here if you're:** Formatting content, creating PDFs, building SCORM/Common Cartridge packages, managing assets, or delivering final products.
 
 ---
 
@@ -149,7 +149,7 @@ Instead of creating separate content for each state and subject, the system uses
 
 1. Read **[PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md)** Section 1: Getting Started
 2. Understand the publishing workflow (Section 2)
-3. Choose appropriate format(s) (Section 3: PDF, HTML, SCORM, accessible)
+3. Choose appropriate format(s) (Section 3: PDF, HTML, SCORM, Common Cartridge, accessible)
 4. Manage and optimize assets (Section 4)
 5. Run QA checks before delivery (Section 5)
 
@@ -288,6 +288,7 @@ All guides integrate with the **Professor Framework** - an AI-powered content de
 | Provide feedback | EDITOR_GUIDE.md | Section 4 (Effective Feedback) |
 | Create a PDF | PRODUCTION_GUIDE.md | Section 3 (PDF Production) |
 | Build SCORM package | PRODUCTION_GUIDE.md | Section 3 (SCORM Production) |
+| Build Common Cartridge package | PRODUCTION_GUIDE.md | Section 3 (Format 3B: Common Cartridge) |
 | Optimize images/videos | PRODUCTION_GUIDE.md | Section 4 (Asset Management) |
 | Add a new state | ENGINEER_GUIDE.md | Section 3 (Add State/District) |
 | Add a new subject | ENGINEER_GUIDE.md | Section 4 (Add Subject) |

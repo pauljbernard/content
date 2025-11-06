@@ -1060,6 +1060,118 @@ Review across 7 quality pillars:
 
 ---
 
+### Section 9: Common Cartridge Compatibility
+
+**When to Review:**
+This section applies when content will be packaged as Common Cartridge (.imscc) for LMS delivery (Canvas, Moodle, Blackboard). Check with production to confirm packaging format.
+
+**How to Review:**
+
+1. **Check QTI-compatible assessment structure:**
+   - Open `/templates/qti/README.md` to understand QTI item types
+   - Verify assessments use supported item types:
+     - ✅ Multiple choice, True/False (choiceInteraction)
+     - ✅ Fill-in-the-blank, short answer (textEntryInteraction)
+     - ✅ Essay questions (extendedTextInteraction)
+     - ✅ Matching, ordering (matchInteraction)
+     - ✅ Dropdown selections (inlineChoiceInteraction)
+     - ❌ Highly interactive custom items may not export cleanly
+   - Each assessment item should have:
+     - Clear question stem
+     - Point value specified
+     - Correct answer marked
+     - Feedback for correct/incorrect (if applicable)
+     - Rationale or explanation
+
+2. **Verify file references are CC-friendly:**
+   - Check all asset references (images, videos, PDFs):
+     - ✅ Relative paths: `images/diagram1.png` or `./assets/video.mp4`
+     - ❌ Absolute paths: `/Users/name/Desktop/image.png` or `C:\Documents\file.pdf`
+     - ❌ External URLs requiring authentication
+   - File names should be web-safe:
+     - ✅ Lowercase, hyphens, no spaces: `cell-diagram-1.png`
+     - ❌ Spaces, special characters: `Cell Diagram (Final).png`
+
+3. **Check content structure for CC packaging:**
+   - Is content organized into logical modules/units?
+   - Each module should have clear sequence (Module 1, Module 2, etc.)
+   - Assessment placement is clear (end of module, standalone quiz, etc.)
+   - Check for discussion topics: Are prompts clear and point values specified?
+
+4. **Verify LTI tool documentation (if applicable):**
+   - If content references external tools/simulations:
+     - Is LTI launch URL documented?
+     - Are required LTI settings specified? (privacy level, custom parameters)
+     - Is tool configuration clear for production team?
+   - Reference: `/templates/common-cartridge/v1.3/lti-tool.xml`
+
+5. **Check gradebook requirements:**
+   - Are assignment groups specified? (Quizzes, Homework, Projects, etc.)
+   - Are point values and weights clear?
+   - Is grading type specified for each assessment? (Points, percentage, complete/incomplete, letter grade)
+
+6. **Validate module prerequisites (if applicable):**
+   - If content specifies "Module 2 requires Module 1 completion":
+     - Prerequisites are clearly documented
+     - Prerequisite logic is simple (no complex branching)
+
+7. **Review for CC production handoff:**
+   - Open `/PRODUCTION_GUIDE.md` Section 3 (Common Cartridge Format 3B)
+   - Ask: "Does production have everything they need?"
+     - Module structure document or clear hierarchy
+     - Complete assessment files with answer keys
+     - All assets referenced are included or clearly specified
+     - Discussion topics documented (if any)
+     - LTI tools documented (if any)
+     - Gradebook configuration specified
+
+**Checklist:**
+
+**QTI Assessment Compatibility:**
+- [ ] All item types are QTI-compatible (MC, FIB, essay, matching, dropdown)
+- [ ] Point values specified for all items
+- [ ] Correct answers clearly marked
+- [ ] Feedback/rationales provided where appropriate
+
+**File References:**
+- [ ] All file paths are relative (not absolute)
+- [ ] File names are web-safe (lowercase, hyphens, no spaces)
+- [ ] No external URLs requiring authentication
+- [ ] All referenced assets included or specified
+
+**Content Structure:**
+- [ ] Logical module/unit organization
+- [ ] Clear content sequence
+- [ ] Assessment placement documented
+- [ ] Discussion topics have prompts and point values
+
+**External Tools (if applicable):**
+- [ ] LTI launch URLs documented
+- [ ] LTI settings specified (privacy, parameters)
+- [ ] Tool configuration clear for production
+
+**Gradebook Configuration:**
+- [ ] Assignment groups specified (if needed)
+- [ ] Point values and weights clear
+- [ ] Grading types specified (points, percentage, etc.)
+
+**Production Handoff:**
+- [ ] Module structure/hierarchy documented
+- [ ] Complete assessment files with answer keys
+- [ ] All assets included or specified
+- [ ] Discussion topics documented (if any)
+- [ ] LTI tools documented (if any)
+- [ ] Gradebook settings specified
+
+**Reference:**
+- `/templates/common-cartridge/README.md` - CC packaging overview
+- `/templates/common-cartridge/VERSION_SUPPORT.md` - CC/QTI version guidance
+- `/templates/qti/README.md` - QTI item types and compatibility
+- `/PRODUCTION_GUIDE.md` Section 3 (Format 3B) - CC production workflow
+- Skills: `curriculum.package-common-cartridge`, `curriculum.validate-cc`
+
+---
+
 ## 4. Providing Effective Feedback
 
 ### Principles

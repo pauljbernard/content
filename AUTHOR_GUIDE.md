@@ -2037,6 +2037,216 @@ Both examples demonstrate all 7 Quality Pillars:
 
 ---
 
+## 4.6. Authoring for Common Cartridge Export
+
+### Overview
+
+When authoring content that will be packaged as **Common Cartridge** (for LMS distribution), follow these guidelines to ensure compatibility and maximum interoperability.
+
+**What is Common Cartridge?**
+- IMS Global standard for packaging complete courses
+- Includes lessons, QTI assessments, discussions, and gradebook setup
+- Works with Canvas, Moodle, Blackboard, D2L, Schoology
+- Modern alternative to SCORM (better for full courses)
+
+### When Your Content Becomes Common Cartridge
+
+**Typical Use Cases:**
+- Full course or unit packaging (not single lessons)
+- Content with assessments (QTI format)
+- Courses with discussion forums
+- Content requiring gradebook categories/weights
+- Multi-LMS distribution required
+
+**Who Handles Packaging:**
+- Production staff converts your content to Common Cartridge
+- You don't create .imscc files directly
+- BUT: Authoring decisions affect CC compatibility
+
+### CC-Friendly Authoring Practices
+
+**1. Assessment Authoring for QTI Export**
+
+Your assessments will be converted to QTI 2.1 format for portability across LMS platforms.
+
+**Supported Item Types** (QTI 2.1 compatible):
+- ✅ Multiple Choice
+- ✅ True/False
+- ✅ Fill-in-the-Blank (text entry)
+- ✅ Essay/Short Answer
+- ✅ Matching
+- ✅ Ordering/Sequencing
+
+**Avoid These** (limited QTI support):
+- ❌ Complex drag-and-drop
+- ❌ Custom interactive elements (unless LTI-based)
+- ❌ Platform-specific widgets
+
+**Assessment Guidelines:**
+```markdown
+## Assessment: Module 1 Quiz
+
+**Item 1 (Multiple Choice)**
+Which organelle is responsible for cellular respiration?
+
+A. Nucleus
+B. Ribosome
+C. Mitochondrion ✓ (correct answer)
+D. Chloroplast
+
+**Rationale:** Mitochondria convert glucose to ATP through cellular respiration.
+**DOK Level:** 1 (Recall)
+**Points:** 1
+```
+
+**Why This Works for CC/QTI:**
+- Clear item type specified
+- Single correct answer marked
+- All distractors provided
+- Rationale helps QTI export
+- Standard format across items
+
+**2. Discussion Forum Topics**
+
+Common Cartridge supports discussion forums natively. When authoring discussion prompts:
+
+**Good Discussion Prompt (CC-compatible):**
+```markdown
+## Discussion: Fraction Strategies
+
+**Prompt:**
+Share your strategy for adding fractions with unlike denominators.
+Include an example and explain your reasoning.
+
+**Requirements:**
+- Initial post: 100-150 words
+- Respond to 2 peers
+- Due: End of Module 1
+
+**Grading:**
+- Initial post quality: 7 points
+- Peer responses: 3 points (1.5 each)
+- **Total: 10 points**
+```
+
+**Why This Works:**
+- Clear prompt and requirements
+- Point values specified (for gradebook)
+- Structured for CC discussion resource type
+
+**3. External Tool Integration (LTI)**
+
+If your lesson includes external tools (simulations, virtual labs), document them for LTI integration in CC packages:
+
+**Example:**
+```markdown
+## Activity: Virtual Microscope Lab
+
+**Tool:** Virtual Microscope Simulator
+**URL:** https://virtualmicroscope.edu
+**Description:** Students identify cell structures using interactive microscope
+**Duration:** 20 minutes
+**Grading:** 10 points (participation)
+
+**Instructions for students:**
+1. Launch virtual microscope tool
+2. Complete identification activity
+3. Submit screenshot of completed worksheet
+```
+
+**Why This Works:**
+- Production can create LTI tool link in CC package
+- Clear integration point identified
+- Grading info for gradebook setup
+
+**4. Content Structure for CC**
+
+**Organize by Modules/Units:**
+```markdown
+# Module 1: Cell Biology
+
+## Lesson 1.1: Cell Membranes
+[Lesson content...]
+
+## Lesson 1.2: Organelles
+[Lesson content...]
+
+## Discussion: Cell Theory Debate
+[Discussion prompt...]
+
+## Assessment: Module 1 Quiz
+[Assessment items...]
+```
+
+**Why This Matters:**
+- CC packages organize content hierarchically
+- Clear module structure = better CC organization
+- Assessments at module level = easier gradebook setup
+
+**5. Asset References**
+
+**Use Relative Paths:**
+```markdown
+✅ Good: ![Cell diagram](../assets/images/cell-diagram.png)
+❌ Bad:  ![Cell diagram](/Users/author/Desktop/cell-diagram.png)
+```
+
+**Why:**
+- CC packages need portable file references
+- Absolute paths break when packaged
+- Relative paths work across systems
+
+### What Production Needs From You
+
+**For Successful CC Export:**
+
+✅ **Provide:**
+- Clear module/lesson structure
+- Assessment items in standard format
+- Discussion prompts with point values
+- LTI tool requirements documented
+- All assets with relative paths
+
+❌ **Avoid:**
+- Platform-specific features (Canvas-only, Moodle-only)
+- Embedded assessment code (use standard item format)
+- Hard-coded absolute paths
+- Non-standard item types
+
+### Checklist: CC-Friendly Authoring
+
+Before submitting content for CC packaging:
+
+- [ ] Content organized by modules/units
+- [ ] Assessment items use supported types (MC, TF, Essay, etc.)
+- [ ] Each assessment item has clear correct answer marked
+- [ ] Discussion prompts include point values
+- [ ] LTI tools documented (if used)
+- [ ] All asset references use relative paths
+- [ ] No platform-specific code or widgets
+- [ ] Gradebook categories specified (if applicable)
+
+### Resources
+
+**For More Information:**
+- **Production Guide:** See [PRODUCTION_GUIDE.md](PRODUCTION_GUIDE.md) Section "Day 4 Alternative: Common Cartridge"
+- **Templates:** `/templates/common-cartridge/` - CC package structure examples
+- **QTI Export:** Production uses `curriculum.export-qti` skill for assessments
+- **Version Support:** `/templates/common-cartridge/VERSION_SUPPORT.md` - CC/QTI versions
+
+### Questions?
+
+**Q: Do I need to learn Common Cartridge XML?**
+A: No. Production handles all technical packaging. You just author standard content.
+
+**Q: Can I still use MLRs and EB scaffolds?**
+A: Yes! All pedagogical approaches work in CC. It's just the packaging format.
+
+**Q: What if I need a feature not supported by QTI?**
+A: Consider using an LTI tool for advanced interactions, or discuss with your editor.
+
+---
+
 ## 5. Working with AI Assistance
 
 ### Overview
