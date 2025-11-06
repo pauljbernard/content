@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.1 Match/Associate Item Template (2012)
+     Enhanced matching with improved accessibility
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines correct pairs -->
+  <responseDeclaration identifier="RESPONSE" cardinality="multiple" baseType="pair">
+    <correctResponse>
+      <value>{{SOURCE_A_ID}} {{TARGET_1_ID}}</value>
+      <value>{{SOURCE_B_ID}} {{TARGET_2_ID}}</value>
+      <value>{{SOURCE_C_ID}} {{TARGET_3_ID}}</value>
+      <value>{{SOURCE_D_ID}} {{TARGET_4_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question and matching sets -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <associateInteraction responseIdentifier="RESPONSE" shuffle="{{SHUFFLE}}" maxAssociations="{{MAX_ASSOCIATIONS}}">
+      <prompt>{{PROMPT_TEXT}}</prompt>
+
+      <!-- Source Set (left side) -->
+      <simpleAssociableChoice identifier="{{SOURCE_A_ID}}" matchMax="1">
+        {{SOURCE_A_TEXT}}
+      </simpleAssociableChoice>
+      <simpleAssociableChoice identifier="{{SOURCE_B_ID}}" matchMax="1">
+        {{SOURCE_B_TEXT}}
+      </simpleAssociableChoice>
+      <simpleAssociableChoice identifier="{{SOURCE_C_ID}}" matchMax="1">
+        {{SOURCE_C_TEXT}}
+      </simpleAssociableChoice>
+      <simpleAssociableChoice identifier="{{SOURCE_D_ID}}" matchMax="1">
+        {{SOURCE_D_TEXT}}
+      </simpleAssociableChoice>
+
+      <!-- Target Set (right side) -->
+      <simpleAssociableChoice identifier="{{TARGET_1_ID}}" matchMax="1">
+        {{TARGET_1_TEXT}}
+      </simpleAssociableChoice>
+      <simpleAssociableChoice identifier="{{TARGET_2_ID}}" matchMax="1">
+        {{TARGET_2_TEXT}}
+      </simpleAssociableChoice>
+      <simpleAssociableChoice identifier="{{TARGET_3_ID}}" matchMax="1">
+        {{TARGET_3_TEXT}}
+      </simpleAssociableChoice>
+      <simpleAssociableChoice identifier="{{TARGET_4_ID}}" matchMax="1">
+        {{TARGET_4_TEXT}}
+      </simpleAssociableChoice>
+
+    </associateInteraction>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="http://www.imsglobal.org/question/qti_v2p1/rptemplates/match_correct"/>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>

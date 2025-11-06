@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.2 Enhanced Hotspot Interaction Item Template (2015)
+     Improved graphics support with SVG and multiple selection
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p2"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p2 http://www.imsglobal.org/xsd/qti/qtiv2p2/imsqti_v2p2.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Supports multiple hotspot selections -->
+  <responseDeclaration identifier="RESPONSE" cardinality="multiple" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_HOTSPOT_1_ID}}</value>
+      <value>{{CORRECT_HOTSPOT_2_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: Enhanced hotspot with graphics -->
+  <itemBody>
+    <div class="question-content">
+      <p>{{QUESTION_TEXT}}</p>
+
+      <graphicInteraction responseIdentifier="RESPONSE" maxChoices="{{MAX_CHOICES}}">
+        <prompt>{{PROMPT_TEXT}}</prompt>
+
+        <!-- Background Image or SVG -->
+        <object data="{{IMAGE_PATH}}" type="{{IMAGE_TYPE}}" width="{{IMAGE_WIDTH}}" height="{{IMAGE_HEIGHT}}">
+          <param name="alt" value="{{IMAGE_ALT_TEXT}}"/>
+          <param name="longdesc" value="{{IMAGE_LONG_DESCRIPTION}}"/>
+        </object>
+
+        <!-- Define Clickable Hotspots with Enhanced Properties -->
+        <hotspotChoice identifier="{{HOTSPOT_A_ID}}"
+                       shape="rect"
+                       coords="{{RECT_A_COORDS}}"
+                       label="{{HOTSPOT_A_LABEL}}"/>
+
+        <hotspotChoice identifier="{{HOTSPOT_B_ID}}"
+                       shape="circle"
+                       coords="{{CIRCLE_B_COORDS}}"
+                       label="{{HOTSPOT_B_LABEL}}"/>
+
+        <hotspotChoice identifier="{{HOTSPOT_C_ID}}"
+                       shape="poly"
+                       coords="{{POLY_C_COORDS}}"
+                       label="{{HOTSPOT_C_LABEL}}"/>
+
+        <hotspotChoice identifier="{{HOTSPOT_D_ID}}"
+                       shape="ellipse"
+                       coords="{{ELLIPSE_D_COORDS}}"
+                       label="{{HOTSPOT_D_LABEL}}"/>
+
+      </graphicInteraction>
+
+      <!-- Accessibility: Comprehensive text alternative -->
+      <div class="sr-only" role="region" aria-label="Text alternative">
+        <h3>Text Description of Image</h3>
+        <p>{{ACCESSIBILITY_FULL_DESCRIPTION}}</p>
+        <ul>
+          <li>Option A: {{HOTSPOT_A_DESCRIPTION}}</li>
+          <li>Option B: {{HOTSPOT_B_DESCRIPTION}}</li>
+          <li>Option C: {{HOTSPOT_C_DESCRIPTION}}</li>
+          <li>Option D: {{HOTSPOT_D_DESCRIPTION}}</li>
+        </ul>
+      </div>
+    </div>
+  </itemBody>
+
+  <!-- Response Processing: Partial credit for multiple selections -->
+  <responseProcessing>
+    <setOutcomeValue identifier="SCORE">
+      <mapResponse identifier="RESPONSE"/>
+    </setOutcomeValue>
+  </responseProcessing>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show" title="Excellent!">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="partial" showHide="show" title="Partially Correct">
+    <p>{{PARTIAL_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show" title="Not Quite">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>

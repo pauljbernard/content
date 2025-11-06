@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.1 Hotspot Interaction Item Template (2012)
+     NEW: Clickable regions on images - select correct area(s)
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines correct hotspot(s) -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_HOTSPOT_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question with image hotspots -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <hotspotInteraction responseIdentifier="RESPONSE" maxChoices="1">
+      <prompt>{{PROMPT_TEXT}}</prompt>
+
+      <!-- Background Image -->
+      <object data="{{IMAGE_PATH}}" type="{{IMAGE_TYPE}}" width="{{IMAGE_WIDTH}}" height="{{IMAGE_HEIGHT}}">
+        <param name="alt" value="{{IMAGE_ALT_TEXT}}"/>
+      </object>
+
+      <!-- Define Clickable Hotspots (rectangular regions) -->
+      <hotspotChoice identifier="{{HOTSPOT_A_ID}}" shape="rect" coords="{{RECT_A_COORDS}}"/>
+      <hotspotChoice identifier="{{HOTSPOT_B_ID}}" shape="rect" coords="{{RECT_B_COORDS}}"/>
+      <hotspotChoice identifier="{{HOTSPOT_C_ID}}" shape="rect" coords="{{RECT_C_COORDS}}"/>
+      <hotspotChoice identifier="{{HOTSPOT_D_ID}}" shape="rect" coords="{{RECT_D_COORDS}}"/>
+
+      <!-- Alternative: Circular hotspots -->
+      <!-- <hotspotChoice identifier="{{HOTSPOT_E_ID}}" shape="circle" coords="{{CIRCLE_COORDS}}"/> -->
+
+      <!-- Alternative: Polygonal hotspots -->
+      <!-- <hotspotChoice identifier="{{HOTSPOT_F_ID}}" shape="poly" coords="{{POLY_COORDS}}"/> -->
+
+    </hotspotInteraction>
+
+    <!-- Accessibility: Text alternative for screen readers -->
+    <p class="sr-only">{{ACCESSIBILITY_DESCRIPTION}}</p>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="http://www.imsglobal.org/question/qti_v2p1/rptemplates/match_correct"/>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>

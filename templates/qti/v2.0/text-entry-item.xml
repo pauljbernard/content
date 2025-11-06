@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.0 Text Entry Item Template (2005)
+     Fill-in-the-blank / Short answer question - legacy format
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p0"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines correct answer(s) for text entry -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="string">
+    <correctResponse>
+      <value>{{CORRECT_ANSWER}}</value>
+    </correctResponse>
+    <!-- Optional: Additional acceptable answers -->
+    <mapping defaultValue="0">
+      <mapEntry mapKey="{{CORRECT_ANSWER}}" mappedValue="1.0"/>
+      <mapEntry mapKey="{{ALTERNATIVE_ANSWER_1}}" mappedValue="1.0"/>
+      <mapEntry mapKey="{{ALTERNATIVE_ANSWER_2}}" mappedValue="1.0"/>
+    </mapping>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question with text entry -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <!-- Text Entry Interaction -->
+    <p>
+      {{PROMPT_BEFORE}}
+      <textEntryInteraction responseIdentifier="RESPONSE" expectedLength="{{EXPECTED_LENGTH}}"/>
+      {{PROMPT_AFTER}}
+    </p>
+
+    <!-- Optional: Provide guidance -->
+    <p class="guidance">{{GUIDANCE_TEXT}}</p>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct"/>
+
+</assessmentItem>

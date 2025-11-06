@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMS Common Cartridge 1.2 Course Settings Template
+     Defines gradebook structure, assignment groups, and weights
+-->
+<courseSettings xmlns="http://canvas.instructure.com/xsd/cccv1p0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://canvas.instructure.com/xsd/cccv1p0 https://canvas.instructure.com/xsd/cccv1p0.xsd">
+
+  <course identifier="{{COURSE_ID}}">
+
+    <!-- Assignment Groups (Gradebook Categories) -->
+    <assignment_groups>
+
+      <assignment_group identifier="{{AG_QUIZZES_ID}}">
+        <title>Quizzes</title>
+        <position>1</position>
+        <group_weight>{{QUIZZES_WEIGHT}}</group_weight>
+      </assignment_group>
+
+      <assignment_group identifier="{{AG_HOMEWORK_ID}}">
+        <title>Homework</title>
+        <position>2</position>
+        <group_weight>{{HOMEWORK_WEIGHT}}</group_weight>
+      </assignment_group>
+
+      <assignment_group identifier="{{AG_PROJECTS_ID}}">
+        <title>Projects</title>
+        <position>3</position>
+        <group_weight>{{PROJECTS_WEIGHT}}</group_weight>
+      </assignment_group>
+
+      <assignment_group identifier="{{AG_EXAMS_ID}}">
+        <title>Exams</title>
+        <position>4</position>
+        <group_weight>{{EXAMS_WEIGHT}}</group_weight>
+      </assignment_group>
+
+    </assignment_groups>
+
+    <!-- Assignments -->
+    <assignments>
+
+      <!-- Quiz Assignment -->
+      <assignment identifier="{{QUIZ_1_ASSIGNMENT_ID}}">
+        <title>{{QUIZ_1_TITLE}}</title>
+        <assignment_group_identifierref>{{AG_QUIZZES_ID}}</assignment_group_identifierref>
+        <position>1</position>
+        <points_possible>{{QUIZ_1_POINTS}}</points_possible>
+        <grading_type>points</grading_type>
+        <submission_types>online_quiz</submission_types>
+        <quiz_identifierref>{{QUIZ_1_RESOURCE_ID}}</quiz_identifierref>
+      </assignment>
+
+      <!-- Homework Assignment -->
+      <assignment identifier="{{HW_1_ASSIGNMENT_ID}}">
+        <title>{{HW_1_TITLE}}</title>
+        <assignment_group_identifierref>{{AG_HOMEWORK_ID}}</assignment_group_identifierref>
+        <position>1</position>
+        <points_possible>{{HW_1_POINTS}}</points_possible>
+        <grading_type>points</grading_type>
+        <submission_types>online_upload</submission_types>
+        <description>{{HW_1_DESCRIPTION}}</description>
+      </assignment>
+
+      <!-- Project Assignment -->
+      <assignment identifier="{{PROJECT_1_ASSIGNMENT_ID}}">
+        <title>{{PROJECT_1_TITLE}}</title>
+        <assignment_group_identifierref>{{AG_PROJECTS_ID}}</assignment_group_identifierref>
+        <position>1</position>
+        <points_possible>{{PROJECT_1_POINTS}}</points_possible>
+        <grading_type>points</grading_type>
+        <submission_types>online_upload</submission_types>
+        <description>{{PROJECT_1_DESCRIPTION}}</description>
+      </assignment>
+
+    </assignments>
+
+  </course>
+
+</courseSettings>

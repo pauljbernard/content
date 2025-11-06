@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 3.0 Media Interaction Item Template (2019)
+     NEW: Enhanced audio/video interactions with time-based responses
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_item_v3p0.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="true"
+                lang="{{LANGUAGE_CODE}}">
+
+  <!-- Response Declaration: Defines correct answer -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Outcome Declaration: Media play count -->
+  <outcomeDeclaration identifier="PLAY_COUNT" cardinality="single" baseType="integer">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: Media with interaction -->
+  <itemBody>
+    <div class="qti-media-item" role="main" aria-labelledby="media-heading">
+
+      <h2 id="media-heading">{{QUESTION_TEXT}}</h2>
+
+      <!-- Media Object (Video or Audio) -->
+      <div class="qti-media-container" role="region" aria-label="{{MEDIA_LABEL}}">
+
+        <!-- Video Example -->
+        <mediaInteraction responseIdentifier="RESPONSE"
+                         autostart="false"
+                         minPlays="{{MIN_PLAYS}}"
+                         maxPlays="{{MAX_PLAYS}}"
+                         loop="false">
+
+          <!-- Video Source -->
+          <object data="{{VIDEO_PATH}}"
+                  type="{{VIDEO_TYPE}}"
+                  width="{{VIDEO_WIDTH}}"
+                  height="{{VIDEO_HEIGHT}}">
+            <param name="poster" value="{{VIDEO_POSTER_PATH}}"/>
+            <param name="controls" value="true"/>
+
+            <!-- Captions/Subtitles (NEW in 3.0 - enhanced accessibility) -->
+            <param name="tracks" value='[
+              {
+                "kind": "captions",
+                "src": "{{CAPTIONS_EN_PATH}}",
+                "srclang": "en",
+                "label": "English"
+              },
+              {
+                "kind": "captions",
+                "src": "{{CAPTIONS_ES_PATH}}",
+                "srclang": "es",
+                "label": "Spanish"
+              },
+              {
+                "kind": "descriptions",
+                "src": "{{AUDIO_DESCRIPTION_PATH}}",
+                "srclang": "en",
+                "label": "Audio Descriptions"
+              }
+            ]'/>
+
+            <!-- Fallback for unsupported media -->
+            <p>{{MEDIA_FALLBACK_TEXT}}</p>
+          </object>
+
+        </mediaInteraction>
+
+        <!-- Transcript (Accessibility) -->
+        <details class="qti-transcript">
+          <summary>View Transcript</summary>
+          <div class="transcript-content">
+            {{MEDIA_TRANSCRIPT}}
+          </div>
+        </details>
+
+      </div>
+
+      <!-- Question after media -->
+      <div class="qti-question-after-media">
+        <p>{{POST_MEDIA_QUESTION}}</p>
+
+        <choiceInteraction responseIdentifier="RESPONSE"
+                          shuffle="{{SHUFFLE}}"
+                          maxChoices="1"
+                          aria-describedby="media-heading">
+          <prompt>{{PROMPT_TEXT}}</prompt>
+
+          <simpleChoice identifier="{{CHOICE_A_ID}}" aria-label="{{CHOICE_A_ARIA_LABEL}}">
+            {{CHOICE_A_TEXT}}
+          </simpleChoice>
+
+          <simpleChoice identifier="{{CHOICE_B_ID}}" aria-label="{{CHOICE_B_ARIA_LABEL}}">
+            {{CHOICE_B_TEXT}}
+          </simpleChoice>
+
+          <simpleChoice identifier="{{CHOICE_C_ID}}" aria-label="{{CHOICE_C_ARIA_LABEL}}">
+            {{CHOICE_C_TEXT}}
+          </simpleChoice>
+
+          <simpleChoice identifier="{{CHOICE_D_ID}}" aria-label="{{CHOICE_D_ARIA_LABEL}}">
+            {{CHOICE_D_TEXT}}
+          </simpleChoice>
+
+        </choiceInteraction>
+      </div>
+
+    </div>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct"/>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE"
+                 identifier="correct"
+                 showHide="show"
+                 title="Correct Answer"
+                 role="alert"
+                 aria-live="assertive">
+    <div class="feedback-content">
+      <p>{{CORRECT_FEEDBACK}}</p>
+    </div>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE"
+                 identifier="incorrect"
+                 showHide="show"
+                 title="Incorrect Answer"
+                 role="alert"
+                 aria-live="assertive">
+    <div class="feedback-content">
+      <p>{{INCORRECT_FEEDBACK}}</p>
+    </div>
+  </modalFeedback>
+
+  <!-- Stylesheet Reference -->
+  <stylesheet href="{{STYLESHEET_PATH}}" type="text/css"/>
+
+</assessmentItem>

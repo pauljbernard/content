@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.2 Custom Interaction Item Template (2015)
+     NEW: Portable Custom Interaction (PCI) framework
+     Allows embedding custom JavaScript-based interactions
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p2"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p2 http://www.imsglobal.org/xsd/qti/qtiv2p2/imsqti_v2p2.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines expected response format -->
+  <responseDeclaration identifier="RESPONSE" cardinality="{{CARDINALITY}}" baseType="{{BASE_TYPE}}">
+    <correctResponse>
+      <value>{{CORRECT_VALUE}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: Custom interaction -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <!-- Portable Custom Interaction (PCI) -->
+    <customInteraction responseIdentifier="RESPONSE">
+
+      <!-- PCI Metadata -->
+      <portableCustomInteraction customInteractionTypeIdentifier="{{PCI_TYPE_ID}}"
+                                  hook="{{PCI_HOOK_URL}}"
+                                  version="{{PCI_VERSION}}">
+
+        <!-- Configuration Properties -->
+        <properties>
+          <entry key="{{PROPERTY_1_KEY}}">{{PROPERTY_1_VALUE}}</entry>
+          <entry key="{{PROPERTY_2_KEY}}">{{PROPERTY_2_VALUE}}</entry>
+          <entry key="{{PROPERTY_3_KEY}}">{{PROPERTY_3_VALUE}}</entry>
+        </properties>
+
+        <!-- Markup: HTML structure for the interaction -->
+        <markup>
+          <![CDATA[
+            <div id="{{INTERACTION_CONTAINER_ID}}" class="pci-container">
+              {{CUSTOM_HTML_CONTENT}}
+            </div>
+          ]]>
+        </markup>
+
+        <!-- Resources: JavaScript and CSS files -->
+        <resources>
+          <libraries>
+            <lib id="{{LIB_1_ID}}" href="{{LIB_1_PATH}}" version="{{LIB_1_VERSION}}"/>
+            <lib id="{{LIB_2_ID}}" href="{{LIB_2_PATH}}" version="{{LIB_2_VERSION}}"/>
+          </libraries>
+          <stylesheets>
+            <link href="{{CSS_PATH}}" type="text/css"/>
+          </stylesheets>
+          <mediaFiles>
+            <file src="{{MEDIA_FILE_PATH}}" type="{{MEDIA_TYPE}}"/>
+          </mediaFiles>
+        </resources>
+
+      </portableCustomInteraction>
+
+    </customInteraction>
+
+    <!-- Accessibility: Alternative text description -->
+    <p class="sr-only">{{ACCESSIBILITY_DESCRIPTION}}</p>
+  </itemBody>
+
+  <!-- Response Processing -->
+  <responseProcessing>
+    <responseCondition>
+      <responseIf>
+        <match>
+          <variable identifier="RESPONSE"/>
+          <correct identifier="RESPONSE"/>
+        </match>
+        <setOutcomeValue identifier="SCORE">
+          <baseValue baseType="float">1.0</baseValue>
+        </setOutcomeValue>
+      </responseIf>
+      <responseElse>
+        <setOutcomeValue identifier="SCORE">
+          <baseValue baseType="float">0.0</baseValue>
+        </setOutcomeValue>
+      </responseElse>
+    </responseCondition>
+  </responseProcessing>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>

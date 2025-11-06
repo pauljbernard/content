@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 3.0 Multiple Choice Item Template (2019)
+     Modernized structure with enhanced accessibility and ARIA support
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_item_v3p0.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false"
+                lang="{{LANGUAGE_CODE}}">
+
+  <!-- Response Declaration: Defines correct answer -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Outcome Declaration: Duration tracking (NEW in 3.0) -->
+  <outcomeDeclaration identifier="DURATION" cardinality="single" baseType="duration">
+    <defaultValue>
+      <value>PT0S</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question and choices -->
+  <itemBody>
+    <div class="qti-item-content" role="main" aria-labelledby="question-heading">
+
+      <!-- Accessible heading -->
+      <h2 id="question-heading" class="qti-question">{{QUESTION_TEXT}}</h2>
+
+      <!-- Optional: Stimulus material with ARIA region -->
+      <div class="qti-stimulus" role="region" aria-label="{{STIMULUS_LABEL}}">
+        {{STIMULUS_CONTENT}}
+      </div>
+
+      <!-- Choice Interaction with enhanced accessibility -->
+      <choiceInteraction responseIdentifier="RESPONSE"
+                        shuffle="{{SHUFFLE}}"
+                        maxChoices="1"
+                        class="qti-choice-interaction"
+                        aria-describedby="prompt-description">
+
+        <prompt id="prompt-description">{{PROMPT_TEXT}}</prompt>
+
+        <simpleChoice identifier="{{CHOICE_A_ID}}" aria-label="{{CHOICE_A_ARIA_LABEL}}">
+          {{CHOICE_A_TEXT}}
+        </simpleChoice>
+
+        <simpleChoice identifier="{{CHOICE_B_ID}}" aria-label="{{CHOICE_B_ARIA_LABEL}}">
+          {{CHOICE_B_TEXT}}
+        </simpleChoice>
+
+        <simpleChoice identifier="{{CHOICE_C_ID}}" aria-label="{{CHOICE_C_ARIA_LABEL}}">
+          {{CHOICE_C_TEXT}}
+        </simpleChoice>
+
+        <simpleChoice identifier="{{CHOICE_D_ID}}" aria-label="{{CHOICE_D_ARIA_LABEL}}">
+          {{CHOICE_D_TEXT}}
+        </simpleChoice>
+
+      </choiceInteraction>
+
+    </div>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="https://purl.imsglobal.org/spec/qti/v3p0/rptemplates/match_correct"/>
+
+  <!-- Modal Feedback with ARIA -->
+  <modalFeedback outcomeIdentifier="SCORE"
+                 identifier="correct"
+                 showHide="show"
+                 title="Correct Answer"
+                 role="alert"
+                 aria-live="assertive">
+    <div class="feedback-content">
+      <p>{{CORRECT_FEEDBACK}}</p>
+    </div>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE"
+                 identifier="incorrect"
+                 showHide="show"
+                 title="Incorrect Answer"
+                 role="alert"
+                 aria-live="assertive">
+    <div class="feedback-content">
+      <p>{{INCORRECT_FEEDBACK}}</p>
+    </div>
+  </modalFeedback>
+
+  <!-- Stylesheet Reference (NEW in 3.0) -->
+  <stylesheet href="{{STYLESHEET_PATH}}" type="text/css"/>
+
+</assessmentItem>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.1 Text Entry Item Template (2012)
+     Enhanced text entry with pattern matching and feedback
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines correct answer(s) -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="string">
+    <correctResponse>
+      <value>{{CORRECT_ANSWER}}</value>
+    </correctResponse>
+    <!-- Optional: Mapping for partial credit -->
+    <mapping defaultValue="0">
+      <mapEntry mapKey="{{CORRECT_ANSWER}}" mappedValue="1.0"/>
+      <mapEntry mapKey="{{ALTERNATIVE_ANSWER_1}}" mappedValue="1.0"/>
+      <mapEntry mapKey="{{ALTERNATIVE_ANSWER_2}}" mappedValue="0.5"/>
+    </mapping>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question with text entry -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <p>
+      {{PROMPT_BEFORE}}
+      <textEntryInteraction responseIdentifier="RESPONSE"
+                           expectedLength="{{EXPECTED_LENGTH}}"
+                           patternMask="{{PATTERN_MASK}}"/>
+      {{PROMPT_AFTER}}
+    </p>
+
+    <!-- Optional: Provide guidance -->
+    <p class="guidance">{{GUIDANCE_TEXT}}</p>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="http://www.imsglobal.org/question/qti_v2p1/rptemplates/match_correct"/>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>

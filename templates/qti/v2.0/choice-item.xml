@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.0 Multiple Choice Item Template (2005)
+     Basic multiple choice question - legacy format
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p0"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines correct answer -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question and choices -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <choiceInteraction responseIdentifier="RESPONSE" shuffle="{{SHUFFLE}}" maxChoices="1">
+      <prompt>{{PROMPT_TEXT}}</prompt>
+
+      <simpleChoice identifier="{{CHOICE_A_ID}}">{{CHOICE_A_TEXT}}</simpleChoice>
+      <simpleChoice identifier="{{CHOICE_B_ID}}">{{CHOICE_B_TEXT}}</simpleChoice>
+      <simpleChoice identifier="{{CHOICE_C_ID}}">{{CHOICE_C_TEXT}}</simpleChoice>
+      <simpleChoice identifier="{{CHOICE_D_ID}}">{{CHOICE_D_TEXT}}</simpleChoice>
+
+    </choiceInteraction>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="http://www.imsglobal.org/question/qti_v2p0/rptemplates/match_correct"/>
+
+</assessmentItem>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 3.0 Composite Item Template (2019)
+     NEW: Multiple interactions within a single item with shared stimulus
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v3p0"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v3p0 https://purl.imsglobal.org/spec/qti/v3p0/schema/xsd/imsqti_item_v3p0.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false"
+                lang="{{LANGUAGE_CODE}}"
+                composite="true">
+
+  <!-- Response Declarations: One for each interaction -->
+  <responseDeclaration identifier="RESPONSE_PART_A" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_PART_A_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <responseDeclaration identifier="RESPONSE_PART_B" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_PART_B_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <responseDeclaration identifier="RESPONSE_PART_C" cardinality="single" baseType="string">
+    <correctResponse>
+      <value>{{CORRECT_PART_C_ANSWER}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declarations -->
+  <outcomeDeclaration identifier="SCORE_PART_A" cardinality="single" baseType="float">
+    <defaultValue><value>0</value></defaultValue>
+  </outcomeDeclaration>
+
+  <outcomeDeclaration identifier="SCORE_PART_B" cardinality="single" baseType="float">
+    <defaultValue><value>0</value></defaultValue>
+  </outcomeDeclaration>
+
+  <outcomeDeclaration identifier="SCORE_PART_C" cardinality="single" baseType="float">
+    <defaultValue><value>0</value></defaultValue>
+  </outcomeDeclaration>
+
+  <outcomeDeclaration identifier="TOTAL_SCORE" cardinality="single" baseType="float">
+    <defaultValue><value>0</value></defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: Shared stimulus with multiple interactions -->
+  <itemBody>
+    <div class="qti-composite-item" role="main">
+
+      <!-- Shared Stimulus -->
+      <section class="qti-shared-stimulus" role="region" aria-labelledby="stimulus-heading">
+        <h2 id="stimulus-heading">{{STIMULUS_TITLE}}</h2>
+        <div class="stimulus-content">
+          {{SHARED_STIMULUS_CONTENT}}
+        </div>
+      </section>
+
+      <!-- Part A: Multiple Choice -->
+      <section class="qti-item-part" role="region" aria-labelledby="part-a-heading">
+        <h3 id="part-a-heading">Part A</h3>
+        <p>{{QUESTION_PART_A}}</p>
+
+        <choiceInteraction responseIdentifier="RESPONSE_PART_A"
+                          shuffle="{{SHUFFLE_A}}"
+                          maxChoices="1"
+                          aria-describedby="part-a-heading">
+          <prompt>{{PROMPT_PART_A}}</prompt>
+          <simpleChoice identifier="{{CHOICE_A1_ID}}">{{CHOICE_A1_TEXT}}</simpleChoice>
+          <simpleChoice identifier="{{CHOICE_A2_ID}}">{{CHOICE_A2_TEXT}}</simpleChoice>
+          <simpleChoice identifier="{{CHOICE_A3_ID}}">{{CHOICE_A3_TEXT}}</simpleChoice>
+          <simpleChoice identifier="{{CHOICE_A4_ID}}">{{CHOICE_A4_TEXT}}</simpleChoice>
+        </choiceInteraction>
+      </section>
+
+      <!-- Part B: Another Multiple Choice -->
+      <section class="qti-item-part" role="region" aria-labelledby="part-b-heading">
+        <h3 id="part-b-heading">Part B</h3>
+        <p>{{QUESTION_PART_B}}</p>
+
+        <choiceInteraction responseIdentifier="RESPONSE_PART_B"
+                          shuffle="{{SHUFFLE_B}}"
+                          maxChoices="1"
+                          aria-describedby="part-b-heading">
+          <prompt>{{PROMPT_PART_B}}</prompt>
+          <simpleChoice identifier="{{CHOICE_B1_ID}}">{{CHOICE_B1_TEXT}}</simpleChoice>
+          <simpleChoice identifier="{{CHOICE_B2_ID}}">{{CHOICE_B2_TEXT}}</simpleChoice>
+          <simpleChoice identifier="{{CHOICE_B3_ID}}">{{CHOICE_B3_TEXT}}</simpleChoice>
+          <simpleChoice identifier="{{CHOICE_B4_ID}}">{{CHOICE_B4_TEXT}}</simpleChoice>
+        </choiceInteraction>
+      </section>
+
+      <!-- Part C: Text Entry -->
+      <section class="qti-item-part" role="region" aria-labelledby="part-c-heading">
+        <h3 id="part-c-heading">Part C</h3>
+        <p>{{QUESTION_PART_C}}</p>
+
+        <extendedTextInteraction responseIdentifier="RESPONSE_PART_C"
+                                expectedLines="{{EXPECTED_LINES}}"
+                                expectedLength="{{EXPECTED_LENGTH}}"
+                                aria-describedby="part-c-heading">
+          <prompt>{{PROMPT_PART_C}}</prompt>
+        </extendedTextInteraction>
+      </section>
+
+    </div>
+  </itemBody>
+
+  <!-- Response Processing: Score each part and sum -->
+  <responseProcessing>
+    <!-- Score Part A -->
+    <responseCondition>
+      <responseIf>
+        <match>
+          <variable identifier="RESPONSE_PART_A"/>
+          <correct identifier="RESPONSE_PART_A"/>
+        </match>
+        <setOutcomeValue identifier="SCORE_PART_A">
+          <baseValue baseType="float">{{POINTS_PART_A}}</baseValue>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+
+    <!-- Score Part B -->
+    <responseCondition>
+      <responseIf>
+        <match>
+          <variable identifier="RESPONSE_PART_B"/>
+          <correct identifier="RESPONSE_PART_B"/>
+        </match>
+        <setOutcomeValue identifier="SCORE_PART_B">
+          <baseValue baseType="float">{{POINTS_PART_B}}</baseValue>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+
+    <!-- Score Part C -->
+    <responseCondition>
+      <responseIf>
+        <match>
+          <variable identifier="RESPONSE_PART_C"/>
+          <correct identifier="RESPONSE_PART_C"/>
+        </match>
+        <setOutcomeValue identifier="SCORE_PART_C">
+          <baseValue baseType="float">{{POINTS_PART_C}}</baseValue>
+        </setOutcomeValue>
+      </responseIf>
+    </responseCondition>
+
+    <!-- Calculate Total Score -->
+    <setOutcomeValue identifier="TOTAL_SCORE">
+      <sum>
+        <variable identifier="SCORE_PART_A"/>
+        <variable identifier="SCORE_PART_B"/>
+        <variable identifier="SCORE_PART_C"/>
+      </sum>
+    </setOutcomeValue>
+  </responseProcessing>
+
+  <!-- Stylesheet Reference -->
+  <stylesheet href="{{STYLESHEET_PATH}}" type="text/css"/>
+
+</assessmentItem>

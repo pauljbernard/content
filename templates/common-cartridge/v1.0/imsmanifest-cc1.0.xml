@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- IMS Common Cartridge 1.0 Manifest Template (2008)
+     Legacy format - basic features only
+     Use for very old LMS systems (pre-2012)
+-->
+<manifest identifier="{{COURSE_ID}}"
+          xmlns="http://www.imsglobal.org/xsd/imsccv1p0/imscp_v1p1"
+          xmlns:lom="http://ltsc.ieee.org/xsd/imsccv1p0/LOM/resource"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://www.imsglobal.org/xsd/imsccv1p0/imscp_v1p1 http://www.imsglobal.org/profile/cc/ccv1p0/ccv1p0_imscp_v1p2_v1p0.xsd
+                              http://ltsc.ieee.org/xsd/imsccv1p0/LOM/resource http://www.imsglobal.org/profile/cc/ccv1p0/LOM/ccv1p0_lomresource_v1p0.xsd">
+
+  <!-- Metadata -->
+  <metadata>
+    <schema>IMS Common Cartridge</schema>
+    <schemaversion>1.0.0</schemaversion>
+    <lom:lom>
+      <lom:general>
+        <lom:title>
+          <lom:string language="en">{{COURSE_TITLE}}</lom:string>
+        </lom:title>
+        <lom:description>
+          <lom:string language="en">{{COURSE_DESCRIPTION}}</lom:string>
+        </lom:description>
+        <lom:keyword>
+          <lom:string language="en">{{KEYWORDS}}</lom:string>
+        </lom:keyword>
+      </lom:general>
+      <lom:lifeCycle>
+        <lom:contribute>
+          <lom:date>
+            <lom:dateTime>{{CREATION_DATE}}</lom:dateTime>
+          </lom:date>
+        </lom:contribute>
+      </lom:lifeCycle>
+      <lom:rights>
+        <lom:copyrightAndOtherRestrictions>
+          <lom:value>yes</lom:value>
+        </lom:copyrightAndOtherRestrictions>
+        <lom:description>
+          <lom:string language="en">{{COPYRIGHT_INFO}}</lom:string>
+        </lom:description>
+      </lom:rights>
+    </lom:lom>
+  </metadata>
+
+  <!-- Course Organization Structure -->
+  <organizations>
+    <organization identifier="{{ORG_ID}}" structure="rooted-hierarchy">
+      <item identifier="{{ROOT_ITEM_ID}}">
+        <title>{{COURSE_TITLE}}</title>
+
+        <!-- Module 1 -->
+        <item identifier="{{MODULE_1_ID}}">
+          <title>{{MODULE_1_TITLE}}</title>
+
+          <!-- Lesson 1.1 -->
+          <item identifier="{{LESSON_1_1_ID}}" identifierref="{{RESOURCE_1_1_ID}}">
+            <title>{{LESSON_1_1_TITLE}}</title>
+          </item>
+
+          <!-- Lesson 1.2 -->
+          <item identifier="{{LESSON_1_2_ID}}" identifierref="{{RESOURCE_1_2_ID}}">
+            <title>{{LESSON_1_2_TITLE}}</title>
+          </item>
+
+        </item>
+
+        <!-- Module 2 -->
+        <item identifier="{{MODULE_2_ID}}">
+          <title>{{MODULE_2_TITLE}}</title>
+
+          <!-- Lesson 2.1 -->
+          <item identifier="{{LESSON_2_1_ID}}" identifierref="{{RESOURCE_2_1_ID}}">
+            <title>{{LESSON_2_1_TITLE}}</title>
+          </item>
+
+        </item>
+
+      </item>
+    </organization>
+  </organizations>
+
+  <!-- Resources -->
+  <resources>
+
+    <!-- Web Content Resource -->
+    <resource identifier="{{RESOURCE_1_1_ID}}" type="webcontent" href="{{LESSON_1_1_HTML}}">
+      <file href="{{LESSON_1_1_HTML}}"/>
+      <file href="{{LESSON_1_1_CSS}}"/>
+      <file href="{{LESSON_1_1_IMAGE}}"/>
+    </resource>
+
+    <!-- QTI Assessment Resource (CC 1.0 supports QTI 2.0 only) -->
+    <resource identifier="{{ASSESSMENT_RESOURCE_ID}}" type="imsqti_xmlv2p0">
+      <file href="{{ASSESSMENT_XML_PATH}}"/>
+      <dependency identifierref="{{ASSESSMENT_ITEMS_RESOURCE_ID}}"/>
+    </resource>
+
+    <!-- Assessment Items -->
+    <resource identifier="{{ASSESSMENT_ITEMS_RESOURCE_ID}}" type="associatedcontent/imscc_xmlv1p0/learning-application-resource">
+      <file href="{{ITEM_1_PATH}}"/>
+      <file href="{{ITEM_2_PATH}}"/>
+    </resource>
+
+  </resources>
+
+</manifest>

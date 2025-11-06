@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.2 Multiple Choice Item Template (2015)
+     Enhanced with better mobile support and accessibility
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p2"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p2 http://www.imsglobal.org/xsd/qti/qtiv2p2/imsqti_v2p2.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false"
+                label="{{ITEM_LABEL}}">
+
+  <!-- Response Declaration: Defines correct answer -->
+  <responseDeclaration identifier="RESPONSE" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Outcome Declaration: Completion status (NEW in 2.2) -->
+  <outcomeDeclaration identifier="completionStatus" cardinality="single" baseType="identifier">
+    <defaultValue>
+      <value>not_attempted</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: The actual question and choices -->
+  <itemBody>
+    <div class="question-content">
+      <p>{{QUESTION_TEXT}}</p>
+
+      <!-- Optional: Stimulus material -->
+      <div class="stimulus" role="region" aria-label="Stimulus">
+        {{STIMULUS_CONTENT}}
+      </div>
+
+      <choiceInteraction responseIdentifier="RESPONSE" shuffle="{{SHUFFLE}}" maxChoices="1">
+        <prompt>{{PROMPT_TEXT}}</prompt>
+
+        <simpleChoice identifier="{{CHOICE_A_ID}}">{{CHOICE_A_TEXT}}</simpleChoice>
+        <simpleChoice identifier="{{CHOICE_B_ID}}">{{CHOICE_B_TEXT}}</simpleChoice>
+        <simpleChoice identifier="{{CHOICE_C_ID}}">{{CHOICE_C_TEXT}}</simpleChoice>
+        <simpleChoice identifier="{{CHOICE_D_ID}}">{{CHOICE_D_TEXT}}</simpleChoice>
+
+      </choiceInteraction>
+    </div>
+  </itemBody>
+
+  <!-- Response Processing: Standard match correct template -->
+  <responseProcessing template="http://www.imsglobal.org/question/qti_v2p2/rptemplates/match_correct"/>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show" title="Correct">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show" title="Incorrect">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>

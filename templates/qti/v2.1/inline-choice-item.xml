@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QTI 2.1 Inline Choice Item Template (2012)
+     NEW: Dropdown selections embedded within text (cloze/fill-in with choices)
+-->
+<assessmentItem xmlns="http://www.imsglobal.org/xsd/imsqti_v2p1"
+                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                xsi:schemaLocation="http://www.imsglobal.org/xsd/imsqti_v2p1 http://www.imsglobal.org/xsd/qti/qtiv2p1/imsqti_v2p1.xsd"
+                identifier="{{ITEM_ID}}"
+                title="{{ITEM_TITLE}}"
+                adaptive="false"
+                timeDependent="false">
+
+  <!-- Response Declaration: Defines correct answers for each gap -->
+  <responseDeclaration identifier="RESPONSE_1" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_1_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <responseDeclaration identifier="RESPONSE_2" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_2_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <responseDeclaration identifier="RESPONSE_3" cardinality="single" baseType="identifier">
+    <correctResponse>
+      <value>{{CORRECT_CHOICE_3_ID}}</value>
+    </correctResponse>
+  </responseDeclaration>
+
+  <!-- Outcome Declaration: Defines scoring -->
+  <outcomeDeclaration identifier="SCORE" cardinality="single" baseType="float">
+    <defaultValue>
+      <value>0</value>
+    </defaultValue>
+  </outcomeDeclaration>
+
+  <!-- Item Body: Text with embedded dropdown choices -->
+  <itemBody>
+    <p>{{QUESTION_TEXT}}</p>
+
+    <p>
+      {{TEXT_BEFORE_GAP_1}}
+      <inlineChoiceInteraction responseIdentifier="RESPONSE_1" shuffle="{{SHUFFLE_1}}">
+        <inlineChoice identifier="{{CHOICE_1A_ID}}">{{CHOICE_1A_TEXT}}</inlineChoice>
+        <inlineChoice identifier="{{CHOICE_1B_ID}}">{{CHOICE_1B_TEXT}}</inlineChoice>
+        <inlineChoice identifier="{{CHOICE_1C_ID}}">{{CHOICE_1C_TEXT}}</inlineChoice>
+      </inlineChoiceInteraction>
+      {{TEXT_BETWEEN_GAP_1_AND_2}}
+      <inlineChoiceInteraction responseIdentifier="RESPONSE_2" shuffle="{{SHUFFLE_2}}">
+        <inlineChoice identifier="{{CHOICE_2A_ID}}">{{CHOICE_2A_TEXT}}</inlineChoice>
+        <inlineChoice identifier="{{CHOICE_2B_ID}}">{{CHOICE_2B_TEXT}}</inlineChoice>
+        <inlineChoice identifier="{{CHOICE_2C_ID}}">{{CHOICE_2C_TEXT}}</inlineChoice>
+      </inlineChoiceInteraction>
+      {{TEXT_BETWEEN_GAP_2_AND_3}}
+      <inlineChoiceInteraction responseIdentifier="RESPONSE_3" shuffle="{{SHUFFLE_3}}">
+        <inlineChoice identifier="{{CHOICE_3A_ID}}">{{CHOICE_3A_TEXT}}</inlineChoice>
+        <inlineChoice identifier="{{CHOICE_3B_ID}}">{{CHOICE_3B_TEXT}}</inlineChoice>
+        <inlineChoice identifier="{{CHOICE_3C_ID}}">{{CHOICE_3C_TEXT}}</inlineChoice>
+      </inlineChoiceInteraction>
+      {{TEXT_AFTER_GAP_3}}
+    </p>
+  </itemBody>
+
+  <!-- Response Processing: Custom processing for multiple responses -->
+  <responseProcessing>
+    <setOutcomeValue identifier="SCORE">
+      <sum>
+        <mapResponse identifier="RESPONSE_1"/>
+        <mapResponse identifier="RESPONSE_2"/>
+        <mapResponse identifier="RESPONSE_3"/>
+      </sum>
+    </setOutcomeValue>
+  </responseProcessing>
+
+  <!-- Modal Feedback -->
+  <modalFeedback outcomeIdentifier="SCORE" identifier="correct" showHide="show">
+    <p>{{CORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="partial" showHide="show">
+    <p>{{PARTIAL_FEEDBACK}}</p>
+  </modalFeedback>
+
+  <modalFeedback outcomeIdentifier="SCORE" identifier="incorrect" showHide="show">
+    <p>{{INCORRECT_FEEDBACK}}</p>
+  </modalFeedback>
+
+</assessmentItem>
