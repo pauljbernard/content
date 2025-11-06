@@ -89,6 +89,546 @@ content/
 
 ---
 
+## Your First Week in Production
+
+Welcome! This section walks you through your first week, building skills progressively from Day 1 observation to Day 5 independent production.
+
+### Day 1: Orientation and Environment Setup (6-8 hours)
+
+**Morning: System Access and Tools (3-4 hours)**
+
+**Hour 1: Get Access**
+```bash
+# Verify GitHub access
+git clone https://github.com/pauljbernard/content.git
+cd content
+
+# Verify you can see published content
+ls published/
+
+# Verify production directories exist
+ls production/ dist/
+```
+
+**Hour 2: Install Production Tools**
+```bash
+# Install Pandoc (for PDF generation)
+brew install pandoc  # macOS
+# or: sudo apt install pandoc  # Linux
+
+# Install LaTeX (for PDF typesetting)
+brew install basictex  # macOS
+# or: sudo apt install texlive-latex-base texlive-fonts-recommended  # Linux
+
+# Install ImageMagick (for image optimization)
+brew install imagemagick
+
+# Install FFmpeg (for video/audio processing)
+brew install ffmpeg
+
+# Verify installations
+pandoc --version
+pdflatex --version
+convert --version  # ImageMagick
+ffmpeg -version
+```
+
+**Hour 3: Explore Templates**
+```bash
+cd templates/
+
+# PDF templates (LaTeX)
+ls *.latex
+# - hmh-teacher-guide.latex
+# - hmh-student-workbook.latex
+# - hmh-assessment.latex
+
+# HTML templates
+ls *.html
+# - interactive-lesson.html
+# - assessment-player.html
+
+# SCORM templates
+ls scorm-templates/
+```
+
+**Hour 4: Review Brand Guidelines**
+```bash
+# HMH brand assets
+ls assets/brand/
+# - hmh-logo.svg
+# - color-palette.json
+# - typography-guide.md
+# - style-guide.pdf
+
+# Read brand guidelines
+open assets/brand/style-guide.pdf
+```
+
+**Afternoon: Shadow a Production Run (3-4 hours)**
+
+**Find a recently completed production run:**
+```bash
+# Look for recent deliveries
+ls -lt dist/ | head -10
+
+# Pick one to study
+cd dist/pdf/hmh-math-tx-grade5-lesson-3.2/
+
+# Files you'll see:
+# - teacher-guide.pdf
+# - student-pages.pdf
+# - answer-key.pdf
+# - production-manifest.json
+# - qa-report.txt
+```
+
+**Review the source:**
+```bash
+# Find the original source content
+cd /published/lessons/hmh-math-tx/grade-5/lesson-3.2/
+
+# Compare source markdown to final PDF
+open teacher-guide.md
+open ../../dist/pdf/hmh-math-tx-grade5-lesson-3.2/teacher-guide.pdf
+```
+
+**Questions to answer:**
+- How did markdown become this polished PDF?
+- What brand elements were added (logo, colors, fonts)?
+- How are images positioned and sized?
+- How is the table of contents generated?
+
+**Day 1 Reflection:**
+- [ ] Can access all repositories and tools
+- [ ] Tools installed and working (pandoc, LaTeX, ImageMagick, FFmpeg)
+- [ ] Understand directory structure (published → production → dist)
+- [ ] Reviewed one complete production run end-to-end
+
+---
+
+### Day 2: Hands-On Practice - PDF Production (6-8 hours)
+
+**Morning: Produce Your First PDF (3-4 hours)**
+
+**Step 1: Find Practice Content**
+```bash
+cd /published/lessons/practice/simple-lesson/
+
+# This is a simplified lesson for practice
+ls
+# - teacher-guide.md (simple, 2 pages)
+# - assets/diagram1.png
+```
+
+**Step 2: Generate PDF with Pandoc**
+```bash
+# Basic conversion (no template)
+pandoc teacher-guide.md -o test1.pdf
+
+# Open and review
+open test1.pdf
+
+# Note: Looks plain, no branding, basic formatting
+```
+
+**Step 3: Apply HMH Template**
+```bash
+pandoc teacher-guide.md \
+  --template=../../templates/hmh-teacher-guide.latex \
+  --pdf-engine=xelatex \
+  --toc \
+  -V geometry:margin=1in \
+  -V fontsize:11pt \
+  -o test2.pdf
+
+open test2.pdf
+
+# Note: Now has HMH branding, proper fonts, TOC
+```
+
+**Step 4: Fix Common Issues**
+
+**Issue 1: Image not found**
+```bash
+# Error: "! LaTeX Error: File `diagram1.png' not found"
+
+# Solution: Specify resource path
+pandoc teacher-guide.md \
+  --template=../../templates/hmh-teacher-guide.latex \
+  --pdf-engine=xelatex \
+  --resource-path=assets \
+  -o test3.pdf
+```
+
+**Issue 2: Image too large**
+```bash
+# Solution: Resize with ImageMagick before PDF generation
+cd assets/
+convert diagram1.png -resize 600x diagram1-resized.png
+
+# Or: Add width specification in markdown
+# ![Diagram](assets/diagram1.png){width=400px}
+```
+
+**Afternoon: Practice Different PDF Types (3-4 hours)**
+
+**Practice 1: Student Workbook**
+```bash
+cd /published/assessments/practice/simple-quiz/
+
+pandoc student-quiz.md \
+  --template=../../templates/hmh-student-workbook.latex \
+  --pdf-engine=xelatex \
+  -o student-quiz.pdf
+
+open student-quiz.pdf
+```
+
+**Practice 2: Assessment with Answer Key**
+```bash
+# Generate student version (no answers)
+pandoc assessment.md \
+  --template=../../templates/hmh-assessment.latex \
+  -V show-answers:false \
+  -o assessment-student.pdf
+
+# Generate teacher version (with answers)
+pandoc assessment.md \
+  --template=../../templates/hmh-assessment.latex \
+  -V show-answers:true \
+  -o assessment-teacher.pdf
+```
+
+**Day 2 Reflection:**
+- [ ] Generated PDFs using Pandoc
+- [ ] Applied HMH templates successfully
+- [ ] Resolved image path issues
+- [ ] Created both student and teacher versions
+- [ ] Understand difference between basic and templated output
+
+---
+
+### Day 3: HTML and Interactive Content (6-8 hours)
+
+**Morning: Basic HTML Production (3-4 hours)**
+
+**Step 1: Convert Markdown to HTML**
+```bash
+cd /published/lessons/practice/simple-lesson/
+
+# Basic HTML conversion
+pandoc teacher-guide.md -o test1.html
+
+# With CSS styling
+pandoc teacher-guide.md \
+  --css=../../templates/styles/hmh-lesson.css \
+  --standalone \
+  -o test2.html
+
+open test2.html
+```
+
+**Step 2: Add Interactive Elements**
+
+**Create index.html:**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Fraction Addition Lesson</title>
+  <link rel="stylesheet" href="styles/lesson.css">
+</head>
+<body>
+  <header>
+    <img src="assets/hmh-logo.svg" alt="HMH Logo">
+    <h1>Lesson 3.2: Adding Fractions</h1>
+  </header>
+
+  <nav>
+    <button onclick="showSection('teacher')">Teacher Guide</button>
+    <button onclick="showSection('student')">Student Pages</button>
+    <button onclick="showSection('practice')">Practice</button>
+  </nav>
+
+  <div id="teacher" class="section">
+    <!-- Teacher content here -->
+  </div>
+
+  <div id="student" class="section" style="display:none;">
+    <!-- Student content here -->
+  </div>
+
+  <div id="practice" class="section" style="display:none;">
+    <!-- Practice activities here -->
+  </div>
+
+  <script src="scripts/lesson.js"></script>
+</body>
+</html>
+```
+
+**Afternoon: Practice Interactive Features (3-4 hours)**
+
+**Add Interactive Quiz:**
+```html
+<div class="interactive-quiz">
+  <p>What is 1/4 + 1/4?</p>
+  <button onclick="checkAnswer('A')">A) 1/8</button>
+  <button onclick="checkAnswer('B')">B) 2/4</button>
+  <button onclick="checkAnswer('C')">C) 1/2</button>
+  <div id="feedback"></div>
+</div>
+
+<script>
+function checkAnswer(choice) {
+  const feedback = document.getElementById('feedback');
+  if (choice === 'B' || choice === 'C') {
+    feedback.innerHTML = '<p class="correct">✓ Correct!</p>';
+  } else {
+    feedback.innerHTML = '<p class="incorrect">Try again.</p>';
+  }
+}
+</script>
+```
+
+**Test Responsive Design:**
+```bash
+# Open in browser
+open test.html
+
+# Resize browser window - does it adapt?
+# Test on mobile viewport
+```
+
+**Day 3 Reflection:**
+- [ ] Generated HTML from Markdown
+- [ ] Applied CSS styling
+- [ ] Added interactive navigation
+- [ ] Created simple interactive quiz
+- [ ] Tested responsive design
+
+---
+
+### Day 4: SCORM Packaging (6-8 hours)
+
+**Morning: Understand SCORM Structure (3-4 hours)**
+
+**SCORM Package Anatomy:**
+```
+lesson-3.2-scorm.zip
+├── imsmanifest.xml       # SCORM manifest (required)
+├── index.html            # Launch file
+├── assets/
+│   ├── images/
+│   └── videos/
+├── scripts/
+│   ├── scorm-api.js      # SCORM API wrapper
+│   └── lesson.js         # Content logic
+└── styles/
+    └── lesson.css
+```
+
+**Step 1: Create imsmanifest.xml**
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest identifier="hmh-math-tx-lesson-3.2" version="1.0">
+  <metadata>
+    <schema>ADL SCORM</schema>
+    <schemaversion>1.2</schemaversion>
+  </metadata>
+  <organizations default="hmh-math-tx-lesson-3.2-org">
+    <organization identifier="hmh-math-tx-lesson-3.2-org">
+      <title>Lesson 3.2: Adding Fractions</title>
+      <item identifier="item1" identifierref="resource1">
+        <title>Adding Fractions with Unlike Denominators</title>
+      </item>
+    </organization>
+  </organizations>
+  <resources>
+    <resource identifier="resource1" type="webcontent" href="index.html">
+      <file href="index.html"/>
+      <file href="scripts/scorm-api.js"/>
+      <file href="styles/lesson.css"/>
+      <file href="assets/diagram1.png"/>
+    </resource>
+  </resources>
+</manifest>
+```
+
+**Step 2: Add SCORM API Communication**
+```javascript
+// scripts/scorm-api.js
+let scormAPI = null;
+
+function initSCORM() {
+  scormAPI = window.parent.API || window.top.API;
+  if (scormAPI) {
+    scormAPI.LMSInitialize("");
+    scormAPI.LMSSetValue("cmi.core.lesson_status", "incomplete");
+  }
+}
+
+function completeSCORM() {
+  if (scormAPI) {
+    scormAPI.LMSSetValue("cmi.core.lesson_status", "completed");
+    scormAPI.LMSSetValue("cmi.core.score.raw", "100");
+    scormAPI.LMSCommit("");
+    scormAPI.LMSFinish("");
+  }
+}
+
+window.onload = initSCORM;
+window.onbeforeunload = completeSCORM;
+```
+
+**Afternoon: Package and Test (3-4 hours)**
+
+**Step 3: Create SCORM Package**
+```bash
+cd production/scorm/lesson-3.2/
+
+# Package as ZIP
+zip -r lesson-3.2-scorm.zip *
+
+# Move to dist
+mv lesson-3.2-scorm.zip ../../../dist/scorm/
+```
+
+**Step 4: Test in LMS**
+```
+1. Log into test LMS (Canvas/Moodle)
+2. Upload SCORM package
+3. Launch and verify:
+   - Content loads
+   - Navigation works
+   - Completion tracked
+   - Score recorded
+```
+
+**Day 4 Reflection:**
+- [ ] Understand SCORM package structure
+- [ ] Created imsmanifest.xml
+- [ ] Added SCORM API communication
+- [ ] Packaged as ZIP
+- [ ] Tested in LMS environment
+
+---
+
+### Day 5: Complete End-to-End Production (6-8 hours)
+
+**Your First Independent Production Run**
+
+**Assignment: Produce Lesson 4.1 in all formats**
+
+**Step 1: Review Source (30 min)**
+```bash
+cd /published/lessons/hmh-math-tx/grade-5/lesson-4.1/
+
+ls
+# - teacher-guide.md
+# - student-pages.md
+# - practice-problems.md
+# - assets/ (5 images, 1 video)
+```
+
+**Step 2: PDF Production (1.5 hours)**
+```bash
+# Teacher guide
+pandoc teacher-guide.md \
+  --template=../../templates/hmh-teacher-guide.latex \
+  --pdf-engine=xelatex \
+  --toc \
+  --resource-path=assets \
+  -o ../../../production/pdf/lesson-4.1-teacher.pdf
+
+# Student pages
+pandoc student-pages.md \
+  --template=../../templates/hmh-student-workbook.latex \
+  --pdf-engine=xelatex \
+  --resource-path=assets \
+  -o ../../../production/pdf/lesson-4.1-student.pdf
+
+# QA check both PDFs
+```
+
+**Step 3: HTML Production (2 hours)**
+```bash
+# Create interactive HTML
+cd ../../../production/html/lesson-4.1/
+
+# Convert markdown sections
+pandoc ../../../published/lessons/hmh-math-tx/grade-5/lesson-4.1/teacher-guide.md \
+  --css=styles/lesson.css \
+  --standalone \
+  -o teacher-section.html
+
+# Build interactive index.html (use Day 3 template)
+# Add navigation, interactive elements
+# Test responsive design
+```
+
+**Step 4: SCORM Package (2 hours)**
+```bash
+cd ../../../production/scorm/lesson-4.1/
+
+# Copy HTML content
+cp -r ../html/lesson-4.1/* .
+
+# Create imsmanifest.xml (use Day 4 template)
+# Add SCORM API wrapper
+# Package as ZIP
+zip -r lesson-4.1-scorm.zip *
+
+# Test in LMS
+```
+
+**Step 5: QA and Delivery (1 hour)**
+```bash
+# Run QA checklist
+# - All PDFs render correctly
+# - HTML responsive on mobile
+# - SCORM launches in LMS
+# - All assets display correctly
+
+# Move to dist/
+mv production/pdf/lesson-4.1-*.pdf dist/pdf/
+mv production/html/lesson-4.1/ dist/html/
+mv production/scorm/lesson-4.1-scorm.zip dist/scorm/
+
+# Create delivery manifest (JSON)
+# Notify stakeholders
+```
+
+**Day 5 Reflection:**
+- [ ] Completed full production run independently
+- [ ] Generated all 3 formats (PDF, HTML, SCORM)
+- [ ] Ran QA checklist
+- [ ] Delivered to dist/ directory
+- [ ] Ready for Week 2 advanced topics
+
+---
+
+### Week 1 Summary
+
+**Skills Acquired:**
+- PDF production with Pandoc and LaTeX templates
+- HTML production with CSS styling and interactivity
+- SCORM packaging with manifest and API
+- Asset optimization (images, videos)
+- QA processes
+- Directory structure and git workflow
+
+**Next Steps (Week 2):**
+- Accessible format production (large print, screen reader, braille)
+- Advanced asset optimization and CDN delivery
+- Automation scripts for batch production
+- Performance optimization
+- Working with production metrics
+
+---
+
 ## 2. Publishing Workflow
 
 ### End-to-End Process
@@ -731,6 +1271,790 @@ zip -r package-scorm.zip manifest.xml content/ assets/
 - [ ] SCORM tested in LMS
 - [ ] Documentation complete
 - [ ] Delivery confirmed
+
+---
+
+## Frequently Asked Questions
+
+### PDF Production
+
+**Q1: Pandoc fails with "! LaTeX Error: File not found". How do I fix image paths?**
+
+**A:** Use `--resource-path` to specify where Pandoc should look for assets:
+```bash
+pandoc teacher-guide.md \
+  --resource-path=assets:../assets:../../shared-assets \
+  --pdf-engine=xelatex \
+  -o output.pdf
+```
+
+Multiple paths separated by `:` (Unix) or `;` (Windows). Pandoc searches in order.
+
+**Q2: PDFs have inconsistent fonts. How do I ensure brand fonts are used?**
+
+**A:** Specify fonts in LaTeX template and install system-wide:
+```latex
+% In template .latex file
+\setmainfont{Helvetica Neue}
+\setmonofont{Courier New}
+```
+
+Install fonts:
+```bash
+# macOS
+cp fonts/*.ttf /Library/Fonts/
+
+# Linux
+cp fonts/*.ttf ~/.fonts/
+fc-cache -f -v
+```
+
+**Q3: How do I generate both print and digital PDFs with different specifications?**
+
+**A:** Use Pandoc variables to control output:
+```bash
+# Print version (CMYK, high res, bleed)
+pandoc content.md \
+  --template=templates/print.latex \
+  -V print-mode:true \
+  -V dpi:300 \
+  -o print.pdf
+
+# Digital version (RGB, screen res, hyperlinks)
+pandoc content.md \
+  --template=templates/digital.latex \
+  -V digital-mode:true \
+  -V colorlinks:true \
+  -o digital.pdf
+```
+
+**Q4: PDF generation is slow (5+ minutes). How can I speed it up?**
+
+**A:** Several optimizations:
+```bash
+# 1. Optimize images BEFORE Pandoc (resize to needed size)
+find assets/ -name "*.png" -exec convert {} -resize 1200x {}.opt.png \;
+
+# 2. Use faster PDF engine (if acceptable quality)
+--pdf-engine=pdflatex  # Faster than xelatex
+
+# 3. Disable TOC if not needed
+# Remove --toc flag
+
+# 4. Parallel processing for multiple files
+ls *.md | xargs -P 4 -I {} pandoc {} -o {}.pdf
+```
+
+**Q5: How do I add page numbers, headers, and footers?**
+
+**A:** Configure in LaTeX template:
+```latex
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead[L]{HMH Into Math - Grade 5}
+\fancyhead[R]{Lesson 3.2}
+\fancyfoot[C]{\thepage}
+```
+
+---
+
+### HTML Production
+
+**Q6: HTML doesn't look right on mobile. How do I make it responsive?**
+
+**A:** Use responsive CSS:
+```css
+/* Mobile-first approach */
+body {
+  font-size: 16px;
+  padding: 10px;
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+  body {
+    font-size: 18px;
+    padding: 20px;
+  }
+}
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+/* Images scale */
+img {
+  max-width: 100%;
+  height: auto;
+}
+```
+
+Test with browser dev tools mobile emulation.
+
+**Q7: Videos don't play in HTML. What formats should I use?**
+
+**A:** Provide multiple formats for compatibility:
+```html
+<video controls width="640">
+  <source src="video.mp4" type="video/mp4">
+  <source src="video.webm" type="video/webm">
+  <p>Your browser doesn't support HTML5 video. <a href="video.mp4">Download video</a>.</p>
+</video>
+```
+
+Convert with FFmpeg:
+```bash
+# MP4 (H.264)
+ffmpeg -i source.mov -c:v libx264 -crf 23 -c:a aac -b:a 128k video.mp4
+
+# WebM (VP9)
+ffmpeg -i source.mov -c:v libvpx-vp9 -crf 30 -c:a libopus video.webm
+```
+
+**Q8: How do I implement navigation between sections without page reload?**
+
+**A:** Use JavaScript to show/hide sections:
+```javascript
+function showSection(sectionId) {
+  // Hide all sections
+  document.querySelectorAll('.section').forEach(section => {
+    section.style.display = 'none';
+  });
+
+  // Show requested section
+  document.getElementById(sectionId).style.display = 'block';
+
+  // Update navigation active state
+  document.querySelectorAll('.nav-button').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  event.target.classList.add('active');
+
+  // Update URL without reload (for bookmarking)
+  history.pushState({section: sectionId}, '', `#${sectionId}`);
+}
+
+// Handle back/forward buttons
+window.addEventListener('popstate', (event) => {
+  if (event.state && event.state.section) {
+    showSection(event.state.section);
+  }
+});
+```
+
+---
+
+### SCORM Packaging
+
+**Q9: SCORM package uploads but doesn't launch in LMS. What's wrong?**
+
+**A:** Check common issues:
+```bash
+# 1. Verify imsmanifest.xml is at package root
+unzip -l package.zip | head -5
+# Should show: imsmanifest.xml as first file
+
+# 2. Validate XML syntax
+xmllint --noout imsmanifest.xml
+# No output = valid
+
+# 3. Check href paths match actual files
+# In manifest: <resource ... href="index.html">
+ls index.html  # Must exist
+
+# 4. Verify no spaces in filenames
+find . -name "* *"
+# Rename any files with spaces
+
+# 5. Test with SCORM validator
+# Upload to: https://scorm.com/scorm-solved/scorm-cloud-features/scorm-content-player/
+```
+
+**Q10: LMS shows "incomplete" even after completing content. How do I fix completion tracking?**
+
+**A:** Ensure proper SCORM API calls:
+```javascript
+// SCORM 1.2
+function completeCourse() {
+  var scormAPI = findAPI();
+  if (scormAPI) {
+    // Set status
+    scormAPI.LMSSetValue("cmi.core.lesson_status", "completed");
+
+    // Set score (0-100)
+    scormAPI.LMSSetValue("cmi.core.score.raw", "100");
+    scormAPI.LMSSetValue("cmi.core.score.min", "0");
+    scormAPI.LMSSetValue("cmi.core.score.max", "100");
+
+    // Commit data
+    scormAPI.LMSCommit("");
+
+    // Finish session
+    scormAPI.LMSFinish("");
+  }
+}
+
+// Call on quiz completion or lesson end
+document.getElementById('finish-button').addEventListener('click', completeCourse);
+```
+
+**Q11: Different LMS platforms (Canvas, Moodle, Blackboard) behave differently. How do I ensure compatibility?**
+
+**A:** Stick to SCORM 1.2 (not 2004) for widest compatibility:
+```xml
+<!-- Use SCORM 1.2 in manifest -->
+<schemaversion>1.2</schemaversion>
+```
+
+Test in target LMS:
+- Canvas: Use SCORM 1.2, test with Canvas Cloud
+- Moodle: Works with 1.2 and 2004, test locally
+- Blackboard: Prefers SCORM 1.2, test in sandbox
+
+Common compatibility fixes:
+```javascript
+// Find API across different LMS implementations
+function findAPI(win) {
+  let attempts = 0;
+  const maxAttempts = 500;
+
+  while (!win.API && !win.API_1484_11 && win.parent && win.parent != win && attempts < maxAttempts) {
+    attempts++;
+    win = win.parent;
+  }
+
+  return win.API || win.API_1484_11 || null;
+}
+```
+
+---
+
+### Asset Management
+
+**Q12: What are the optimal image specifications for web vs. print?**
+
+**A:**
+
+**Web (HTML/SCORM):**
+```bash
+# JPG for photos
+convert photo.jpg -resize 1200x -quality 85 photo-web.jpg
+
+# PNG for diagrams/text
+convert diagram.png -resize 800x diagram-web.png
+
+# SVG for logos/icons (no conversion needed, already optimal)
+```
+
+**Print (PDF):**
+```bash
+# High resolution (300 DPI)
+convert photo.jpg -density 300 -units PixelsPerInch photo-print.jpg
+
+# CMYK color space for professional printing
+convert photo.jpg -colorspace CMYK photo-print-cmyk.jpg
+```
+
+**Q13: How do I batch-optimize hundreds of images?**
+
+**A:** Use shell loops with ImageMagick:
+```bash
+# Optimize all JPGs in assets/
+for file in assets/**/*.jpg; do
+  convert "$file" -resize 1200x -quality 85 "${file%.jpg}-opt.jpg"
+done
+
+# Optimize all PNGs (lossless compression)
+for file in assets/**/*.png; do
+  optipng -o5 "$file"  # or: pngquant --quality=80-95 "$file"
+done
+
+# Or use parallel processing for speed
+find assets/ -name "*.jpg" | parallel -j 8 convert {} -resize 1200x -quality 85 {}.opt.jpg
+```
+
+**Q14: Videos are too large (100+ MB). How do I compress without losing quality?**
+
+**A:** Use FFmpeg with optimized settings:
+```bash
+# H.264 compression (good quality, widely supported)
+ffmpeg -i input.mov \
+  -c:v libx264 \
+  -crf 23 \
+  -preset slow \
+  -c:a aac -b:a 128k \
+  output.mp4
+
+# For web (smaller file size)
+ffmpeg -i input.mov \
+  -c:v libx264 \
+  -crf 28 \
+  -preset faster \
+  -c:a aac -b:a 96k \
+  output-web.mp4
+
+# Check file size reduction
+ls -lh input.mov output.mp4
+```
+
+CRF values: 18 (high quality, large file) to 28 (lower quality, small file). 23 is balanced.
+
+---
+
+### Quality Assurance
+
+**Q15: How do I validate WCAG 2.1 AA compliance for HTML?**
+
+**A:** Use automated tools + manual checks:
+
+**Automated:**
+```bash
+# Install Pa11y
+npm install -g pa11y
+
+# Test HTML file
+pa11y --standard WCAG2AA output.html
+
+# Test entire site
+pa11y-ci --sitemap https://example.com/sitemap.xml
+```
+
+**Manual Checklist:**
+- [ ] All images have alt text
+- [ ] Color contrast ≥ 4.5:1 for text
+- [ ] Keyboard navigation works (no mouse needed)
+- [ ] Screen reader announces all content properly
+- [ ] Form inputs have labels
+- [ ] Videos have captions
+
+**Q16: PDF renders differently on Mac vs. Windows. How do I ensure consistency?**
+
+**A:** Use embedded fonts and consistent settings:
+```bash
+pandoc content.md \
+  --pdf-engine=xelatex \
+  --variable fontenc=T1 \
+  --variable geometry:margin=1in \
+  -o output.pdf
+
+# Verify fonts are embedded
+pdffonts output.pdf
+# "emb" column should show "yes" for all fonts
+
+# If fonts not embedded, force it in LaTeX template:
+\usepackage{fontspec}
+\setmainfont[Path=fonts/,Extension=.ttf,UprightFont=*-Regular,BoldFont=*-Bold]{HelveticaNeue}
+```
+
+Test on both platforms or use PDF viewer that renders consistently (Adobe Acrobat).
+
+---
+
+### Automation and Workflow
+
+**Q17: Can I automate production for batch processing 50+ lessons?**
+
+**A:** Yes, use bash scripts:
+```bash
+#!/bin/bash
+# batch-produce.sh
+
+LESSONS_DIR="/published/lessons/hmh-math-tx/grade-5"
+OUTPUT_DIR="/dist/pdf"
+
+for lesson in "$LESSONS_DIR"/*/; do
+  lesson_name=$(basename "$lesson")
+  echo "Processing: $lesson_name"
+
+  # PDF
+  pandoc "$lesson/teacher-guide.md" \
+    --template=templates/hmh-teacher-guide.latex \
+    --pdf-engine=xelatex \
+    --resource-path="$lesson/assets" \
+    -o "$OUTPUT_DIR/$lesson_name-teacher.pdf"
+
+  # HTML
+  pandoc "$lesson/student-pages.md" \
+    --css=styles/lesson.css \
+    --standalone \
+    -o "/dist/html/$lesson_name.html"
+done
+
+echo "Batch processing complete"
+```
+
+Run: `./batch-produce.sh`
+
+**Q18: How do I set up a CI/CD pipeline for automated production on content updates?**
+
+**A:** Use GitHub Actions:
+```yaml
+# .github/workflows/production.yml
+name: Auto Production
+
+on:
+  push:
+    paths:
+      - 'published/**'
+
+jobs:
+  produce:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install tools
+        run: |
+          sudo apt-get install -y pandoc texlive-xelatex
+
+      - name: Generate PDFs
+        run: |
+          for file in published/**/*.md; do
+            pandoc "$file" -o "dist/$(basename $file .md).pdf"
+          done
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: production-output
+          path: dist/
+```
+
+---
+
+### Troubleshooting
+
+**Q19: Pandoc hangs/crashes on large files (1000+ pages). How do I handle this?**
+
+**A:** Split into smaller chunks:
+```bash
+# Split markdown file into chapters
+csplit content.md '/^# Chapter/' '{*}'
+
+# Process each chapter
+for chapter in xx*; do
+  pandoc "$chapter" -o "chapter-$(basename $chapter).pdf"
+done
+
+# Merge PDFs
+pdfunite chapter-*.pdf complete-book.pdf
+```
+
+**Q20: Build fails with cryptic LaTeX errors. How do I debug?**
+
+**A:** Check LaTeX log:
+```bash
+# Run pandoc with --verbose
+pandoc content.md --pdf-engine=xelatex --verbose -o output.pdf 2>&1 | tee build.log
+
+# Look for actual error (often near end)
+grep -i "error" build.log
+
+# Common fixes:
+# 1. Special characters - escape: \$ \% \& \# \_ \{ \}
+# 2. Image paths - use --resource-path
+# 3. Missing packages - install with tlmgr:
+sudo tlmgr install <package-name>
+```
+
+---
+
+## Common Issues and Troubleshooting
+
+### Issue 1: "Permission Denied" when writing to dist/
+
+**Symptom:**
+```
+bash: dist/output.pdf: Permission denied
+```
+
+**Cause:** Directory permissions or file locked by another process
+
+**Solution:**
+```bash
+# Check permissions
+ls -la dist/
+
+# Fix permissions
+chmod 755 dist/
+chmod 644 dist/*.pdf
+
+# Check if file is open in another application
+lsof | grep output.pdf  # macOS/Linux
+
+# Close file and retry
+```
+
+---
+
+### Issue 2: Broken Images in PDF
+
+**Symptom:** PDF shows empty boxes or [IMAGE] placeholders
+
+**Cause:** Pandoc can't find image files
+
+**Solution:**
+```bash
+# Method 1: Use --resource-path
+pandoc content.md --resource-path=assets:../assets -o output.pdf
+
+# Method 2: Use absolute paths in markdown
+# Change: ![](image.png)
+# To: ![](/full/path/to/image.png)
+
+# Method 3: Copy images to same directory
+cp assets/*.png .
+pandoc content.md -o output.pdf
+```
+
+---
+
+### Issue 3: SCORM Package Works in One LMS But Not Another
+
+**Symptom:** Package launches in Canvas but fails in Moodle (or vice versa)
+
+**Cause:** LMS-specific SCORM implementation differences
+
+**Solution:**
+```javascript
+// Robust API finder that works across LMS platforms
+function findAPI(win) {
+  let API = null;
+  let findAttempts = 0;
+  const maxAttempts = 500;
+
+  while (!API && win.parent && win != win.parent && findAttempts < maxAttempts) {
+    findAttempts++;
+
+    // Check for SCORM 1.2
+    if (win.parent.API) {
+      API = win.parent.API;
+      break;
+    }
+
+    // Check for SCORM 2004
+    if (win.parent.API_1484_11) {
+      API = win.parent.API_1484_11;
+      break;
+    }
+
+    win = win.parent;
+  }
+
+  return API;
+}
+```
+
+Test in multiple LMS platforms before final delivery.
+
+---
+
+### Issue 4: HTML Looks Different in Different Browsers
+
+**Symptom:** Chrome looks great, Firefox has layout issues, Safari has font problems
+
+**Cause:** Browser-specific CSS rendering differences
+
+**Solution:**
+```css
+/* Use CSS reset to normalize across browsers */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Use standard web-safe fonts as fallbacks */
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Test with vendor prefixes for newer CSS */
+.element {
+  display: -webkit-flex;
+  display: flex;
+}
+
+/* Use feature detection, not browser detection */
+@supports (display: grid) {
+  .container {
+    display: grid;
+  }
+}
+```
+
+Test in: Chrome, Firefox, Safari, Edge
+
+---
+
+### Issue 5: PDF File Size Too Large (50+ MB)
+
+**Symptom:** PDF is slow to open, too large to email
+
+**Cause:** Unoptimized images
+
+**Solution:**
+```bash
+# Optimize images BEFORE Pandoc
+find assets/ -name "*.jpg" -exec convert {} -resize 1200x -quality 85 {} \;
+find assets/ -name "*.png" -exec optipng -o5 {} \;
+
+# Or compress existing PDF
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output-compressed.pdf input.pdf
+
+# Check size reduction
+ls -lh input.pdf output-compressed.pdf
+```
+
+---
+
+### Issue 6: Video Won't Play in SCORM Package
+
+**Symptom:** Video shows but doesn't play when clicked
+
+**Cause:** Incorrect MIME type or codec
+
+**Solution:**
+```html
+<!-- Use multiple formats -->
+<video controls>
+  <source src="video.mp4" type="video/mp4">
+  <source src="video.webm" type="video/webm">
+  Your browser doesn't support video.
+</video>
+
+<!-- Ensure server sends correct MIME types -->
+<!-- .mp4 → video/mp4 -->
+<!-- .webm → video/webm -->
+
+<!-- Convert to web-friendly codecs -->
+ffmpeg -i input.mov -c:v libx264 -profile:v baseline -level 3.0 -c:a aac video.mp4
+```
+
+---
+
+### Issue 7: LaTeX Template Changes Don't Apply
+
+**Symptom:** Modified template, but PDF looks the same
+
+**Cause:** Pandoc caching or using wrong template
+
+**Solution:**
+```bash
+# Specify template explicitly
+pandoc content.md --template=/full/path/to/template.latex -o output.pdf
+
+# Clear Pandoc cache (if exists)
+rm -rf ~/.pandoc/
+
+# Verify template is being used
+pandoc content.md --template=template.latex --verbose 2>&1 | grep template
+```
+
+---
+
+### Issue 8: Accessibility Checker Fails on PDF
+
+**Symptom:** PDF accessibility validation fails
+
+**Cause:** Missing alt text, improper structure, no tags
+
+**Solution:**
+```latex
+% In LaTeX template, enable PDF/UA tagging
+\usepackage[pdfa]{hyperref}
+\usepackage{pdfcomment}
+
+% In markdown, always provide alt text
+![Alt text describing image](image.png)
+
+% Generate tagged PDF
+pandoc content.md --pdf-engine=xelatex -o output.pdf
+
+% Validate with Adobe Acrobat:
+% Tools → Accessibility → Full Check
+```
+
+---
+
+## Production Metrics and Analytics
+
+### Key Metrics to Track
+
+**1. Production Time**
+```bash
+# Track time per content type
+echo "Lesson 3.2 PDF: 1.5 hours" >> production-log.txt
+echo "Lesson 3.2 HTML: 2 hours" >> production-log.txt
+echo "Lesson 3.2 SCORM: 1 hour" >> production-log.txt
+
+# Calculate averages
+awk -F: '{sum+=$2; count++} END {print "Average:", sum/count, "hours"}' production-log.txt
+```
+
+**2. File Sizes**
+```bash
+# Track output sizes
+ls -lh dist/pdf/*.pdf | awk '{print $5, $9}' > size-report.txt
+
+# Calculate total size per format
+du -sh dist/pdf dist/html dist/scorm
+```
+
+**3. Quality Metrics**
+- PDF rendering issues: 0 per file (target)
+- WCAG violations: 0 per HTML file (target)
+- SCORM launch failures: <1% (target)
+- Asset optimization: >70% size reduction (target)
+
+**4. Throughput**
+```bash
+# Lessons produced per week
+find dist/ -name "*.pdf" -mtime -7 | wc -l
+
+# Formats produced per lesson
+find dist/ -type d -mindepth 2 | cut -d/ -f2 | sort | uniq -c
+```
+
+### Weekly Production Report Template
+
+```markdown
+# Production Report - Week of [DATE]
+
+## Output Summary
+- Lessons produced: 12
+- Assessments produced: 5
+- Total deliverables: 34 (PDF: 15, HTML: 10, SCORM: 9)
+
+## Time Metrics
+- Average time per lesson: 4.2 hours (down from 5.1 last week)
+- Total production time: 68 hours
+- Fastest production: 2.5 hours (Lesson 4.3)
+- Slowest production: 7 hours (Lesson 5.1 - complex interactive)
+
+## Quality Metrics
+- PDFs with rendering issues: 0
+- WCAG violations found: 2 (both fixed)
+- SCORM packages tested: 9 (100% launch success)
+- Average file size: PDF 4.2 MB, HTML 1.8 MB
+
+## Issues Encountered
+- LaTeX compilation error on Lesson 4.8 (resolved: missing image)
+- SCORM API timeout in Moodle (resolved: increased timeout)
+
+## Process Improvements
+- Implemented batch image optimization script (saved 3 hours/week)
+- Created SCORM template with robust API finder (reduced LMS issues)
+
+## Next Week Goals
+- Produce 15 lessons
+- Reduce average production time to <4 hours
+- Implement automated QA checks
+```
 
 ---
 
