@@ -16,7 +16,7 @@ class ClaudeClient:
             raise ValueError("ANTHROPIC_API_KEY environment variable is not set")
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
-        self.default_model = "claude-3-5-sonnet-20241022"  # Latest Sonnet model
+        self.default_model = "claude-3-5-sonnet-20240620"  # Claude 3.5 Sonnet
         self.max_tokens = 8000
 
     async def generate_response(
