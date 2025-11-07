@@ -4,7 +4,10 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { Toaster } from 'react-hot-toast';
+import { ErrorBoundary } from 'react-error-boundary';
 import useAuthStore from './store/authStore';
+import ErrorFallback from './components/ErrorFallback';
 
 // Pages
 import Login from './pages/Login';
@@ -18,6 +21,11 @@ import ContentEditor from './pages/ContentEditor';
 import ReviewQueue from './pages/ReviewQueue';
 import ConfigManager from './pages/ConfigManager';
 import Profile from './pages/Profile';
+import Agents from './pages/Agents';
+import Workflows from './pages/Workflows';
+import WorkflowDetail from './pages/WorkflowDetail';
+import WorkflowEditor from './pages/WorkflowEditor';
+import Skills from './pages/Skills';
 
 // Create QueryClient
 const queryClient = new QueryClient({
@@ -68,8 +76,13 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <BrowserRouter>
-        <Routes>
+        <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          onReset={() => window.location.href = '/'}
+        >
+          <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -154,6 +167,72 @@ function App() {
             }
           />
 
+          {/* Agents Routes (Authors+) */}
+          <Route
+            path="/agents"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <Agents />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Workflows Routes (Authors+) */}
+          <Route
+            path="/workflows"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <Workflows />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workflows/new"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <WorkflowEditor />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workflows/:id"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <WorkflowDetail />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workflows/:id/edit"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <WorkflowEditor />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Skills Routes (Authors+) */}
+          <Route
+            path="/skills"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <Skills />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
           {/* Review Routes (Editors, Engineers) */}
           <Route
             path="/reviews"
@@ -181,6 +260,7 @@ function App() {
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </ErrorBoundary>
       </BrowserRouter>
     </QueryClientProvider>
   );

@@ -4,6 +4,7 @@ User database model and Pydantic schemas.
 from datetime import datetime
 from typing import Optional
 from sqlalchemy import Boolean, Column, DateTime, Integer, String, Text
+from sqlalchemy.orm import relationship
 from pydantic import BaseModel, EmailStr
 from database.session import Base
 
@@ -26,6 +27,9 @@ class User(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
     last_login = Column(DateTime, nullable=True)
     preferences = Column(Text, nullable=True)  # JSON string
+
+    # Relationships
+    agent_jobs = relationship("AgentJob", back_populates="user")
 
 
 # Pydantic schemas

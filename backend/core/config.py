@@ -11,9 +11,9 @@ class Settings(BaseSettings):
 
     # API Configuration
     API_V1_STR: str = "/api/v1"
-    PROJECT_NAME: str = "HMH Content Management System"
+    PROJECT_NAME: str = "Nova"
     VERSION: str = "1.0.0"
-    DESCRIPTION: str = "Comprehensive API for HMH Multi-Curriculum Knowledge Base"
+    DESCRIPTION: str = "AI-Powered Educational Content Platform with Professor Framework Integration"
 
     # CORS
     BACKEND_CORS_ORIGINS: List[str] = []
@@ -56,7 +56,7 @@ class Settings(BaseSettings):
     LOG_FORMAT: str = "json"
 
     # Admin
-    FIRST_SUPERUSER_EMAIL: str = "admin@hmhco.com"
+    FIRST_SUPERUSER_EMAIL: str = "admin@nova.ai"
     FIRST_SUPERUSER_PASSWORD: str = "changeme"
 
     # Professor Framework Integration
@@ -67,8 +67,8 @@ class Settings(BaseSettings):
     # Git Integration
     GIT_ENABLED: bool = True
     GIT_AUTO_COMMIT: bool = False
-    GIT_COMMIT_USER_NAME: str = "HMH CMS"
-    GIT_COMMIT_USER_EMAIL: str = "cms@hmhco.com"
+    GIT_COMMIT_USER_NAME: str = "Nova"
+    GIT_COMMIT_USER_EMAIL: str = "system@nova.ai"
 
     # File Upload
     MAX_UPLOAD_SIZE_MB: int = 50

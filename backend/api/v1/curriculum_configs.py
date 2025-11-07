@@ -25,7 +25,7 @@ class CurriculumConfig(BaseModel):
     subject: str
     district: Optional[str] = None
     course: Optional[str] = None
-    knowledge_resolution: Dict[str, List[str]]
+    knowledge_resolution: Dict[str, Any]  # Allow any type for flexibility (order, note, etc.)
     standards: Optional[Dict[str, Any]] = None
     metadata: Optional[Dict[str, Any]] = None
 
@@ -39,7 +39,7 @@ class CurriculumConfigCreate(BaseModel):
     subject: str
     district: Optional[str] = None
     course: Optional[str] = None
-    knowledge_resolution: Dict[str, List[str]]
+    knowledge_resolution: Dict[str, Any]  # Allow any type for flexibility (order, note, etc.)
     standards: Optional[Dict[str, Any]] = None
     metadata: Optional[Dict[str, Any]] = {}
 
@@ -113,8 +113,9 @@ async def list_curriculum_configs(
                 continue
 
             configs.append(CurriculumConfig(**config_data))
-        except (json.JSONDecodeError, KeyError):
-            # Skip invalid config files
+        except (json.JSONDecodeError, KeyError, Exception) as e:
+            # Skip invalid config files (malformed JSON, missing fields, validation errors)
+            print(f"Skipping invalid config {config_file.name}: {str(e)}")
             continue
 
     return configs

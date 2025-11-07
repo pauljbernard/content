@@ -12,6 +12,8 @@ import {
 import { contentAPI } from '../services/api';
 import useAuthStore from '../store/authStore';
 import Layout from '../components/Layout';
+import EmptyState from '../components/EmptyState';
+import { SkeletonList } from '../components/LoadingSkeleton';
 
 export default function ContentList() {
   const { user } = useAuthStore();
@@ -190,7 +192,9 @@ export default function ContentList() {
         {/* Content List */}
         <div className="bg-white shadow rounded-lg overflow-hidden">
           {isLoading ? (
-            <div className="p-8 text-center text-gray-500">Loading...</div>
+            <div className="p-6">
+              <SkeletonList items={5} />
+            </div>
           ) : filteredContent && filteredContent.length > 0 ? (
             <div className="divide-y divide-gray-200">
               {filteredContent.map((item) => (
@@ -241,20 +245,24 @@ export default function ContentList() {
               ))}
             </div>
           ) : (
-            <div className="p-8 text-center">
-              <p className="text-gray-500">No content found</p>
-              {['author', 'editor', 'knowledge_engineer'].includes(
-                user?.role
-              ) && (
-                <Link
-                  to="/content/new"
-                  className="mt-4 inline-flex items-center text-primary-600 hover:text-primary-700"
-                >
-                  <PlusIcon className="h-5 w-5 mr-1" />
-                  Create your first content
-                </Link>
-              )}
-            </div>
+            <EmptyState
+              icon="📝"
+              title="No content found"
+              message={
+                search || Object.values(filters).some((f) => f !== '')
+                  ? 'No content matches your search or filter criteria. Try adjusting your filters.'
+                  : 'Get started by creating your first piece of content'
+              }
+              action={
+                ['author', 'editor', 'knowledge_engineer'].includes(user?.role)
+                  ? {
+                      label: 'Create Content',
+                      onClick: () => (window.location.href = '/content/new'),
+                      icon: <PlusIcon className="h-5 w-5" />,
+                    }
+                  : undefined
+              }
+            />
           )}
         </div>
       </div>

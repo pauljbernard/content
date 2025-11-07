@@ -256,4 +256,49 @@ export const searchAPI = {
   },
 };
 
+// Agent API
+export const agentsAPI = {
+  // List available agents
+  list: async () => {
+    const response = await apiClient.get('/agents/');
+    return response.data;
+  },
+
+  // Invoke an agent
+  invoke: async (agentType, taskDescription, parameters = {}) => {
+    const response = await apiClient.post('/agents/invoke', {
+      agent_type: agentType,
+      task_description: taskDescription,
+      parameters,
+    });
+    return response.data;
+  },
+
+  // List user's jobs
+  listJobs: async (status = null, limit = 20) => {
+    const response = await apiClient.get('/agents/jobs', {
+      params: { status, limit },
+    });
+    return response.data;
+  },
+
+  // Get job status
+  getJobStatus: async (jobId) => {
+    const response = await apiClient.get(`/agents/jobs/${jobId}`);
+    return response.data;
+  },
+
+  // Get job result
+  getJobResult: async (jobId) => {
+    const response = await apiClient.get(`/agents/jobs/${jobId}/result`);
+    return response.data;
+  },
+
+  // Cancel a job
+  cancelJob: async (jobId) => {
+    const response = await apiClient.post(`/agents/jobs/${jobId}/cancel`);
+    return response.data;
+  },
+};
+
 export default apiClient;

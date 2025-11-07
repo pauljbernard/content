@@ -24,11 +24,11 @@ router = APIRouter(prefix="/content")
 async def list_content(
     skip: int = 0,
     limit: int = 20,
-    status: Optional[ContentStatus] = None,
-    content_type: Optional[ContentType] = None,
-    subject: Optional[str] = None,
-    grade_level: Optional[str] = None,
-    state: Optional[str] = None,
+    status: Optional[str] = Query(None),
+    content_type: Optional[str] = Query(None),
+    subject: Optional[str] = Query(None),
+    grade_level: Optional[str] = Query(None),
+    state: Optional[str] = Query(None),
     author_id: Optional[int] = None,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
@@ -58,16 +58,24 @@ async def list_content(
             | (Content.author_id == current_user.id)
         )
 
-    # Apply filters
-    if status:
-        query = query.filter(Content.status == status)
-    if content_type:
-        query = query.filter(Content.content_type == content_type)
-    if subject:
+    # Apply filters (convert empty strings to None)
+    if status and status.strip():
+        try:
+            status_enum = ContentStatus(status)
+            query = query.filter(Content.status == status_enum)
+        except ValueError:
+            pass  # Invalid status value, ignore filter
+    if content_type and content_type.strip():
+        try:
+            content_type_enum = ContentType(content_type)
+            query = query.filter(Content.content_type == content_type_enum)
+        except ValueError:
+            pass  # Invalid content_type value, ignore filter
+    if subject and subject.strip():
         query = query.filter(Content.subject == subject)
-    if grade_level:
+    if grade_level and grade_level.strip():
         query = query.filter(Content.grade_level == grade_level)
-    if state:
+    if state and state.strip():
         query = query.filter(Content.state == state)
     if author_id:
         query = query.filter(Content.author_id == author_id)
