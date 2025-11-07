@@ -11,7 +11,7 @@ def init_db():
     """Initialize database with tables and admin user."""
     print("Creating database tables...")
     Base.metadata.create_all(bind=engine)
-    print("✓ Database tables created")
+    print("[OK] Database tables created")
 
     # Create database session
     db = next(get_db())
@@ -21,7 +21,7 @@ def init_db():
         admin = db.query(User).filter(User.email == settings.FIRST_SUPERUSER_EMAIL).first()
 
         if admin:
-            print(f"✓ Admin user already exists: {settings.FIRST_SUPERUSER_EMAIL}")
+            print(f"[OK] Admin user already exists: {settings.FIRST_SUPERUSER_EMAIL}")
         else:
             # Create admin user
             admin = User(
@@ -35,7 +35,7 @@ def init_db():
             db.add(admin)
             db.commit()
             db.refresh(admin)
-            print(f"✓ Created admin user: {settings.FIRST_SUPERUSER_EMAIL}")
+            print(f"[OK] Created admin user: {settings.FIRST_SUPERUSER_EMAIL}")
             print(f"  Password: {settings.FIRST_SUPERUSER_PASSWORD}")
             print(f"  Role: knowledge_engineer (superuser)")
 
@@ -75,7 +75,7 @@ def init_db():
                 )
                 db.add(user)
                 db.commit()
-                print(f"✓ Created {user_data['role']}: {user_data['email']} / {user_data['password']}")
+                print(f"[OK] Created {user_data['role']}: {user_data['email']} / {user_data['password']}")
             else:
                 print(f"  {user_data['role']}: {user_data['email']} (already exists)")
 

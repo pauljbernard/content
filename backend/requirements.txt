@@ -11,6 +11,7 @@ psycopg2-binary==2.9.9
 # Authentication & Security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+bcrypt==4.1.2
 python-dateutil==2.8.2
 pydantic[email]==2.5.0
 pydantic-settings==2.1.0
@@ -33,7 +34,7 @@ markdown==3.5.1
 pymdown-extensions==10.5
 
 # API documentation
-fastapi-swagger-ui==0.3.0
+# fastapi-swagger-ui==0.3.0  # Not needed - FastAPI has built-in Swagger UI
 
 # Testing
 pytest==7.4.3
