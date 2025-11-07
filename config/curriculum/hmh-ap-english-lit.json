@@ -1,0 +1,46 @@
+{
+  "id": "hmh-ap-english-literature",
+  "name": "HMH AP English Literature and Composition",
+  "publisher": "hmh",
+  "program": "ap-english-lit",
+  "subject": "ela",
+  "district": null,
+  "grades": ["11", "12"],
+  "course": "AP English Literature and Composition",
+  "ap_course": true,
+  "version": "2024",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/ela/high-school/",
+      "/reference/hmh-knowledge/subjects/ela/common/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+  "standards": {
+    "primary": "College Board AP English Literature and Composition",
+    "secondary": "Common Core State Standards - ELA (HS)",
+    "frameworks": ["College/Career Readiness"]
+  },
+  "assessments": {
+    "ap_exam": {
+      "format": "AP English Literature and Composition Exam",
+      "sections": ["Multiple Choice (Poetry and Prose)", "Free Response (Poetry Analysis, Prose Analysis, Literary Argument)"],
+      "duration": "3 hours"
+    }
+  },
+  "skills_focus": [
+    "Close reading and literary analysis",
+    "Rhetorical analysis",
+    "Argumentation and evidence",
+    "Poetry interpretation",
+    "Prose fiction analysis",
+    "Literary periods and movements",
+    "Critical writing"
+  ],
+  "college_credit": {
+    "eligible": true,
+    "typical_credit": "3-6 credits",
+    "score_requirement": "3 or higher (varies by institution)"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "hmh-ap-calculus-ab",
+  "name": "HMH AP Calculus AB",
+  "publisher": "hmh",
+  "program": "ap-calculus",
+  "subject": "mathematics",
+  "district": null,
+  "grades": ["11", "12"],
+  "course": "AP Calculus AB",
+  "ap_course": true,
+  "version": "2024",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/mathematics/high-school/",
+      "/reference/hmh-knowledge/subjects/mathematics/common/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+  "standards": {
+    "primary": "College Board AP Calculus AB",
+    "secondary": "Common Core State Standards - Mathematics (HS)",
+    "frameworks": ["College/Career Readiness"]
+  },
+  "assessments": {
+    "ap_exam": {
+      "format": "AP Calculus AB Exam",
+      "sections": ["Multiple Choice", "Free Response"],
+      "calculator_policy": "Graphing calculator required"
+    }
+  },
+  "college_credit": {
+    "eligible": true,
+    "typical_credit": "3-5 credits",
+    "score_requirement": "3 or higher (varies by institution)"
+  }
+}

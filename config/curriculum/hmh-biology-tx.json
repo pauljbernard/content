@@ -1,0 +1,33 @@
+{
+  "id": "hmh-biology-tx",
+  "name": "HMH Biology Texas Edition",
+  "publisher": "hmh",
+  "program": "biology-texas",
+  "subject": "science",
+  "district": "texas",
+  "grades": ["9", "10"],
+  "course": "Biology",
+  "version": "2024",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/science/districts/texas/",
+      "/reference/hmh-knowledge/subjects/science/high-school/",
+      "/reference/hmh-knowledge/subjects/science/common/",
+      "/reference/hmh-knowledge/districts/texas/high-school/",
+      "/reference/hmh-knowledge/districts/texas/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+  "standards": {
+    "primary": "TEKS Science - Biology",
+    "secondary": "NGSS HS-LS (Life Science)",
+    "language": "ELPS",
+    "assessments": ["STAAR Biology EOC"]
+  },
+  "compliance": {
+    "state_adoption": true,
+    "sboe_aligned": true,
+    "eoc_preparation": "STAAR Biology"
+  }
+}

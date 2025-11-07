@@ -1,0 +1,32 @@
+{
+  "id": "hmh-algebra1-tx",
+  "name": "HMH Algebra I Texas Edition",
+  "publisher": "hmh",
+  "program": "aga-texas",
+  "subject": "mathematics",
+  "district": "texas",
+  "grades": ["8", "9"],
+  "course": "Algebra I",
+  "version": "2024",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/mathematics/districts/texas/",
+      "/reference/hmh-knowledge/subjects/mathematics/high-school/",
+      "/reference/hmh-knowledge/subjects/mathematics/common/",
+      "/reference/hmh-knowledge/districts/texas/high-school/",
+      "/reference/hmh-knowledge/districts/texas/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+  "standards": {
+    "primary": "TEKS Mathematics - Algebra I",
+    "language": "ELPS",
+    "assessments": ["STAAR Algebra I EOC"]
+  },
+  "compliance": {
+    "state_adoption": true,
+    "sboe_aligned": true,
+    "eoc_preparation": "STAAR Algebra I"
+  }
+}

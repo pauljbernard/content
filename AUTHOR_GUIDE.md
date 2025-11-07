@@ -2010,9 +2010,361 @@ All accessibility requirements met. APPROVED." - Assessment Specialist, 2025-11-
 
 ---
 
+### Example 3: High School Approved Lesson
+
+**Grade 11-12 Florida Biology: Mendelian Genetics**
+
+```markdown
+# Mendelian Genetics: Punnett Squares and Inheritance Patterns
+**Grade:** 11-12 | **Subject:** Biology | **Duration:** 90 minutes
+**Standards:** NGSS HS-LS3-2 (Inheritance), FL B.E.S.T. SC.912.L.16.1, WIDA 3-5
+**Learning Objectives:**
+- Students will predict genetic outcomes using Punnett squares for monohybrid and dihybrid crosses
+- Students will explain the relationship between genotype and phenotype using evidence-based reasoning
+- Students will analyze inheritance patterns (dominant/recessive, incomplete dominance, codominance) using authentic genetic scenarios
+- Students will communicate findings using appropriate scientific terminology and notation
+
+## Lesson Overview
+Students investigate Mendelian inheritance patterns through hands-on modeling of genetic crosses,
+predict offspring ratios using Punnett squares, and apply their understanding to analyze real-world
+genetic scenarios. This lesson prepares students for Florida Biology EOC and AP Biology exam.
+
+## Materials
+**Teacher Materials:**
+- Whiteboard/projector for modeling
+- Pre-made Punnett square templates (paper and digital)
+- Case study handouts (sickle cell anemia, cystic fibrosis)
+- Answer key with rubric
+
+**Student Materials:**
+- Genetic coin flip kits (2 coins per pair, marked H/h)
+- Punnett square worksheets
+- Genetics notation reference card
+- Scientific calculator (for probability)
+- Lab notebooks for data collection
+
+**Technology:**
+- PhET Genetics simulation (phet.colorado.edu)
+- Chromebook access for digital Punnett squares
+
+## Preparation
+- Pre-load PhET simulation on student devices
+- Print 30 copies of case study handouts
+- Prepare coin flip kits (mark coins with allele labels)
+- Review common misconceptions (see below)
+- Pre-select 3 student work samples for gallery walk
+
+## Lesson Sequence
+
+### Engage (15 minutes) - Phenomenon-Based Hook
+**Objective:** Connect genetics to real-world relevance
+
+**Phenomenon Presentation:**
+Display two photos: (1) family with sickle cell trait carrier parents and affected child,
+(2) genetic pedigree chart showing inheritance pattern
+
+**Driving Question:** "How can two healthy parents have a child with a genetic disorder?"
+
+**Think-Pair-Share (5 minutes):**
+- Think: 1 minute silent reflection
+- Pair: 2 minutes discuss hypotheses with partner
+- Share: 2 minutes whole-class sharing
+
+**College/Career Connection:**
+"Genetic counselors use Punnett squares to predict inheritance risk for families.
+Today's lesson builds foundation skills for careers in medicine, genetics, biotechnology."
+
+**HS Instructional Strategy - Inquiry-Based Learning:**
+Students generate questions about the phenomenon before receiving direct instruction
+
+**ESOL Scaffolds (WIDA Level 3-5):**
+- Level 3: Provide word bank (genes, alleles, inherit, disorder, carrier)
+- Level 4: Sentence frames: "I think ___ because ___. This connects to ___ from our DNA unit."
+- Level 5: Challenge students to use prior vocabulary (chromosome, mutation, dominant/recessive)
+
+**Accessibility Notes:**
+- Enlarged images for visual impairments
+- Screen reader compatible digital images with alt text
+- Provide audio description: "Family photo showing two parents and child; pedigree chart with circles and squares connected by lines"
+
+---
+
+### Exploration (25 minutes) - Modeling Genetic Crosses
+**Objective:** Develop procedural knowledge of Punnett squares through guided practice
+
+**Demo (10 minutes):**
+Teacher models monohybrid cross on board:
+- Parent genotypes: Hh × Hh (tongue rolling trait)
+- Step-by-step Punnett square construction
+- Calculate genotypic ratio (1:2:1) and phenotypic ratio (3:1)
+
+**Think-Aloud:**
+"I'm writing the gametes from each parent. The H parent can contribute either H or h.
+The h parent can also contribute H or h. Let me organize these systematically..."
+
+**Guided Practice - Coin Flip Simulation (15 minutes):**
+Students work in pairs to simulate random gamete combination:
+1. Each partner flips marked coin 10 times (H or h)
+2. Record "offspring" genotypes in data table
+3. Calculate class ratio and compare to theoretical 3:1
+4. Discuss: "Why doesn't our data exactly match 3:1?"
+
+**Science Practice SEP 4 - Analyzing and Interpreting Data:**
+Students compare empirical coin flip data to theoretical Punnett square predictions
+
+**NGSS Disciplinary Core Idea LS3.B:**
+Variation of traits - inheritance patterns follow predictable mathematical patterns
+
+**Formative Check:**
+- Circulate and check student Punnett squares for correct gamete placement
+- Listen for: students explaining why ratios approximate but don't exactly match predictions
+- Common misconception to address: "50% H means every other offspring is H" (probability vs. deterministic)
+
+**EB Scaffolds:**
+- Beginning: Pre-labeled Punnett square template with first box filled in
+- Intermediate: Sentence frame: "The genotype ___ appears ___ times out of 4 boxes. The ratio is ___."
+- Advanced: Ask: "How would the ratio change if both parents were HH?"
+
+---
+
+### Explanation (20 minutes) - Conceptual Development
+**Objective:** Connect procedural knowledge to conceptual understanding of inheritance mechanisms
+
+**Direct Instruction:**
+Teacher explains:
+1. Law of Segregation (alleles separate during meiosis)
+2. Independent Assortment (different genes sort independently)
+3. Genotype vs. Phenotype relationship
+4. Probability rules in genetics
+
+**Visual Supports:**
+- Animation: Meiosis showing chromosome separation
+- Diagram: Punnett square with arrows showing gamete contribution
+- Table: Genotype-phenotype correspondence
+
+**Vocabulary Development:**
+- Homozygous dominant (HH)
+- Homozygous recessive (hh)
+- Heterozygous (Hh)
+- Carrier (heterozygous for recessive disorder)
+- Probability (mathematical likelihood)
+
+**Check for Understanding - Clicker Questions:**
+1. "If a parent is Hh, what percentage of gametes carry H?" (Answer: 50%)
+2. "What's the probability of hh offspring from Hh × Hh?" (Answer: 25%)
+
+**College/Career Readiness - AP Biology Connection:**
+This content directly maps to AP Biology Learning Objective 3.14 (inheritance patterns)
+
+**ESOL Scaffolds:**
+- Level 3: Provide vocabulary cards with images and definitions
+- Level 4: Sentence stems: "Homozygous means ___. Heterozygous is different because ___."
+- Level 5: Ask students to explain vocabulary to peer using analogies
+
+---
+
+### Elaboration (25 minutes) - Application to Complex Scenarios
+**Objective:** Apply Punnett square skills to authentic genetic case studies
+
+**Case Study 1: Sickle Cell Anemia (Incomplete Dominance)**
+- Parents: Both HbA/HbS (sickle cell trait carriers)
+- Task: Predict offspring ratios and explain why 25% risk exists
+- Extension: Discuss why sickle cell trait persists (malaria resistance)
+
+**Case Study 2: Blood Type Inheritance (Codominance)**
+- Parents: Type A (IAi) × Type B (IBi)
+- Task: Determine possible offspring blood types (A, B, AB, O)
+- Challenge: Calculate probability of Type O child (25%)
+
+**Differentiation:**
+- **Below Grade Level:** Focus on Case Study 1 only with scaffolded worksheet
+- **On Grade Level:** Complete both case studies
+- **Above Grade Level/AP:** Add dihybrid cross challenge problem (2 traits simultaneously)
+
+**Science Practice SEP 6 - Constructing Explanations:**
+Students justify predictions using Mendelian genetics principles and mathematical reasoning
+
+**NGSS Crosscutting Concept - Patterns:**
+Inheritance follows observable patterns that can be predicted mathematically
+
+**EB Scaffolds:**
+- Beginning: Fill-in-the-blank Punnett squares with word bank
+- Intermediate: Sentence frames: "The probability of ___ is ___ because ___."
+- Advanced: Write paragraph explaining inheritance pattern using complete sentences
+
+**Accessibility:**
+- Provide calculator for probability calculations
+- Offer graphic organizer for case study analysis
+- Allow verbal explanation option for students with writing difficulties
+
+---
+
+### Evaluation (5 minutes) - Exit Ticket
+**Objective:** Assess individual understanding before next lesson
+
+**Exit Ticket Prompt:**
+"Two parents are both heterozygous for a recessive genetic disorder (Dd × Dd).
+1. Draw a Punnett square showing this cross
+2. What percentage of offspring will have the disorder?
+3. Explain why two healthy parents can have an affected child."
+
+**Scoring:**
+- 3 points: Correct Punnett square with proper notation
+- 2 points: Correct probability calculation (25%)
+- 3 points: Clear explanation using genetics vocabulary
+- Total: 8 points (mastery = 6/8 or higher)
+
+**Use of Data:**
+- Review exit tickets tonight to identify students needing re-teaching
+- Group students by readiness for tomorrow's dihybrid cross lesson
+- Address common misconceptions in warm-up tomorrow
+
+**Florida Biology EOC Alignment:**
+This exit ticket format mirrors Benchmark MA.912.DP.2.2 (probability) and SC.912.L.16.1 (genetics)
+
+---
+
+## Differentiation
+
+**For Emergent Bilinguals (WIDA Level 3-5):**
+- Level 3: Pre-labeled materials, visual supports, bilingual glossary (if available)
+- Level 4: Sentence frames throughout, peer support, extended time
+- Level 5: Open-ended tasks, academic language challenges
+
+**For Students with IEPs:**
+- Extended time (20 minutes)
+- Reduced item count (case study 1 only)
+- Graphic organizer for case study analysis
+- Calculator for all probability work
+- Option to demonstrate understanding verbally with teacher
+
+**For Advanced/AP Students:**
+- Add dihybrid cross (2 traits)
+- Explore pedigree analysis for sex-linked traits
+- Research task: Non-Mendelian inheritance (polygenic traits)
+- Extension: Calculate chi-square test for goodness of fit
+
+**Flexible Grouping:**
+- Heterogeneous pairs for coin flip simulation (peer support)
+- Choice grouping for case studies (students select challenge level)
+- Homogeneous groups for elaboration (differentiate by readiness)
+
+---
+
+## Formative Assessment Opportunities
+
+1. **Warm-up think-pair-share:** Listen for prior knowledge
+2. **Coin flip data collection:** Check procedural accuracy
+3. **Clicker questions:** Immediate whole-class data
+4. **Case study work:** Circulate and provide just-in-time feedback
+5. **Exit ticket:** Individual mastery data for next lesson planning
+
+**Adjustments Based on Formative Data:**
+- If >30% struggle with basic Punnett squares → reteach procedure before case studies
+- If students master quickly → accelerate to dihybrid crosses
+- If vocabulary is barrier → add explicit vocabulary review station
+
+---
+
+## Common Misconceptions and How to Address
+
+**Misconception 1:** "50% probability means exactly half of offspring will be affected"
+**Address:** Use coin flip data to show probability ≠ deterministic outcome; discuss sample size
+
+**Misconception 2:** "The trait from the dominant allele will always show up"
+**Address:** Clarify that dominant masks recessive only in heterozygotes; hh individuals show recessive trait
+
+**Misconception 3:** "Parents contribute whole chromosomes to offspring"
+**Address:** Review meiosis animation showing allele separation (not whole chromosomes)
+
+**Misconception 4:** "Punnett squares only work for humans"
+**Address:** Show examples from plants (pea plants), animals (fruit flies), reinforce universal principles
+
+---
+
+## Materials and Asset Specifications
+
+**Images Needed:**
+- family_sickle_cell.jpg (1200×800, alt text provided, WCAG compliant)
+- pedigree_chart.svg (vector graphic, screen reader compatible)
+- meiosis_animation.mp4 (2 minutes, closed captions, audio description track)
+
+**Digital Tools:**
+- PhET Genetics simulation: https://phet.colorado.edu/en/simulation/punnett-square
+- Google Form exit ticket (auto-grading enabled)
+
+**Printables:**
+- Punnett square templates (PDF, 30 copies)
+- Case study handouts (PDF, 30 copies, 14pt font minimum)
+- Vocabulary reference cards (laminated, reusable)
+
+---
+
+## Standards Alignment Details
+
+**NGSS HS-LS3-2:** Apply concepts of statistics and probability to explain variation and distribution of expressed traits in a population
+- **Addressed:** Punnett squares calculate probability of offspring genotypes; coin flip simulation demonstrates statistical variation
+
+**Florida B.E.S.T. SC.912.L.16.1:** Explain Mendelian genetics and patterns of inheritance
+- **Addressed:** Monohybrid crosses, dominant/recessive patterns, genotype-phenotype relationships
+
+**NGSS Science Practice SEP 4:** Analyzing and Interpreting Data
+- **Addressed:** Students compare empirical coin flip data to theoretical predictions
+
+**NGSS Science Practice SEP 6:** Constructing Explanations
+- **Addressed:** Case studies require evidence-based explanations of inheritance patterns
+
+**WIDA ELD Standard 4 (Language of Science):** Level 3-5 scaffolds throughout
+- **Addressed:** Tiered language supports for vocabulary, sentence frames, academic discourse
+
+**Florida Biology EOC Preparation:**
+- Punnett square construction (testable skill)
+- Probability calculations (MA integration)
+- Genetics vocabulary (anchor standard)
+
+---
+
+## Metadata
+
+**Content Type:** Lesson Plan
+**Grade Band:** 9-12 (High School)
+**Subject:** Biology/Life Science
+**State:** Florida
+**Duration:** 90 minutes (block schedule)
+**Prerequisites:** DNA structure, cell division, basic probability
+**Estimated Author Time:** 8-10 hours (including case study development)
+**Review Status:** Approved 2025-11-06
+**Version:** 1.0
+**License:** © HMH, all rights reserved
+**Accessibility:** WCAG 2.1 AA compliant
+**Knowledge Base Files Used:**
+- /subjects/science/high-school/biology-guide.md
+- /subjects/science/common/ngss-alignment.md
+- /subjects/science/common/science-practices-framework.md
+- /districts/florida/high-school/florida-graduation-requirements.md
+- /districts/florida/language/florida-esol-wida.md
+- /universal/high-school/college-career-readiness-framework.md
+- /universal/high-school/hs-instructional-strategies.md
+- /universal/frameworks/udl-principles-guide.md
+- /universal/accessibility/wcag-compliance.md
+```
+
+**Why This Example Is High School Quality:**
+- ✓ **90-minute block schedule** format (typical HS)
+- ✓ **College/career connections** throughout (genetic counselor, AP Bio, medical field)
+- ✓ **Phenomenon-based inquiry** hook (NGSS best practice for HS)
+- ✓ **Scientific practices** explicitly integrated (SEP 4, SEP 6)
+- ✓ **Rigorous content** (probability, mathematical reasoning, complex inheritance)
+- ✓ **EOC and AP exam preparation** (Florida Biology EOC, AP Biology alignment)
+- ✓ **Independent work expectations** (case studies, analysis, explanation)
+- ✓ **Real-world applications** (sickle cell, blood type, genetic counseling)
+- ✓ **Reduced scaffolding** compared to elementary (age-appropriate for grades 11-12)
+
+---
+
 ### What Makes These Examples "Approved"?
 
-Both examples demonstrate all 7 Quality Pillars:
+All three examples demonstrate all 7 Quality Pillars:
 
 **✓ Pillar 1 - Standards Alignment:** Every objective and item explicitly maps to standards (TEKS, ELPS)
 **✓ Pillar 2 - Pedagogical Soundness:** Evidence-based routines (MLRs), gradual release, formative assessment, misconceptions addressed

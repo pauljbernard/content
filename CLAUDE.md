@@ -4,7 +4,7 @@
 
 This repository provides **two integrated systems** for educational content development:
 
-1. **HMH Multi-Curriculum Knowledge Base** - A hierarchical, reusable knowledge system (258 files) for creating standards-aligned instructional materials across any state, any subject, any grade level with 90-95% knowledge reuse
+1. **HMH Multi-Curriculum Knowledge Base** - A hierarchical, reusable knowledge system (282 files) for creating standards-aligned instructional materials across any state, any subject, any grade level (K-12) with 85-95% knowledge reuse
 2. **Professor Framework Integration** - AI-powered content development with 92 specialized skills and 22 autonomous agents
 
 **Purpose**: Create, manage, and publish high-quality educational content across all educational levels (K-12, undergraduate, graduate, post-graduate, and professional learning).
@@ -21,7 +21,7 @@ This repository provides **two integrated systems** for educational content deve
 A **hierarchical knowledge resolution system** that enables creating standards-aligned, state-compliant instructional materials with **85-97% knowledge reuse** across curricula.
 
 **Location**: `/reference/hmh-knowledge/`
-**Status**: Complete (258 files, 100% US coverage)
+**Status**: Complete (282 files, 100% K-12 US coverage)
 **Documentation**: See complete documentation suite:
 - **[USER_GUIDE.md](USER_GUIDE.md)** - Overview and navigation for all roles
 - **[AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)** - Complete authoring workflows (850 lines)
@@ -32,10 +32,10 @@ A **hierarchical knowledge resolution system** that enables creating standards-a
 ### Current Coverage
 
 **States**: All 51 US states/districts (100% coverage)
-**Subjects**: Mathematics (K-8), ELA (K-8), Science (K-8), Social Studies (K-8), Computer Science (K-8)
-**State/Subject Combinations**: 255 (51 states × 5 subjects)
-**Students Covered**: 38M (100% of US K-8 enrollment)
-**Curricula**: 4 HMH programs (Into Math TX/CA/FL, Into Reading TX)
+**Subjects**: Mathematics (K-12), ELA (K-12), Science (K-12), Social Studies (K-12), Computer Science (K-12)
+**State/Subject Combinations**: 510 (51 states × 5 subjects × 2 grade bands: K-8, 9-12)
+**Students Covered**: 66.5M (100% of US K-12 enrollment: 38M K-8 + 28.5M HS)
+**Curricula**: 4+ HMH programs (Into Math TX/CA/FL K-8, Into Reading TX K-8, Algebra I, AP Calculus, AP English, etc.)
 
 ### 5-Level Hierarchical Architecture
 
@@ -74,12 +74,22 @@ Knowledge resolution order (specific → general, first match wins):
 **Subject-District (7 files) - State + subject specific:**
 - TEKS Math/ELA, CCSS-M, MAFS alignments
 
+**High School (24 files) - Grade 9-12 subject-specific:**
+- Universal HS (3 files): College/Career Readiness Framework, HS Instructional Strategies, HS Assessment Guide
+- Math HS (6 files): Algebra I, Algebra II, Geometry, Pre-Calculus, Calculus (AP AB/BC), Statistics (AP)
+- ELA HS (4 files): HS Literature, HS Composition, AP English Language, AP English Literature
+- Science HS (3 files): Biology, Chemistry, Physics (including AP courses)
+- Social Studies HS (4 files): US History, World History, Government, Economics (including AP courses)
+- Computer Science HS (1 file): AP CS Principles and AP CS A
+- State Graduation Requirements (3 files): Texas, California, Florida (graduation requirements, EOC exams, college prep)
+
 ### How Claude Code Should Use This
 
 **When generating state/subject-specific content:**
 
 1. **Check for curriculum config** in `/config/curriculum/`
-   - `hmh-math-tx.json`, `hmh-math-ca.json`, `hmh-math-fl.json`, `hmh-ela-tx.json`
+   - K-8: `hmh-math-tx.json`, `hmh-math-ca.json`, `hmh-math-fl.json`, `hmh-ela-tx.json`
+   - HS: `hmh-algebra1-tx.json`, `hmh-biology-tx.json`, `hmh-ap-calc-ab.json`, `hmh-ap-english-lit.json`
 
 2. **Follow resolution order** defined in config to find relevant knowledge files
    - Start with most specific (program-specific)
@@ -108,6 +118,23 @@ Knowledge resolution order (specific → general, first match wins):
    - `/universal/assessment/item-types-reference.md`
 3. Combine guidance to create lesson aligned to TEKS, ELPS, SBOE standards with MLRs and UDL
 
+**Example Query (High School)**: "Create a Florida AP Biology lesson on genetics"
+
+**Resolution Process**:
+1. Load `hmh-biology-fl.json` config
+2. Gather knowledge from:
+   - `/subjects/science/high-school/biology-guide.md` (genetics content, AP Biology standards)
+   - `/subjects/science/common/ngss-alignment.md` (HS-LS3 Heredity standards)
+   - `/subjects/science/common/science-practices-framework.md` (8 SEPs)
+   - `/districts/florida/high-school/florida-graduation-requirements.md` (Biology EOC prep, B.E.S.T. standards)
+   - `/districts/florida/language/florida-esol-wida.md` (ESOL scaffolding)
+   - `/districts/florida/compliance/florida-adoption-criteria.md` (state compliance)
+   - `/universal/high-school/college-career-readiness-framework.md` (AP course preparation)
+   - `/universal/high-school/hs-instructional-strategies.md` (HS pedagogy)
+   - `/universal/frameworks/udl-principles-guide.md`
+   - `/universal/assessment/item-types-reference.md`
+3. Combine guidance to create lesson aligned to B.E.S.T. standards, Florida Biology EOC, AP Biology exam, NGSS, and college readiness
+
 ### Adding New States/Subjects
 
 **For Engineers**: See [ENGINEER_GUIDE.md](ENGINEER_GUIDE.md) for complete step-by-step instructions, templates, and examples.
@@ -123,8 +150,10 @@ Knowledge resolution order (specific → general, first match wins):
 
 **Current Status:**
 - ✅ All 51 US states/districts covered (100%)
+- ✅ K-12 coverage complete (grades K-8 and 9-12)
 - ✅ 5 core subjects complete (Math, ELA, Science, Social Studies, CS)
-- ✅ 258 knowledge files production-ready
+- ✅ 282 knowledge files production-ready
+- ✅ High school expansion complete - 24 files added (2025-11-06)
 - ✅ Missing TEKS Math alignment file - FIXED (created 2025-11-06)
 
 **Minor Gaps:**
@@ -132,8 +161,7 @@ Knowledge resolution order (specific → general, first match wins):
 - Config paths are correct (`/reference/hmh-knowledge/`)
 
 **Future expansion:**
-- High school (9-12) - Estimated +100-120 files, ~80 hours
-- Additional K-8 subjects (World Languages, Fine Arts, PE/Health) - ~70 hours each
+- Additional K-12 subjects (World Languages, Fine Arts, PE/Health) - ~70 hours each
 - Large urban districts (NYC, LA, Chicago, etc.) - ~5 hours each
 - Pre-K expansion - ~60 hours
 - International curricula (IB, Cambridge, UK, Canada, Australia) - ~200 hours
@@ -426,7 +454,7 @@ This repository uses GitHub Actions workflows that:
 - ENGINEER_GUIDE.md: 1,700 lines
 - USER_GUIDE.md: 335 lines
 
-**HMH Knowledge Base**: 258 files, 90-95% reuse, 5-level hierarchy, 100% US coverage
+**HMH Knowledge Base**: 282 files, 85-95% reuse, 5-level hierarchy, 100% K-12 US coverage
 **Professor Framework**: 2.0.0 (92 skills, 22 agents)
 **Claude Code**: Latest
 **Last Updated**: 2025-11-06

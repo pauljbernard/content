@@ -554,10 +554,16 @@ Determine:
 Look in `/config/curriculum/` for a matching JSON file.
 
 **Existing configs:**
-- `hmh-math-tx.json` - HMH Into Math Texas
-- `hmh-math-ca.json` - HMH Into Math California
-- `hmh-ela-tx.json` - HMH Into Reading Texas
-- `hmh-math-fl.json` - HMH Into Math Florida
+- K-8 Programs:
+  - `hmh-math-tx.json` - HMH Into Math Texas (K-8)
+  - `hmh-math-ca.json` - HMH Into Math California (K-8)
+  - `hmh-ela-tx.json` - HMH Into Reading Texas (K-8)
+  - `hmh-math-fl.json` - HMH Into Math Florida (K-8)
+- High School Courses:
+  - `hmh-algebra1-tx.json` - HMH Algebra I Texas Edition (grades 8-9)
+  - `hmh-biology-tx.json` - HMH Biology Texas Edition (grades 9-10)
+  - `hmh-ap-calc-ab.json` - HMH AP Calculus AB (grades 11-12)
+  - `hmh-ap-english-lit.json` - HMH AP English Literature and Composition (grades 11-12)
 
 If your curriculum exists, proceed to Step 3.
 If not, see [How to Create a New Curriculum Config](#how-to-create-a-new-curriculum-config).
@@ -1073,6 +1079,139 @@ cat hmh-ela-ca.json | python -m json.tool
 # Test resolution by checking if files exist
 # (manually or with a script)
 ```
+
+---
+
+### Example 2: Creating a High School Config
+
+**Use Case:** Creating HMH AP Calculus AB (national course, not state-specific)
+
+#### Differences for High School Configs
+
+High school configs differ from K-8 in several ways:
+- **Course-specific** (e.g., "Algebra I", "Biology") rather than grade-band programs
+- **Specific grade levels** (e.g., [" 11", "12"]) not full K-8 range
+- **AP courses** are national (district: null) with College Board standards
+- **Knowledge resolution** includes high school-specific paths
+- **Standards** reference state graduation requirements, EOC exams, AP frameworks
+- **College/career readiness** focus with credit articulation
+
+#### 1. Create New Config File
+
+```bash
+cd /config/curriculum
+# Copy from similar HS course or create new
+touch hmh-ap-calc-ab.json
+```
+
+#### 2. Add HS-Specific Metadata
+
+```json
+{
+  "id": "hmh-ap-calculus-ab",
+  "name": "HMH AP Calculus AB",
+  "publisher": "hmh",
+  "program": "ap-calculus",
+  "subject": "mathematics",
+  "district": null,  // AP courses are national, not state-specific
+  "grades": ["11", "12"],  // Typical HS grades for AP Calc
+  "course": "AP Calculus AB",
+  "ap_course": true,  // Flag for AP courses
+  "version": "2024",
+```
+
+#### 3. Update Knowledge Resolution for HS
+
+```json
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/mathematics/high-school/",  // HS math content
+      "/reference/hmh-knowledge/subjects/mathematics/common/",       // MLRs, vocab
+      "/reference/hmh-knowledge/universal/high-school/",             // HS pedagogy, college/career
+      "/reference/hmh-knowledge/universal/"                          // UDL, DOK, assessment
+    ],
+    "description": "Resolution for AP course: subject HS → common → universal HS → universal"
+  },
+```
+
+**Key Difference:** HS configs include `/subjects/[subject]/high-school/` and `/universal/high-school/` in resolution order.
+
+#### 4. Add College Board Standards
+
+```json
+  "standards": {
+    "primary": "College Board AP Calculus AB",
+    "secondary": "Common Core State Standards - Mathematics (HS)",
+    "frameworks": ["College/Career Readiness"]
+  },
+```
+
+#### 5. Add AP-Specific Assessment Info
+
+```json
+  "assessments": {
+    "ap_exam": {
+      "format": "AP Calculus AB Exam",
+      "sections": ["Multiple Choice", "Free Response"],
+      "calculator_policy": "Graphing calculator required"
+    }
+  },
+```
+
+#### 6. Add College Credit Articulation
+
+```json
+  "college_credit": {
+    "eligible": true,
+    "typical_credit": "3-5 credits",
+    "score_requirement": "3 or higher (varies by institution)"
+  }
+}
+```
+
+#### 7. For State-Specific HS Courses (e.g., Algebra I Texas)
+
+If creating a state-specific HS course, include state paths:
+
+```json
+{
+  "id": "hmh-algebra1-tx",
+  "name": "HMH Algebra I Texas Edition",
+  "district": "texas",
+  "grades": ["8", "9"],  // Algebra I can be 8th or 9th grade
+  "course": "Algebra I",
+
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/mathematics/districts/texas/",  // TEKS
+      "/reference/hmh-knowledge/subjects/mathematics/high-school/",      // Algebra I content
+      "/reference/hmh-knowledge/subjects/mathematics/common/",           // MLRs
+      "/reference/hmh-knowledge/districts/texas/high-school/",           // TX graduation requirements
+      "/reference/hmh-knowledge/districts/texas/",                       // ELPS
+      "/reference/hmh-knowledge/universal/high-school/",                 // HS pedagogy
+      "/reference/hmh-knowledge/universal/"                              // UDL, DOK
+    ]
+  },
+
+  "standards": {
+    "primary": "TEKS Mathematics - Algebra I",
+    "language": "ELPS",
+    "assessments": ["STAAR Algebra I EOC"]
+  },
+
+  "compliance": {
+    "state_adoption": true,
+    "sboe_aligned": true,
+    "eoc_preparation": "STAAR Algebra I"
+  }
+}
+```
+
+**Key Additions for State HS:**
+- State district paths come BEFORE high school content paths
+- Graduation requirement files referenced
+- EOC exam preparation noted
+- State compliance requirements included
 
 ---
 
