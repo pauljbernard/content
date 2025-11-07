@@ -124,6 +124,25 @@ class ContentCreate(ContentBase):
     learning_objectives: Optional[List[str]] = []
     duration_minutes: Optional[int] = None
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "title": "Introduction to Fractions",
+                "content_type": "lesson",
+                "subject": "mathematics",
+                "grade_level": "5",
+                "state": "texas",
+                "curriculum_id": "hmh-math-tx",
+                "file_content": "# Introduction to Fractions\n\n## Learning Objectives\n- Understand fractions as parts of a whole\n- Compare and order fractions\n\n## Lesson Content\n...",
+                "standards_aligned": ["TEKS.5.3A", "TEKS.5.3B"],
+                "learning_objectives": [
+                    "Students will identify fractions as parts of a whole",
+                    "Students will compare fractions with like denominators"
+                ],
+                "duration_minutes": 60
+            }
+        }
+
 
 class ContentUpdate(BaseModel):
     """Schema for updating content."""
@@ -178,6 +197,22 @@ class ContentReviewCreate(BaseModel):
     comments: Optional[str] = None
     checklist_results: Optional[Dict[str, Any]] = None
     rating: Optional[int] = Field(None, ge=1, le=5)
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "content_id": 42,
+                "status": "approved",
+                "comments": "Excellent lesson with clear objectives and engaging activities. Standards alignment is accurate.",
+                "rating": 5,
+                "checklist_results": {
+                    "standards_aligned": True,
+                    "objectives_clear": True,
+                    "accessibility_compliant": True,
+                    "culturally_responsive": True
+                }
+            }
+        }
 
 
 class ContentReviewInDB(BaseModel):

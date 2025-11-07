@@ -86,8 +86,10 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 5. **Access API documentation:**
 
-- Swagger UI: http://localhost:8000/api/v1/docs
-- ReDoc: http://localhost:8000/api/v1/redoc
+- **Swagger UI**: http://localhost:8000/api/v1/docs (interactive API testing)
+- **ReDoc**: http://localhost:8000/api/v1/redoc (beautiful API documentation)
+- **OpenAPI JSON**: http://localhost:8000/api/v1/openapi.json (OpenAPI 3.1.0 specification)
+- **Root Endpoint**: http://localhost:8000/ (API information and status)
 
 ## Configuration
 
@@ -123,6 +125,125 @@ PROFESSOR_ENABLED=false
 GIT_ENABLED=true
 GIT_AUTO_COMMIT=false
 ```
+
+## OpenAPI Documentation
+
+The HMH Content Management System API is fully documented using **OpenAPI 3.1.0** specification with comprehensive interactive documentation.
+
+### Accessing API Documentation
+
+**Swagger UI** (Interactive API Explorer):
+- URL: http://localhost:8000/api/v1/docs
+- Features:
+  - Interactive API testing directly in the browser
+  - Try out endpoints with sample data
+  - View request/response examples
+  - Test authentication with JWT tokens
+  - Explore all 40+ API endpoints organized by tags
+
+**ReDoc** (Beautiful Documentation):
+- URL: http://localhost:8000/api/v1/redoc
+- Features:
+  - Clean, responsive documentation layout
+  - Detailed endpoint descriptions
+  - Request/response schema documentation
+  - Code samples in multiple formats
+  - Search functionality
+
+**OpenAPI JSON Specification**:
+- URL: http://localhost:8000/api/v1/openapi.json
+- Use with:
+  - API client generators (OpenAPI Generator, Swagger Codegen)
+  - API testing tools (Postman, Insomnia)
+  - Documentation tools
+  - CI/CD validation pipelines
+
+### OpenAPI Features
+
+**Comprehensive Endpoint Documentation**:
+- All 7 API routers (40+ endpoints) documented
+- Detailed descriptions for each endpoint
+- Request/response examples with realistic data
+- Query parameter documentation
+- Path parameter documentation
+
+**Authentication & Security**:
+- JWT Bearer token authentication documented
+- OAuth2 password flow specification
+- Role-based access control (scopes) documented
+- Security requirements per endpoint
+
+**Request/Response Examples**:
+- Pydantic models include example values
+- ContentCreate example: "Introduction to Fractions" lesson
+- UserCreate example: Author registration
+- ContentReview example: 5-star approval with feedback
+
+**Organized by Tags**:
+1. **Authentication** - Login, register, token management
+2. **Users** - User profile and administration
+3. **Knowledge Base** - Browse 303 knowledge files
+4. **Curriculum Configs** - Configuration management
+5. **Content** - Content authoring workflow
+6. **Reviews** - Editorial review workflow
+7. **Search** - Full-text search
+
+**Server Configuration**:
+- Development server (localhost:8000)
+- Production server (api.hmhco.com)
+- Configurable via environment variables
+
+### Using OpenAPI with Tools
+
+**Postman**:
+```bash
+# Import OpenAPI spec into Postman
+# File → Import → URL: http://localhost:8000/api/v1/openapi.json
+```
+
+**OpenAPI Generator (Generate Client Libraries)**:
+```bash
+# Generate Python client
+openapi-generator-cli generate \
+  -i http://localhost:8000/api/v1/openapi.json \
+  -g python \
+  -o ./client-python
+
+# Generate TypeScript client
+openapi-generator-cli generate \
+  -i http://localhost:8000/api/v1/openapi.json \
+  -g typescript-axios \
+  -o ./client-typescript
+```
+
+**cURL Example** (using OpenAPI documentation):
+```bash
+# Login to get tokens
+curl -X POST http://localhost:8000/api/v1/auth/login \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "username=author@example.com&password=SecureP@ssw0rd"
+
+# Create content with token
+curl -X POST http://localhost:8000/api/v1/content/ \
+  -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "Introduction to Fractions",
+    "content_type": "lesson",
+    "subject": "mathematics",
+    "grade_level": "5",
+    "state": "texas",
+    "file_content": "# Lesson content here..."
+  }'
+```
+
+### OpenAPI Compliance
+
+- **OpenAPI Version**: 3.1.0
+- **Specification**: Full compliance with OpenAPI 3.1.0 schema
+- **Validation**: All endpoints include proper response models
+- **Examples**: Comprehensive examples for all request/response bodies
+- **Security Schemes**: JWT Bearer and OAuth2 flows documented
 
 ## API Endpoints
 

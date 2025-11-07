@@ -44,6 +44,16 @@ class UserCreate(UserBase):
 
     password: str
 
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "email": "author@example.com",
+                "full_name": "Jane Smith",
+                "role": "author",
+                "password": "SecureP@ssw0rd",
+            }
+        }
+
 
 class UserUpdate(BaseModel):
     """Schema for updating a user."""
@@ -53,6 +63,14 @@ class UserUpdate(BaseModel):
     password: Optional[str] = None
     role: Optional[str] = None
     is_active: Optional[bool] = None
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "full_name": "Jane Doe",
+                "email": "jane.doe@example.com",
+            }
+        }
 
 
 class UserInDB(UserBase):
@@ -86,6 +104,15 @@ class Token(BaseModel):
     access_token: str
     refresh_token: str
     token_type: str = "bearer"
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+                "token_type": "bearer",
+            }
+        }
 
 
 class TokenData(BaseModel):

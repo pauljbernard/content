@@ -4,6 +4,7 @@ Main FastAPI application for HMH Content Management System.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.openapi.utils import get_openapi
 from core.config import settings
 from database.session import engine, Base
 from api.v1 import (
@@ -27,6 +28,46 @@ app = FastAPI(
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     docs_url=f"{settings.API_V1_STR}/docs",
     redoc_url=f"{settings.API_V1_STR}/redoc",
+    contact={
+        "name": "HMH Content Management System",
+        "url": "https://github.com/pauljbernard/content",
+        "email": "support@hmhco.com",
+    },
+    license_info={
+        "name": "Proprietary",
+        "url": "https://github.com/pauljbernard/content/blob/master/LICENSE",
+    },
+    terms_of_service="https://github.com/pauljbernard/content/blob/master/TERMS.md",
+    openapi_tags=[
+        {
+            "name": "Authentication",
+            "description": "JWT-based authentication endpoints for user login, registration, and token management. Supports role-based access control (teacher, author, editor, knowledge_engineer).",
+        },
+        {
+            "name": "Users",
+            "description": "User management endpoints for profile updates, password changes, and user administration. Knowledge engineers can manage all users.",
+        },
+        {
+            "name": "Knowledge Base",
+            "description": "Browse and access the HMH Multi-Curriculum Knowledge Base with 303 knowledge files across 51 US states. Supports hierarchical navigation and markdown content rendering.",
+        },
+        {
+            "name": "Curriculum Configs",
+            "description": "Manage curriculum configurations and knowledge resolution orders. Knowledge engineers only. Defines how content inherits from universal, subject-common, and district-specific knowledge.",
+        },
+        {
+            "name": "Content",
+            "description": "Content authoring and management endpoints. Authors create lessons/assessments, editors review and approve, and knowledge engineers manage all content. Supports draft → submit → review → approve → publish workflow.",
+        },
+        {
+            "name": "Reviews",
+            "description": "Editorial review workflow for content approval. Editors and knowledge engineers review submitted content, provide ratings and feedback, and approve for publication.",
+        },
+        {
+            "name": "Search",
+            "description": "Full-text search across knowledge base files and authored content. Supports filtering by subject, grade level, and content type.",
+        },
+    ],
 )
 
 # Configure CORS
@@ -99,6 +140,75 @@ async def internal_error_handler(request, exc):
             "message": "An unexpected error occurred",
         },
     )
+
+
+def custom_openapi():
+    """
+    Custom OpenAPI schema with enhanced security documentation and examples.
+    """
+    if app.openapi_schema:
+        return app.openapi_schema
+
+    openapi_schema = get_openapi(
+        title=app.title,
+        version=app.version,
+        description=app.description,
+        routes=app.routes,
+        tags=app.openapi_tags,
+        contact=app.contact,
+        license_info=app.license_info,
+        terms_of_service=app.terms_of_service,
+    )
+
+    # Add security schemes
+    openapi_schema["components"]["securitySchemes"] = {
+        "Bearer": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT",
+            "description": "JWT authentication using access tokens. Obtain tokens via the `/api/v1/auth/login` endpoint.",
+        },
+        "OAuth2PasswordBearer": {
+            "type": "oauth2",
+            "flows": {
+                "password": {
+                    "tokenUrl": f"{settings.API_V1_STR}/auth/login",
+                    "scopes": {
+                        "teacher": "Read access to published content",
+                        "author": "Create and edit own content",
+                        "editor": "Review and approve content",
+                        "knowledge_engineer": "Full system access",
+                    },
+                }
+            },
+        },
+    }
+
+    # Add global security requirement
+    openapi_schema["security"] = [{"Bearer": []}]
+
+    # Add server information
+    openapi_schema["servers"] = [
+        {
+            "url": "http://localhost:8000",
+            "description": "Development server",
+        },
+        {
+            "url": "https://api.hmhco.com",
+            "description": "Production server",
+        },
+    ]
+
+    # Add additional information
+    openapi_schema["info"]["x-logo"] = {
+        "url": "https://www.hmhco.com/favicon.ico"
+    }
+
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
 
 
 if __name__ == "__main__":
