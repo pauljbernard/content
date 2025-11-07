@@ -2,16 +2,22 @@
  * Content Editor page - create and edit content
  */
 import { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { ArrowLeftIcon, CheckIcon } from '@heroicons/react/24/outline';
-import { contentAPI } from '../services/api';
+import {
+  ArrowLeftIcon,
+  CheckIcon,
+  SparklesIcon,
+  XMarkIcon
+} from '@heroicons/react/24/outline';
+import { contentAPI, agentsAPI } from '../services/api';
 import useAuthStore from '../store/authStore';
 import Layout from '../components/Layout';
 
 export default function ContentEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const queryClient = useQueryClient();
   const { user } = useAuthStore();
 
@@ -29,6 +35,23 @@ export default function ContentEditor() {
   });
 
   const [objectiveInput, setObjectiveInput] = useState('');
+  const [showAIAssist, setShowAIAssist] = useState(false);
+  const [selectedAgent, setSelectedAgent] = useState(null);
+  const [agentTaskDescription, setAgentTaskDescription] = useState('');
+  const [activeJobId, setActiveJobId] = useState(null);
+
+  // Handle pre-filled content from agent results
+  useEffect(() => {
+    if (location.state?.generatedContent) {
+      const { content } = location.state.generatedContent;
+      setFormData((prev) => ({
+        ...prev,
+        file_content: content,
+      }));
+      // Clear the location state
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, location.pathname, navigate]);
 
   // Load existing content if editing
   const { data: existingContent } = useQuery({
@@ -79,6 +102,49 @@ export default function ContentEditor() {
     },
   });
 
+  // Available agents query
+  const { data: availableAgents } = useQuery({
+    queryKey: ['agents'],
+    queryFn: agentsAPI.list,
+  });
+
+  // Invoke agent mutation
+  const invokeAgentMutation = useMutation({
+    mutationFn: ({ agentType, taskDescription, parameters }) =>
+      agentsAPI.invoke(agentType, taskDescription, parameters),
+    onSuccess: (data) => {
+      setActiveJobId(data.id);
+    },
+  });
+
+  // Poll for job status
+  const { data: jobStatus } = useQuery({
+    queryKey: ['agent-job-status', activeJobId],
+    queryFn: () => agentsAPI.getJobStatus(activeJobId),
+    enabled: !!activeJobId,
+    refetchInterval: (data) => {
+      if (data?.status === 'running' || data?.status === 'queued') {
+        return 2000; // Poll every 2 seconds
+      }
+      return false;
+    },
+  });
+
+  // Get suggested agents based on content type
+  const getSuggestedAgents = () => {
+    if (!availableAgents) return [];
+
+    const suggestions = {
+      lesson: ['content-developer', 'curriculum-architect'],
+      assessment: ['assessment-designer', 'content-developer'],
+      activity: ['content-developer'],
+      guide: ['content-developer'],
+    };
+
+    const suggestedIds = suggestions[formData.content_type] || [];
+    return availableAgents.filter((agent) => suggestedIds.includes(agent.id));
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -121,6 +187,49 @@ export default function ContentEditor() {
   const handleSubmitForReview = () => {
     if (isEditing) {
       submitMutation.mutate(id);
+    }
+  };
+
+  const handleInvokeAgent = () => {
+    if (!selectedAgent || !agentTaskDescription.trim()) return;
+
+    const parameters = {
+      subject: formData.subject,
+      grade_level: formData.grade_level,
+      state: formData.state,
+      content_type: formData.content_type,
+    };
+
+    invokeAgentMutation.mutate({
+      agentType: selectedAgent.id,
+      taskDescription: agentTaskDescription,
+      parameters,
+    });
+  };
+
+  const handleInsertGeneratedContent = () => {
+    if (jobStatus?.output_content) {
+      setFormData((prev) => ({
+        ...prev,
+        file_content: jobStatus.output_content,
+      }));
+      setShowAIAssist(false);
+      setActiveJobId(null);
+      setSelectedAgent(null);
+      setAgentTaskDescription('');
+    }
+  };
+
+  const handleAppendGeneratedContent = () => {
+    if (jobStatus?.output_content) {
+      setFormData((prev) => ({
+        ...prev,
+        file_content: prev.file_content + '\n\n' + jobStatus.output_content,
+      }));
+      setShowAIAssist(false);
+      setActiveJobId(null);
+      setSelectedAgent(null);
+      setAgentTaskDescription('');
     }
   };
 
@@ -317,9 +426,17 @@ export default function ContentEditor() {
 
           {/* Content */}
           <div className="bg-white shadow rounded-lg p-6">
-            <h2 className="text-lg font-medium text-gray-900 mb-4">
-              Content *
-            </h2>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-medium text-gray-900">Content *</h2>
+              <button
+                type="button"
+                onClick={() => setShowAIAssist(true)}
+                className="inline-flex items-center px-3 py-1.5 border border-purple-300 text-sm font-medium rounded-md text-purple-700 bg-purple-50 hover:bg-purple-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+              >
+                <SparklesIcon className="h-4 w-4 mr-1.5" />
+                AI Assist
+              </button>
+            </div>
 
             <textarea
               name="file_content"
@@ -373,6 +490,195 @@ export default function ContentEditor() {
             </div>
           </div>
         </form>
+
+        {/* AI Assist Panel */}
+        {showAIAssist && (
+          <div className="fixed inset-0 z-50 overflow-hidden">
+            <div className="absolute inset-0 bg-gray-500 bg-opacity-75" onClick={() => setShowAIAssist(false)} />
+
+            <div className="fixed inset-y-0 right-0 max-w-xl w-full bg-white shadow-xl flex flex-col">
+              {/* Header */}
+              <div className="px-6 py-4 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <SparklesIcon className="h-6 w-6 text-purple-600 mr-2" />
+                    <h2 className="text-xl font-semibold text-gray-900">AI Assist</h2>
+                  </div>
+                  <button
+                    onClick={() => setShowAIAssist(false)}
+                    className="text-gray-400 hover:text-gray-500"
+                  >
+                    <XMarkIcon className="h-6 w-6" />
+                  </button>
+                </div>
+                <p className="mt-1 text-sm text-gray-500">
+                  Use AI agents to help generate content faster
+                </p>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto px-6 py-4">
+                {!activeJobId ? (
+                  <>
+                    {/* Suggested Agents */}
+                    <div className="mb-6">
+                      <h3 className="text-sm font-medium text-gray-700 mb-3">
+                        Suggested for {formData.content_type}
+                      </h3>
+                      <div className="space-y-2">
+                        {getSuggestedAgents().map((agent) => (
+                          <button
+                            key={agent.id}
+                            type="button"
+                            onClick={() => setSelectedAgent(agent)}
+                            className={`w-full text-left p-3 rounded-lg border-2 transition-colors ${
+                              selectedAgent?.id === agent.id
+                                ? 'border-purple-500 bg-purple-50'
+                                : 'border-gray-200 hover:border-gray-300'
+                            }`}
+                          >
+                            <p className="font-medium text-gray-900">{agent.name}</p>
+                            <p className="text-xs text-gray-500 mt-1">{agent.description}</p>
+                            <p className="text-xs text-purple-600 mt-1">
+                              {agent.productivity_gain} faster • {agent.estimated_time}
+                            </p>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Task Description */}
+                    {selectedAgent && (
+                      <div className="mb-6">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          What do you want the agent to create?
+                        </label>
+                        <textarea
+                          value={agentTaskDescription}
+                          onChange={(e) => setAgentTaskDescription(e.target.value)}
+                          rows={4}
+                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          placeholder={`Example: Create a ${formData.content_type} about ${formData.subject} for grade ${formData.grade_level || 'K-12'}...`}
+                        />
+                        <p className="mt-1 text-xs text-gray-500">
+                          Be specific about what you want. The agent will use your subject,
+                          grade level, and state automatically.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Invoke Button */}
+                    {selectedAgent && (
+                      <button
+                        type="button"
+                        onClick={handleInvokeAgent}
+                        disabled={
+                          !agentTaskDescription.trim() || invokeAgentMutation.isLoading
+                        }
+                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {invokeAgentMutation.isLoading ? 'Starting...' : 'Generate Content'}
+                      </button>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    {/* Job Progress */}
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <h3 className="text-sm font-medium text-gray-700">
+                          {jobStatus?.status === 'running' ? 'Generating...' :
+                           jobStatus?.status === 'queued' ? 'Queued...' :
+                           jobStatus?.status === 'completed' ? 'Complete!' :
+                           'Failed'}
+                        </h3>
+                        <span className="text-sm text-gray-500">
+                          {jobStatus?.progress_percentage || 0}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className="bg-purple-600 h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${jobStatus?.progress_percentage || 0}%` }}
+                        />
+                      </div>
+                      {jobStatus?.progress_message && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          {jobStatus.progress_message}
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Generated Content Preview */}
+                    {jobStatus?.status === 'completed' && jobStatus?.output_content && (
+                      <>
+                        <div className="mb-4">
+                          <h3 className="text-sm font-medium text-gray-700 mb-2">
+                            Generated Content
+                          </h3>
+                          <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 max-h-96 overflow-y-auto">
+                            <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
+                              {jobStatus.output_content}
+                            </pre>
+                          </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="space-y-2">
+                          <button
+                            type="button"
+                            onClick={handleInsertGeneratedContent}
+                            className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                          >
+                            Replace Content
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleAppendGeneratedContent}
+                            className="w-full px-4 py-2 bg-white text-purple-600 border border-purple-600 rounded-lg hover:bg-purple-50"
+                          >
+                            Append to Content
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setActiveJobId(null);
+                              setSelectedAgent(null);
+                              setAgentTaskDescription('');
+                            }}
+                            className="w-full px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                          >
+                            Start Over
+                          </button>
+                        </div>
+                      </>
+                    )}
+
+                    {/* Error Message */}
+                    {jobStatus?.status === 'failed' && (
+                      <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+                        <p className="text-sm text-red-800">
+                          {jobStatus.error_message || 'Failed to generate content'}
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setActiveJobId(null);
+                            setSelectedAgent(null);
+                            setAgentTaskDescription('');
+                          }}
+                          className="mt-3 text-sm text-red-600 hover:text-red-700 font-medium"
+                        >
+                          Try Again
+                        </button>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );

@@ -1,5 +1,5 @@
 """
-Main FastAPI application for HMH Content Management System.
+Main FastAPI application for Nova - AI-Powered Educational Content Platform.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -15,6 +15,9 @@ from api.v1 import (
     content,
     reviews,
     search,
+    agents,
+    workflows,
+    skills,
 )
 
 # Create database tables
@@ -29,9 +32,9 @@ app = FastAPI(
     docs_url=f"{settings.API_V1_STR}/docs",
     redoc_url=f"{settings.API_V1_STR}/redoc",
     contact={
-        "name": "HMH Content Management System",
+        "name": "Nova Platform",
         "url": "https://github.com/pauljbernard/content",
-        "email": "support@hmhco.com",
+        "email": "support@nova.ai",
     },
     license_info={
         "name": "Proprietary",
@@ -49,7 +52,7 @@ app = FastAPI(
         },
         {
             "name": "Knowledge Base",
-            "description": "Browse and access the HMH Multi-Curriculum Knowledge Base with 303 knowledge files across 51 US states. Supports hierarchical navigation and markdown content rendering.",
+            "description": "Browse and access the Multi-Curriculum Knowledge Base with 303 knowledge files across 51 US states. Supports hierarchical navigation and markdown content rendering.",
         },
         {
             "name": "Curriculum Configs",
@@ -66,6 +69,18 @@ app = FastAPI(
         {
             "name": "Search",
             "description": "Full-text search across knowledge base files and authored content. Supports filtering by subject, grade level, and content type.",
+        },
+        {
+            "name": "Agents",
+            "description": "Professor Framework AI agent integration. Invoke autonomous agents for curriculum design, content development, assessment creation, and quality review. Provides 5-10x productivity gains through AI-assisted workflows.",
+        },
+        {
+            "name": "Workflows",
+            "description": "Multi-agent workflow orchestration. Create, manage, and execute workflows that chain multiple agents together in sequence. Workflows enable complex content development pipelines with automatic handoffs between agents.",
+        },
+        {
+            "name": "Skills",
+            "description": "Professor Framework composable skills. Access and invoke 92 granular skills across 19 categories for specific educational development tasks. Skills are lightweight, reusable functions that can be chained together.",
         },
     ],
 )
@@ -118,6 +133,9 @@ app.include_router(
 app.include_router(content.router, prefix=settings.API_V1_STR, tags=["Content"])
 app.include_router(reviews.router, prefix=settings.API_V1_STR, tags=["Reviews"])
 app.include_router(search.router, prefix=settings.API_V1_STR, tags=["Search"])
+app.include_router(agents.router, prefix=settings.API_V1_STR, tags=["Agents"])
+app.include_router(workflows.router, prefix=f"{settings.API_V1_STR}/workflows", tags=["Workflows"])
+app.include_router(skills.router, prefix=f"{settings.API_V1_STR}/skills", tags=["Skills"])
 
 
 # Exception handlers

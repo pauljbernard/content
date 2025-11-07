@@ -11,8 +11,11 @@ import {
 } from '@heroicons/react/24/outline';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeHighlight from 'rehype-highlight';
+import rehypeRaw from 'rehype-raw';
 import { knowledgeAPI } from '../services/api';
 import Layout from '../components/Layout';
+import 'highlight.js/styles/github.css';
 
 export default function KnowledgeBase() {
   const [currentPath, setCurrentPath] = useState('');
@@ -179,8 +182,66 @@ export default function KnowledgeBase() {
                     Size: {(fileContent.metadata.size / 1024).toFixed(1)} KB
                   </span>
                 </div>
-                <div className="prose prose-sm max-w-none">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <div className="markdown-body prose prose-lg max-w-none">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeHighlight, rehypeRaw]}
+                    components={{
+                      h1: ({node, ...props}) => <h1 className="text-3xl font-bold mt-8 mb-4 pb-2 border-b border-gray-200" {...props} />,
+                      h2: ({node, ...props}) => <h2 className="text-2xl font-bold mt-6 mb-3 pb-2 border-b border-gray-200" {...props} />,
+                      h3: ({node, ...props}) => <h3 className="text-xl font-bold mt-5 mb-2" {...props} />,
+                      h4: ({node, ...props}) => <h4 className="text-lg font-semibold mt-4 mb-2" {...props} />,
+                      h5: ({node, ...props}) => <h5 className="text-base font-semibold mt-3 mb-2" {...props} />,
+                      h6: ({node, ...props}) => <h6 className="text-sm font-semibold mt-3 mb-2 text-gray-600" {...props} />,
+                      p: ({node, ...props}) => <p className="mb-4 leading-7 text-gray-800" {...props} />,
+                      ul: ({node, ...props}) => <ul className="list-disc list-inside mb-4 space-y-2 ml-4" {...props} />,
+                      ol: ({node, ...props}) => <ol className="list-decimal list-inside mb-4 space-y-2 ml-4" {...props} />,
+                      li: ({node, ...props}) => <li className="leading-7 text-gray-800" {...props} />,
+                      blockquote: ({node, ...props}) => (
+                        <blockquote className="border-l-4 border-gray-300 pl-4 my-4 italic text-gray-700 bg-gray-50 py-2" {...props} />
+                      ),
+                      code: ({node, inline, className, children, ...props}) => {
+                        if (inline) {
+                          return (
+                            <code className="bg-gray-100 text-red-600 px-1.5 py-0.5 rounded text-sm font-mono" {...props}>
+                              {children}
+                            </code>
+                          );
+                        }
+                        return (
+                          <code className={`${className} block bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm`} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                      pre: ({node, ...props}) => (
+                        <pre className="bg-gray-900 rounded-lg mb-4 overflow-x-auto" {...props} />
+                      ),
+                      a: ({node, ...props}) => (
+                        <a className="text-blue-600 hover:text-blue-800 underline" target="_blank" rel="noopener noreferrer" {...props} />
+                      ),
+                      table: ({node, ...props}) => (
+                        <div className="overflow-x-auto mb-4">
+                          <table className="min-w-full divide-y divide-gray-200 border border-gray-200" {...props} />
+                        </div>
+                      ),
+                      thead: ({node, ...props}) => <thead className="bg-gray-50" {...props} />,
+                      tbody: ({node, ...props}) => <tbody className="bg-white divide-y divide-gray-200" {...props} />,
+                      tr: ({node, ...props}) => <tr className="hover:bg-gray-50" {...props} />,
+                      th: ({node, ...props}) => (
+                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" {...props} />
+                      ),
+                      td: ({node, ...props}) => (
+                        <td className="px-4 py-3 text-sm text-gray-800" {...props} />
+                      ),
+                      hr: ({node, ...props}) => <hr className="my-6 border-t border-gray-300" {...props} />,
+                      img: ({node, ...props}) => (
+                        <img className="max-w-full h-auto rounded-lg shadow-md my-4" {...props} />
+                      ),
+                      strong: ({node, ...props}) => <strong className="font-bold text-gray-900" {...props} />,
+                      em: ({node, ...props}) => <em className="italic" {...props} />,
+                    }}
+                  >
                     {fileContent.content}
                   </ReactMarkdown>
                 </div>

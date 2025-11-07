@@ -12,6 +12,9 @@ import {
   Cog6ToothIcon,
   UserCircleIcon,
   ArrowRightOnRectangleIcon,
+  SparklesIcon,
+  QueueListIcon,
+  CodeBracketIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 
@@ -37,6 +40,24 @@ export default function Layout({ children }) {
       name: 'Content',
       href: '/content',
       icon: DocumentTextIcon,
+      roles: ['author', 'editor', 'knowledge_engineer'],
+    },
+    {
+      name: 'Agents',
+      href: '/agents',
+      icon: SparklesIcon,
+      roles: ['author', 'editor', 'knowledge_engineer'],
+    },
+    {
+      name: 'Workflows',
+      href: '/workflows',
+      icon: QueueListIcon,
+      roles: ['author', 'editor', 'knowledge_engineer'],
+    },
+    {
+      name: 'Skills',
+      href: '/skills',
+      icon: CodeBracketIcon,
       roles: ['author', 'editor', 'knowledge_engineer'],
     },
     {
@@ -75,7 +96,7 @@ export default function Layout({ children }) {
                 <Link to="/" className="flex items-center">
                   <BookOpenIcon className="h-8 w-8 text-primary-600" />
                   <span className="ml-2 text-xl font-bold text-gray-900">
-                    HMH CMS
+                    Nova
                   </span>
                 </Link>
               </div>

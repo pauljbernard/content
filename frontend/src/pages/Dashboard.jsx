@@ -9,6 +9,7 @@ import {
   UsersIcon,
   ChartBarIcon,
   ExclamationTriangleIcon,
+  SparklesIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 import { knowledgeAPI, contentAPI } from '../services/api';
@@ -189,7 +190,7 @@ export default function Dashboard() {
           <h2 className="text-lg font-medium text-gray-900 mb-4">
             Quick Actions
           </h2>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <a
               href="/knowledge"
               className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
@@ -218,11 +219,26 @@ export default function Dashboard() {
               </a>
             )}
 
+            {['author', 'editor', 'knowledge_engineer'].includes(
+              user?.role
+            ) && (
+              <a
+                href="/agents"
+                className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+              >
+                <SparklesIcon className="h-6 w-6 text-purple-600 mr-3" />
+                <div>
+                  <p className="font-medium text-gray-900">AI Agents</p>
+                  <p className="text-sm text-gray-500">5-10x faster with AI</p>
+                </div>
+              </a>
+            )}
+
             <a
               href="/search"
               className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
             >
-              <ChartBarIcon className="h-6 w-6 text-purple-600 mr-3" />
+              <ChartBarIcon className="h-6 w-6 text-indigo-600 mr-3" />
               <div>
                 <p className="font-medium text-gray-900">Search</p>
                 <p className="text-sm text-gray-500">Find files and content</p>
