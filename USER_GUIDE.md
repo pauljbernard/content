@@ -95,25 +95,40 @@ Instead of creating separate content for each state and subject, the system uses
 
 **Resolution Rule:** Search from specific to general, first match wins.
 
-### Current Coverage (Complete - 282 Files)
+### Current Coverage (Phase 3B Complete - 303 Files)
 
-**States:** All 51 US states/districts (100% coverage)
+**States:** All 51 US states/districts (100% coverage for core subjects)
 
-**Grade Levels:** K-12 (Elementary, Middle School, High School)
+**Grade Levels:** Pre-K (ages 3-5) through Grade 12
 
-**Subjects:**
+**Core Subjects (K-12):**
 - Mathematics (K-12) - K-8 foundations + HS courses (Algebra I/II, Geometry, Pre-Calculus, Calculus, Statistics/AP)
 - ELA (K-12) - K-8 foundations + HS courses (Literature, Composition, AP English Language/Literature)
 - Science (K-12) - K-8 foundations + HS courses (Biology, Chemistry, Physics, AP Science)
 - Social Studies (K-12) - K-8 foundations + HS courses (US History, World History, Government, Economics, AP Social Studies)
 - Computer Science (K-12) - K-8 foundations + HS courses (AP CS Principles, AP CS A)
 
+**Additional Subjects (K-12):**
+- World Languages - Spanish I-IV, AP Spanish Language/Literature (pilot framework for all languages)
+- Fine Arts - Visual Arts I-IV, AP Art and Design (pilot framework for all arts disciplines)
+- Physical Education & Health - PE 9-12, comprehensive health education K-12
+
+**Early Childhood:**
+- Pre-K (ages 3-5) - Developmentally appropriate practice, play-based learning, emergent literacy
+
+**International:**
+- IB programmes - Learner Profile and foundational frameworks (PYP, MYP, DP)
+
+**Support Systems:**
+- Intervention/RTI - 3-tier MTSS framework
+- ELL Support - Language transfer guides, bilingual education frameworks
+
 **Programs:**
 - HMH Into Math (TX, CA, FL editions K-8)
 - HMH Into Reading (TX edition K-8)
-- High School courses (Algebra I, Biology, AP courses)
+- High School courses (Algebra I, Biology, Spanish I, Art I, PE 9-12, AP courses)
 
-**Students Covered:** 66.5M (100% of US K-12 enrollment: 38M K-8 + 28.5M HS)
+**Students Covered:** 90M+ (100% of US Pre-K-12 enrollment: ~4M Pre-K + 38M K-8 + 28.5M HS + international markets)
 
 ### Knowledge Reuse Demonstrated
 

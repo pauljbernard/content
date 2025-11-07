@@ -1,0 +1,205 @@
+{
+  "id": "hmh-pe-9-12",
+  "name": "HMH Physical Education - High School",
+  "grades": ["9", "10", "11", "12"],
+  "subject": "Physical Education and Health",
+  "course": "Physical Education 9-12",
+  "district": null,
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/physical-education/high-school/",
+      "/reference/hmh-knowledge/subjects/physical-education/common/",
+      "/reference/hmh-knowledge/universal/physical-education/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ],
+    "note": "State-specific: Add /districts/{state}/ paths for state PE requirements and graduation credits"
+  },
+  "standards": {
+    "primary": "SHAPE America National Standards for K-12 Physical Education",
+    "standards_count": 5
+  },
+  "shape_america_standards": [
+    {
+      "standard": 1,
+      "title": "Motor Skills and Movement Patterns",
+      "hs_focus": "Proficiency in 2+ lifetime activities"
+    },
+    {
+      "standard": 2,
+      "title": "Movement Concepts and Strategies",
+      "hs_focus": "Design and implement practice plans, tactical game play"
+    },
+    {
+      "standard": 3,
+      "title": "Physical Activity and Fitness",
+      "hs_focus": "Achieve and maintain health-enhancing fitness levels independently"
+    },
+    {
+      "standard": 4,
+      "title": "Personal and Social Behavior",
+      "hs_focus": "Leadership, conflict resolution, sportsmanship in competitive settings"
+    },
+    {
+      "standard": 5,
+      "title": "Value of Physical Activity",
+      "hs_focus": "Recognize lifelong health benefits, choose activities for personal enjoyment"
+    }
+  ],
+  "curriculum_focus": "Lifetime Activities and Fitness Independence",
+  "activities": [
+    {
+      "category": "Lifetime Sports",
+      "examples": ["Tennis", "Golf", "Swimming", "Cycling", "Pickleball", "Badminton"]
+    },
+    {
+      "category": "Fitness",
+      "examples": ["Weight Training", "Cardiovascular Training", "Yoga", "Pilates", "Circuit Training"]
+    },
+    {
+      "category": "Outdoor Recreation",
+      "examples": ["Hiking", "Kayaking", "Rock Climbing", "Orienteering"]
+    },
+    {
+      "category": "Dance",
+      "examples": ["Cultural Dance", "Social Dance", "Fitness Dance"]
+    },
+    {
+      "category": "Self-Defense",
+      "examples": ["Basic self-defense techniques", "Awareness and prevention"]
+    }
+  ],
+  "fitness_education": {
+    "components": [
+      "Cardiorespiratory endurance",
+      "Muscular strength",
+      "Muscular endurance",
+      "Flexibility",
+      "Body composition"
+    ],
+    "fitt_principle": {
+      "frequency": "How often (days per week)",
+      "intensity": "How hard (heart rate, perceived exertion)",
+      "time": "How long (minutes)",
+      "type": "What activity (cardio, strength, flexibility)"
+    },
+    "fitness_assessment": {
+      "tool": "FitnessGram or equivalent",
+      "purpose": "Self-assessment and goal-setting (not grading)",
+      "privacy": "Private testing, personal growth focus"
+    },
+    "student_outcomes": [
+      "Design personal fitness plan",
+      "Maintain fitness log",
+      "Set and achieve fitness goals",
+      "Understand fitness-health relationship"
+    ]
+  },
+  "health_education": {
+    "integrated": true,
+    "standards": "National Health Education Standards (8 standards)",
+    "topics": [
+      "Nutrition and physical activity",
+      "Sexual health and relationships",
+      "Mental and emotional health",
+      "Substance abuse prevention",
+      "Safety and injury prevention",
+      "Disease prevention",
+      "Consumer health"
+    ],
+    "skills": [
+      "Decision-making",
+      "Goal-setting",
+      "Interpersonal communication",
+      "Advocacy",
+      "Accessing valid information"
+    ],
+    "sensitive_topics": {
+      "trauma_informed": true,
+      "parent_notification": "Required for sexual health, mental health units",
+      "opt_out_available": "Per state law",
+      "mandatory_reporting": "Abuse, self-harm, harm to others"
+    }
+  },
+  "assessment": {
+    "performance_based": true,
+    "components": [
+      {
+        "type": "Skills Assessment",
+        "weight": 40,
+        "description": "Rubrics for skill execution, game play"
+      },
+      {
+        "type": "Fitness Assessment",
+        "weight": 20,
+        "description": "Goal-setting, fitness plan, progress tracking (NOT fitness level)"
+      },
+      {
+        "type": "Knowledge Assessment",
+        "weight": 20,
+        "description": "Rules, strategies, fitness concepts, health knowledge"
+      },
+      {
+        "type": "Participation and Effort",
+        "weight": 20,
+        "description": "Engagement, sportsmanship, teamwork, leadership"
+      }
+    ],
+    "grading_philosophy": "Effort and growth, not innate ability or fitness level"
+  },
+  "inclusive_practices": {
+    "all_students_participate": true,
+    "modifications": "Activities modified, not expectations",
+    "adaptive_pe_collaboration": "Work with adapted PE specialists for students with disabilities",
+    "no_embarrassment": [
+      "No dodgeball (targets students)",
+      "No elimination games (sitting out)",
+      "No public weigh-ins",
+      "No exercise as punishment",
+      "No captain-picks teams (use random assignment)"
+    ],
+    "body_positivity": "Celebrate all body types and abilities",
+    "gender_inclusive": "No gendered activities, all students access all activities"
+  },
+  "safety": {
+    "equipment_inspection": "Daily before use",
+    "proper_technique": "Taught to prevent injury",
+    "emergency_action_plan": "Posted and practiced",
+    "first_aid": "Kit accessible, staff CPR/First Aid certified",
+    "supervision": "Active supervision at all times"
+  },
+  "student_leadership": {
+    "encouraged": true,
+    "opportunities": [
+      "Student-led warm-ups",
+      "Peer teaching and mentoring",
+      "Team captains (rotating, not popularity-based)",
+      "Officiating and scorekeeping",
+      "Fitness plan design for peers"
+    ]
+  },
+  "college_career_readiness": {
+    "careers_introduced": [
+      "Physical Education Teacher",
+      "Athletic Trainer",
+      "Personal Trainer",
+      "Sports Medicine",
+      "Kinesiology",
+      "Nutritionist",
+      "Coach",
+      "Recreation Director"
+    ],
+    "certifications": [
+      "CPR/First Aid (offered in course)",
+      "Lifeguard (optional pathway)",
+      "Personal Training (advanced students)"
+    ]
+  },
+  "metadata": {
+    "created": "2025-11-06",
+    "version": "1.0",
+    "credit_type": "Required (1-2 credits for graduation, varies by state)",
+    "graduation_requirement": "Check state-specific requirements",
+    "note": "Many states require 1-2 years of PE for graduation. Some allow substitutions (varsity sports, marching band, JROTC)."
+  }
+}

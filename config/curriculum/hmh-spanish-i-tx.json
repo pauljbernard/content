@@ -1,0 +1,89 @@
+{
+  "id": "hmh-spanish-i-tx",
+  "name": "HMH Spanish I - Texas",
+  "grades": ["9", "10", "11", "12"],
+  "subject": "World Languages",
+  "language": "Spanish",
+  "course": "Spanish I",
+  "district": "texas",
+  "proficiency_level": "Novice Mid-High",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/world-languages/districts/texas/",
+      "/reference/hmh-knowledge/subjects/world-languages/high-school/",
+      "/reference/hmh-knowledge/subjects/world-languages/common/",
+      "/reference/hmh-knowledge/districts/texas/high-school/",
+      "/reference/hmh-knowledge/districts/texas/language/",
+      "/reference/hmh-knowledge/districts/texas/",
+      "/reference/hmh-knowledge/universal/world-languages/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ]
+  },
+  "standards": {
+    "primary": "TEKS Languages Other Than English (LOTE) - Spanish Level I",
+    "national": "ACTFL World Readiness Standards",
+    "proficiency_framework": "ACTFL Proficiency Guidelines"
+  },
+  "communication_modes": [
+    "Interpersonal",
+    "Interpretive",
+    "Presentational"
+  ],
+  "skills_focus": [
+    "Present tense regular and irregular verbs",
+    "Basic conversational phrases",
+    "Cultural awareness (Spanish-speaking world)",
+    "Reading simple texts",
+    "Writing sentences and short paragraphs",
+    "Listening comprehension for familiar topics"
+  ],
+  "themes": [
+    "Greetings and introductions",
+    "Family and friends",
+    "School and daily activities",
+    "Food and dining",
+    "House and home",
+    "Hobbies and interests",
+    "Weather and seasons"
+  ],
+  "target_language_use": "90%",
+  "assessments": [
+    "Integrated Performance Assessments (IPAs)",
+    "Proficiency-based assessments",
+    "Oral proficiency interviews",
+    "Written compositions",
+    "Cultural projects"
+  ],
+  "heritage_speakers": {
+    "supports": true,
+    "differentiation": "Literacy development, academic register, formal grammar"
+  },
+  "cultural_competence": {
+    "framework": "3 Ps (Perspectives, Practices, Products)",
+    "countries_covered": [
+      "Spain",
+      "Mexico",
+      "Central America",
+      "South America",
+      "Caribbean"
+    ]
+  },
+  "language_support": {
+    "cognates": true,
+    "false_cognates_instruction": true,
+    "pronunciation_focus": [
+      "Spanish vowels",
+      "Rolling r",
+      "Silent h",
+      "Accent marks"
+    ]
+  },
+  "metadata": {
+    "created": "2025-11-06",
+    "version": "1.0",
+    "credit_type": "Elective (can count toward language requirement for college)",
+    "prerequisite": "None",
+    "sequel_course": "Spanish II"
+  }
+}

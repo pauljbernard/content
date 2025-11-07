@@ -1,0 +1,139 @@
+{
+  "id": "hmh-art-i",
+  "name": "HMH Art I - Introduction to Visual Arts",
+  "grades": ["9", "10"],
+  "subject": "Fine Arts",
+  "discipline": "Visual Arts",
+  "course": "Art I",
+  "district": null,
+  "course_type": "Introductory",
+  "knowledge_resolution": {
+    "order": [
+      "/reference/hmh-knowledge/subjects/fine-arts/high-school/",
+      "/reference/hmh-knowledge/subjects/fine-arts/common/",
+      "/reference/hmh-knowledge/universal/fine-arts/",
+      "/reference/hmh-knowledge/universal/high-school/",
+      "/reference/hmh-knowledge/universal/"
+    ],
+    "note": "State-specific: If implementing in a specific state, add /districts/{state}/ paths"
+  },
+  "standards": {
+    "primary": "National Core Arts Standards (Visual Arts)",
+    "artistic_processes": [
+      "Creating",
+      "Presenting",
+      "Responding",
+      "Connecting"
+    ]
+  },
+  "elements_of_art": [
+    "Line",
+    "Shape",
+    "Form",
+    "Color",
+    "Value",
+    "Texture",
+    "Space"
+  ],
+  "principles_of_design": [
+    "Balance",
+    "Emphasis",
+    "Contrast",
+    "Unity",
+    "Variety",
+    "Movement",
+    "Pattern",
+    "Rhythm"
+  ],
+  "media_covered": [
+    {
+      "medium": "Drawing",
+      "materials": ["Pencil", "Charcoal", "Ink", "Conte crayon", "Pastels"]
+    },
+    {
+      "medium": "Painting",
+      "materials": ["Watercolor", "Acrylic", "Tempera"]
+    },
+    {
+      "medium": "Printmaking",
+      "materials": ["Linoleum cut", "Monoprint"]
+    },
+    {
+      "medium": "Sculpture/3D",
+      "materials": ["Clay", "Found objects", "Paper mache"]
+    },
+    {
+      "medium": "Digital Art",
+      "materials": ["Digital drawing/painting software", "Photo editing"]
+    }
+  ],
+  "skills_focus": [
+    "Foundational drawing techniques (contour, gesture, shading)",
+    "Color theory and mixing",
+    "Composition and design",
+    "Basic printmaking processes",
+    "3D construction and modeling",
+    "Introduction to digital tools",
+    "Artistic vocabulary",
+    "Critique and reflection"
+  ],
+  "studio_habits_of_mind": [
+    "Develop Craft",
+    "Engage and Persist",
+    "Envision",
+    "Express",
+    "Observe",
+    "Reflect",
+    "Stretch and Explore",
+    "Understand Art Worlds"
+  ],
+  "art_history": {
+    "approach": "Integrated with studio work",
+    "movements_introduced": [
+      "Renaissance",
+      "Impressionism",
+      "Cubism",
+      "Contemporary Art"
+    ],
+    "cultural_diversity": true,
+    "contemporary_artists": true
+  },
+  "assessment": {
+    "rubric_criteria": [
+      "Craftsmanship and Technique",
+      "Creative Problem-Solving",
+      "Composition (Elements and Principles)",
+      "Communication of Ideas",
+      "Effort and Growth"
+    ],
+    "portfolio": {
+      "required": true,
+      "min_works": 8,
+      "reflection_required": true
+    },
+    "critique": {
+      "peer_critique": true,
+      "formal_critique": true,
+      "protocol": "Describe, Analyze, Interpret, Evaluate"
+    }
+  },
+  "inclusive_practices": {
+    "udl": true,
+    "adaptive_tools": "Available for students with disabilities",
+    "multiple_entry_points": "All skill levels welcomed",
+    "cultural_responsiveness": "Diverse artists and art forms represented"
+  },
+  "safety": {
+    "materials_safety": true,
+    "ventilation_required": ["Spray fixative", "Some paints"],
+    "proper_tool_use": "Demonstrated for all tools (cutting, sculpting)"
+  },
+  "metadata": {
+    "created": "2025-11-06",
+    "version": "1.0",
+    "credit_type": "Elective (Fine Arts)",
+    "prerequisite": "None",
+    "sequel_courses": ["Art II", "Art III", "AP 2-D Art and Design", "AP 3-D Art and Design", "AP Drawing"],
+    "college_portfolio_prep": true
+  }
+}

@@ -4,7 +4,7 @@
 
 This repository provides **two integrated systems** for educational content development:
 
-1. **HMH Multi-Curriculum Knowledge Base** - A hierarchical, reusable knowledge system (282 files) for creating standards-aligned instructional materials across any state, any subject, any grade level (K-12) with 85-95% knowledge reuse
+1. **HMH Multi-Curriculum Knowledge Base** - A hierarchical, reusable knowledge system (303 files, Pre-K through 12) for creating standards-aligned instructional materials across any state, any subject, any grade level with 85-95% knowledge reuse
 2. **Professor Framework Integration** - AI-powered content development with 92 specialized skills and 22 autonomous agents
 
 **Purpose**: Create, manage, and publish high-quality educational content across all educational levels (K-12, undergraduate, graduate, post-graduate, and professional learning).
@@ -21,7 +21,7 @@ This repository provides **two integrated systems** for educational content deve
 A **hierarchical knowledge resolution system** that enables creating standards-aligned, state-compliant instructional materials with **85-97% knowledge reuse** across curricula.
 
 **Location**: `/reference/hmh-knowledge/`
-**Status**: Complete (282 files, 100% K-12 US coverage)
+**Status**: Phase 3B Complete (303 files, Pre-K-12 US coverage + expanded subjects)
 **Documentation**: See complete documentation suite:
 - **[USER_GUIDE.md](USER_GUIDE.md)** - Overview and navigation for all roles
 - **[AUTHOR_GUIDE.md](AUTHOR_GUIDE.md)** - Complete authoring workflows (850 lines)
@@ -31,11 +31,14 @@ A **hierarchical knowledge resolution system** that enables creating standards-a
 
 ### Current Coverage
 
-**States**: All 51 US states/districts (100% coverage)
-**Subjects**: Mathematics (K-12), ELA (K-12), Science (K-12), Social Studies (K-12), Computer Science (K-12)
-**State/Subject Combinations**: 510 (51 states × 5 subjects × 2 grade bands: K-8, 9-12)
-**Students Covered**: 66.5M (100% of US K-12 enrollment: 38M K-8 + 28.5M HS)
-**Curricula**: 4+ HMH programs (Into Math TX/CA/FL K-8, Into Reading TX K-8, Algebra I, AP Calculus, AP English, etc.)
+**Grade Levels**: Pre-K (ages 3-5) through Grade 12
+**States**: All 51 US states/districts (100% coverage for core subjects)
+**Core Subjects (K-12)**: Mathematics, ELA, Science, Social Studies, Computer Science
+**Additional Subjects (K-12)**: World Languages (Spanish pilot), Fine Arts (Visual Arts pilot), Physical Education & Health
+**State/Subject Combinations**: 510+ (51 states × 5 core subjects × 2 grade bands, plus expanded subjects)
+**Students Covered**: 90M+ (100% of US Pre-K-12 enrollment: ~4M Pre-K + 38M K-8 + 28.5M HS + international markets)
+**Curricula**: 7+ HMH programs (Into Math, Into Reading, Into Literature, Algebra I, Biology, AP courses, Spanish I, Art I, PE 9-12, etc.)
+**International**: IB programme frameworks (PYP, MYP, DP)
 
 ### 5-Level Hierarchical Architecture
 
@@ -83,13 +86,49 @@ Knowledge resolution order (specific → general, first match wins):
 - Computer Science HS (1 file): AP CS Principles and AP CS A
 - State Graduation Requirements (3 files): Texas, California, Florida (graduation requirements, EOC exams, college prep)
 
+**Phase 3 Expansion (21 files) - Pre-K, Additional Subjects, International, Intervention:**
+
+**Pre-K Universal (5 files):**
+- Developmentally Appropriate Practice, Play-Based Learning, Social-Emotional Learning (Pre-K), Pre-K Assessment, Family Engagement
+
+**World Languages (4 files):**
+- Universal (1 file): Proficiency Frameworks (ACTFL/CEFR)
+- Common (2 files): Communicative Approach (CLT), Cultural Competence (3 Ps)
+- HS (1 file): Spanish Guide (Spanish I-IV, AP Spanish Language/Literature)
+
+**Fine Arts (2 files):**
+- Universal (1 file): Creative Process Framework (Creating, Performing, Responding, Connecting)
+- HS (1 file): Visual Arts Guide (Art I-IV, AP Art and Design)
+
+**Physical Education & Health (2 files):**
+- Universal (1 file): PE Standards Framework (SHAPE America 5 standards)
+- Common (1 file): Health Education Standards (8 National Health Education Standards)
+
+**International Curricula (1 file):**
+- IB Common: IB Learner Profile (10 attributes for PYP, MYP, DP, CP)
+
+**Intervention & Support (1 file):**
+- Universal: RTI/MTSS Framework (3-tier intervention model)
+
+**English Language Learners (1 file):**
+- Texas Language: Spanish-English Transfer (cognates, interference patterns, support strategies)
+
+**Early Literacy (1 file):**
+- Common: Emergent Literacy Routines (Pre-K/K literacy foundations)
+
+**Curriculum Configs (3 files):**
+- `hmh-spanish-i-tx.json`: Spanish I for Texas (ACTFL Novice Mid-High proficiency)
+- `hmh-art-i.json`: Art I Introduction to Visual Arts (National Core Arts Standards)
+- `hmh-pe-9-12.json`: Physical Education 9-12 (SHAPE America standards + health education)
+
 ### How Claude Code Should Use This
 
 **When generating state/subject-specific content:**
 
 1. **Check for curriculum config** in `/config/curriculum/`
    - K-8: `hmh-math-tx.json`, `hmh-math-ca.json`, `hmh-math-fl.json`, `hmh-ela-tx.json`
-   - HS: `hmh-algebra1-tx.json`, `hmh-biology-tx.json`, `hmh-ap-calc-ab.json`, `hmh-ap-english-lit.json`
+   - HS Core: `hmh-algebra1-tx.json`, `hmh-biology-tx.json`, `hmh-ap-calc-ab.json`, `hmh-ap-english-lit.json`
+   - HS Additional: `hmh-spanish-i-tx.json`, `hmh-art-i.json`, `hmh-pe-9-12.json`
 
 2. **Follow resolution order** defined in config to find relevant knowledge files
    - Start with most specific (program-specific)
@@ -134,6 +173,20 @@ Knowledge resolution order (specific → general, first match wins):
    - `/universal/frameworks/udl-principles-guide.md`
    - `/universal/assessment/item-types-reference.md`
 3. Combine guidance to create lesson aligned to B.E.S.T. standards, Florida Biology EOC, AP Biology exam, NGSS, and college readiness
+
+**Example Query (World Languages)**: "Create a Texas Spanish I lesson on introducing yourself"
+
+**Resolution Process**:
+1. Load `hmh-spanish-i-tx.json` config
+2. Gather knowledge from:
+   - `/subjects/world-languages/high-school/spanish-guide.md` (Spanish I grammar, themes, proficiency level)
+   - `/subjects/world-languages/common/communicative-approach.md` (CLT, 90% target language, TPRS)
+   - `/subjects/world-languages/common/cultural-competence.md` (3 Ps framework)
+   - `/universal/world-languages/proficiency-frameworks.md` (ACTFL Novice Mid-High level, Can-Do statements)
+   - `/districts/texas/language/elps-alignment.md` (Texas ELPS for heritage Spanish speakers)
+   - `/universal/high-school/college-career-readiness-framework.md` (language requirements for college)
+   - `/universal/frameworks/udl-principles-guide.md`
+3. Combine guidance to create lesson aligned to TEKS LOTE, ACTFL proficiency standards, using Interpersonal/Interpretive/Presentational modes, 90% Spanish, culturally authentic
 
 ### Adding New States/Subjects
 
