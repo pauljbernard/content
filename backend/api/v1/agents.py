@@ -1,8 +1,11 @@
 """
 Professor Framework agent API endpoints.
 """
+import json
+import asyncio
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks, status
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from datetime import datetime
 from database.session import get_db
@@ -458,6 +461,86 @@ async def invoke_agent(
     background_tasks.add_task(execute_agent_job, db_job.id)
 
     return db_job
+
+
+@router.post("/stream")
+async def stream_agent_response(
+    job: AgentJobCreate,
+    current_user: User = Depends(get_author),
+):
+    """
+    Stream agent response in real-time (like ChatGPT).
+
+    Returns Server-Sent Events (SSE) stream of text chunks as they're generated.
+    No job record is created - this is for immediate streaming only.
+
+    Required role: author or above
+    """
+    from services.agent_executor import get_agent_executor, AGENT_PROMPTS
+
+    # Validate agent type exists
+    agent_ids = [a["id"] for a in AVAILABLE_AGENTS]
+    if job.agent_type not in agent_ids:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid agent type. Available agents: {', '.join(agent_ids)}"
+        )
+
+    # Check user has permission for this agent
+    agent_info = next((a for a in AVAILABLE_AGENTS if a["id"] == job.agent_type), None)
+    role_hierarchy = {"teacher": 0, "author": 1, "editor": 2, "knowledge_engineer": 3}
+
+    if role_hierarchy.get(current_user.role, 0) < role_hierarchy.get(agent_info["required_role"], 1):
+        raise HTTPException(
+            status_code=403,
+            detail=f"Insufficient permissions. Required role: {agent_info['required_role']}"
+        )
+
+    async def generate():
+        """Generate Server-Sent Events stream."""
+        import sys
+        try:
+            # Get agent executor
+            agent_executor = get_agent_executor()
+
+            # Send initial status
+            event = f"data: {json.dumps({'type': 'status', 'message': 'Initializing agent...'})}\n\n"
+            print(f"[SSE] Sending status event", file=sys.stderr, flush=True)
+            yield event
+
+            # Stream the agent response
+            chunk_count = 0
+            async for chunk in agent_executor.execute_agent_streaming(
+                agent_type=job.agent_type,
+                task=job.task_description,
+                parameters=job.parameters,
+                use_knowledge_base=True,
+            ):
+                # Send text chunk
+                chunk_count += 1
+                event = f"data: {json.dumps({'type': 'text', 'content': chunk})}\n\n"
+                print(f"[SSE] Sending chunk #{chunk_count}: {len(chunk)} chars", file=sys.stderr, flush=True)
+                yield event
+
+            # Send completion marker
+            print(f"[SSE] Sending done event. Total chunks: {chunk_count}", file=sys.stderr, flush=True)
+            yield f"data: {json.dumps({'type': 'done', 'message': 'Complete'})}\n\n"
+
+        except Exception as e:
+            # Send error event
+            print(f"[SSE] Error: {str(e)}", file=sys.stderr, flush=True)
+            yield f"data: {json.dumps({'type': 'error', 'message': str(e)})}\n\n"
+
+    return StreamingResponse(
+        generate(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "X-Accel-Buffering": "no",  # Disable nginx buffering
+            "Transfer-Encoding": "chunked",  # Force chunked encoding
+        }
+    )
 
 
 @router.get("/jobs", response_model=List[AgentJobInDB])

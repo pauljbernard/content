@@ -1,6 +1,7 @@
 """
 Content authoring and management API endpoints.
 """
+import json
 from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
@@ -81,6 +82,14 @@ async def list_content(
         query = query.filter(Content.author_id == author_id)
 
     content_list = query.offset(skip).limit(limit).all()
+
+    # Deserialize JSON strings back to lists for all items in response
+    for content in content_list:
+        if isinstance(content.standards_aligned, str):
+            content.standards_aligned = json.loads(content.standards_aligned)
+        if isinstance(content.learning_objectives, str):
+            content.learning_objectives = json.loads(content.learning_objectives)
+
     return content_list
 
 
@@ -99,8 +108,22 @@ async def create_content(
     - **subject**: Subject area
     - **file_content**: The actual content (markdown/text)
     """
+    # Convert content to dict and serialize list fields to JSON
+    content_dict = content.dict()
+
+    # Serialize list fields to JSON strings for SQLite
+    if content_dict.get("standards_aligned"):
+        content_dict["standards_aligned"] = json.dumps(content_dict["standards_aligned"])
+    else:
+        content_dict["standards_aligned"] = json.dumps([])
+
+    if content_dict.get("learning_objectives"):
+        content_dict["learning_objectives"] = json.dumps(content_dict["learning_objectives"])
+    else:
+        content_dict["learning_objectives"] = json.dumps([])
+
     db_content = Content(
-        **content.dict(), author_id=current_user.id, status=ContentStatus.DRAFT
+        **content_dict, author_id=current_user.id, status=ContentStatus.DRAFT
     )
     db.add(db_content)
     db.commit()
@@ -130,6 +153,12 @@ async def get_content(
     ):
         raise HTTPException(status_code=403, detail="Access denied")
 
+    # Deserialize JSON strings back to lists for response
+    if isinstance(content.standards_aligned, str):
+        content.standards_aligned = json.loads(content.standards_aligned)
+    if isinstance(content.learning_objectives, str):
+        content.learning_objectives = json.loads(content.learning_objectives)
+
     return content
 
 
@@ -152,11 +181,25 @@ async def update_content(
 
     # Update fields
     update_data = content_update.dict(exclude_unset=True)
+
+    # Serialize list fields to JSON strings for SQLite
+    if "standards_aligned" in update_data and update_data["standards_aligned"] is not None:
+        update_data["standards_aligned"] = json.dumps(update_data["standards_aligned"])
+    if "learning_objectives" in update_data and update_data["learning_objectives"] is not None:
+        update_data["learning_objectives"] = json.dumps(update_data["learning_objectives"])
+
     for key, value in update_data.items():
         setattr(content, key, value)
 
     db.commit()
     db.refresh(content)
+
+    # Deserialize JSON strings back to lists for response
+    if isinstance(content.standards_aligned, str):
+        content.standards_aligned = json.loads(content.standards_aligned)
+    if isinstance(content.learning_objectives, str):
+        content.learning_objectives = json.loads(content.learning_objectives)
+
     return content
 
 

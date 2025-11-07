@@ -6,6 +6,7 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeftIcon,
+  ArrowPathIcon,
   CheckIcon,
   SparklesIcon,
   XMarkIcon
@@ -39,6 +40,11 @@ export default function ContentEditor() {
   const [selectedAgent, setSelectedAgent] = useState(null);
   const [agentTaskDescription, setAgentTaskDescription] = useState('');
   const [activeJobId, setActiveJobId] = useState(null);
+  const [isInvoking, setIsInvoking] = useState(false);
+  const [streamingText, setStreamingText] = useState('');
+  const [isStreaming, setIsStreaming] = useState(false);
+  const [streamError, setStreamError] = useState(null);
+  const [eventSource, setEventSource] = useState(null);
 
   // Handle pre-filled content from agent results
   useEffect(() => {
@@ -114,6 +120,10 @@ export default function ContentEditor() {
       agentsAPI.invoke(agentType, taskDescription, parameters),
     onSuccess: (data) => {
       setActiveJobId(data.id);
+      setIsInvoking(false);
+    },
+    onError: () => {
+      setIsInvoking(false);
     },
   });
 
@@ -190,8 +200,24 @@ export default function ContentEditor() {
     }
   };
 
+  // Cleanup EventSource on unmount or when closing panel
+  useEffect(() => {
+    return () => {
+      if (eventSource) {
+        eventSource.close();
+        setEventSource(null);
+      }
+    };
+  }, [eventSource]);
+
   const handleInvokeAgent = () => {
     if (!selectedAgent || !agentTaskDescription.trim()) return;
+
+    // Reset streaming state
+    setStreamingText('');
+    setStreamError(null);
+    setIsStreaming(true);
+    setIsInvoking(true);
 
     const parameters = {
       subject: formData.subject,
@@ -200,36 +226,134 @@ export default function ContentEditor() {
       content_type: formData.content_type,
     };
 
-    invokeAgentMutation.mutate({
-      agentType: selectedAgent.id,
-      taskDescription: agentTaskDescription,
+    // Prepare request body
+    const requestBody = {
+      agent_type: selectedAgent.id,
+      task_description: agentTaskDescription,
       parameters,
-    });
+    };
+
+    // Get token from localStorage (same as axios interceptor)
+    const token = localStorage.getItem('access_token');
+
+    // Create EventSource connection
+    // Note: EventSource doesn't support custom headers or POST, so we'll use fetch with ReadableStream
+    fetch('http://localhost:8000/api/v1/agents/stream', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestBody),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
+        let buffer = '';
+
+        const readStream = () => {
+          reader.read().then(({ done, value }) => {
+            if (done) {
+              setIsStreaming(false);
+              setIsInvoking(false);
+              return;
+            }
+
+            // Decode the chunk and add to buffer
+            buffer += decoder.decode(value, { stream: true });
+
+            // Split by double newline (SSE event separator)
+            const events = buffer.split('\n\n');
+
+            // Keep the last incomplete event in the buffer
+            buffer = events.pop() || '';
+
+            // Process each complete event
+            events.forEach((event) => {
+              const lines = event.split('\n');
+              lines.forEach((line) => {
+                if (line.startsWith('data: ')) {
+                  try {
+                    const jsonData = line.substring(6).trim();
+                    if (jsonData) {
+                      const data = JSON.parse(jsonData);
+
+                      console.log('Received SSE event:', data);
+
+                      if (data.type === 'text') {
+                        setStreamingText((prev) => prev + data.content);
+                      } else if (data.type === 'status') {
+                        console.log('Status:', data.message);
+                      } else if (data.type === 'done') {
+                        setIsStreaming(false);
+                        setIsInvoking(false);
+                      } else if (data.type === 'error') {
+                        setStreamError(data.message);
+                        setIsStreaming(false);
+                        setIsInvoking(false);
+                      }
+                    }
+                  } catch (e) {
+                    console.error('Error parsing SSE data:', e, 'Line:', line);
+                  }
+                }
+              });
+            });
+
+            readStream();
+          }).catch((error) => {
+            console.error('Stream reading error:', error);
+            setStreamError(error.message);
+            setIsStreaming(false);
+            setIsInvoking(false);
+          });
+        };
+
+        readStream();
+      })
+      .catch((error) => {
+        console.error('Streaming error:', error);
+        setStreamError(error.message);
+        setIsStreaming(false);
+        setIsInvoking(false);
+      });
   };
 
   const handleInsertGeneratedContent = () => {
-    if (jobStatus?.output_content) {
+    // Use streaming text if available, otherwise fall back to job status
+    const content = streamingText || jobStatus?.output_content;
+    if (content) {
       setFormData((prev) => ({
         ...prev,
-        file_content: jobStatus.output_content,
+        file_content: content,
       }));
       setShowAIAssist(false);
       setActiveJobId(null);
       setSelectedAgent(null);
       setAgentTaskDescription('');
+      setStreamingText('');
+      setIsStreaming(false);
     }
   };
 
   const handleAppendGeneratedContent = () => {
-    if (jobStatus?.output_content) {
+    // Use streaming text if available, otherwise fall back to job status
+    const content = streamingText || jobStatus?.output_content;
+    if (content) {
       setFormData((prev) => ({
         ...prev,
-        file_content: prev.file_content + '\n\n' + jobStatus.output_content,
+        file_content: prev.file_content + '\n\n' + content,
       }));
       setShowAIAssist(false);
       setActiveJobId(null);
       setSelectedAgent(null);
       setAgentTaskDescription('');
+      setStreamingText('');
+      setIsStreaming(false);
     }
   };
 
@@ -518,7 +642,7 @@ export default function ContentEditor() {
 
               {/* Content */}
               <div className="flex-1 overflow-y-auto px-6 py-4">
-                {!activeJobId ? (
+                {!isStreaming && !streamingText && !activeJobId ? (
                   <>
                     {/* Suggested Agents */}
                     <div className="mb-6">
@@ -573,12 +697,81 @@ export default function ContentEditor() {
                         type="button"
                         onClick={handleInvokeAgent}
                         disabled={
-                          !agentTaskDescription.trim() || invokeAgentMutation.isLoading
+                          !agentTaskDescription.trim() || isInvoking
                         }
-                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                       >
-                        {invokeAgentMutation.isLoading ? 'Starting...' : 'Generate Content'}
+                        {isInvoking && (
+                          <ArrowPathIcon className="h-5 w-5 mr-2 animate-spin" />
+                        )}
+                        {isInvoking ? 'Starting...' : 'Generate Content'}
                       </button>
+                    )}
+                  </>
+                ) : (streamingText || isStreaming) ? (
+                  <>
+                    {/* Streaming Content Display */}
+                    <div className="mb-6">
+                      <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center">
+                          {isStreaming && (
+                            <ArrowPathIcon className="h-5 w-5 text-purple-600 mr-2 animate-spin" />
+                          )}
+                          <h3 className="text-sm font-medium text-gray-700">
+                            {isStreaming ? 'Generating...' : 'Complete!'}
+                          </h3>
+                        </div>
+                        {!isStreaming && streamingText && (
+                          <CheckIcon className="h-5 w-5 text-green-600" />
+                        )}
+                      </div>
+
+                      {/* Streaming text display */}
+                      <div className="p-4 bg-gray-50 rounded-lg border border-gray-200 max-h-96 overflow-y-auto">
+                        <pre className="text-sm text-gray-800 whitespace-pre-wrap font-mono">
+                          {streamingText}
+                          {isStreaming && <span className="animate-pulse">▊</span>}
+                        </pre>
+                      </div>
+
+                      {/* Error display */}
+                      {streamError && (
+                        <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-lg">
+                          <p className="text-sm text-red-800">{streamError}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Buttons - Only show when streaming is complete */}
+                    {!isStreaming && streamingText && (
+                      <div className="space-y-2">
+                        <button
+                          type="button"
+                          onClick={handleInsertGeneratedContent}
+                          className="w-full px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
+                        >
+                          Replace Content
+                        </button>
+                        <button
+                          type="button"
+                          onClick={handleAppendGeneratedContent}
+                          className="w-full px-4 py-2 bg-white text-purple-600 border border-purple-600 rounded-lg hover:bg-purple-50"
+                        >
+                          Append to Content
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setStreamingText('');
+                            setSelectedAgent(null);
+                            setAgentTaskDescription('');
+                            setStreamError(null);
+                          }}
+                          className="w-full px-4 py-2 bg-white text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50"
+                        >
+                          Start Over
+                        </button>
+                      </div>
                     )}
                   </>
                 ) : (
@@ -586,12 +779,17 @@ export default function ContentEditor() {
                     {/* Job Progress */}
                     <div className="mb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-sm font-medium text-gray-700">
-                          {jobStatus?.status === 'running' ? 'Generating...' :
-                           jobStatus?.status === 'queued' ? 'Queued...' :
-                           jobStatus?.status === 'completed' ? 'Complete!' :
-                           'Failed'}
-                        </h3>
+                        <div className="flex items-center">
+                          {(jobStatus?.status === 'running' || jobStatus?.status === 'queued') && (
+                            <ArrowPathIcon className="h-5 w-5 text-purple-600 mr-2 animate-spin" />
+                          )}
+                          <h3 className="text-sm font-medium text-gray-700">
+                            {jobStatus?.status === 'running' ? 'Generating...' :
+                             jobStatus?.status === 'queued' ? 'Queued...' :
+                             jobStatus?.status === 'completed' ? 'Complete!' :
+                             'Failed'}
+                          </h3>
+                        </div>
                         <span className="text-sm text-gray-500">
                           {jobStatus?.progress_percentage || 0}%
                         </span>

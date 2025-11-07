@@ -230,6 +230,42 @@ class AgentExecutor:
                 }
             }
 
+    async def execute_agent_streaming(
+        self,
+        agent_type: str,
+        task: str,
+        parameters: Optional[Dict[str, Any]] = None,
+        use_knowledge_base: bool = True,
+    ):
+        """
+        Execute a Professor Framework agent with streaming output.
+
+        Args:
+            agent_type: Type of agent to execute (e.g., 'content-developer')
+            task: The task description for the agent
+            parameters: Additional parameters for the task
+            use_knowledge_base: Whether to include knowledge base context
+
+        Yields:
+            Text chunks as they arrive from Claude
+        """
+        # Get system prompt for this agent type
+        system_prompt = AGENT_PROMPTS.get(
+            agent_type,
+            "You are an expert educational AI assistant. Complete the given task with high quality and attention to detail."
+        )
+
+        # Build the full prompt
+        full_prompt = self._build_prompt(task, parameters, use_knowledge_base)
+
+        # Stream with Claude
+        async for chunk in self.claude_client.generate_streaming(
+            prompt=full_prompt,
+            system_prompt=system_prompt,
+            temperature=0.7,  # Balanced creativity and consistency
+        ):
+            yield chunk
+
     def _build_prompt(
         self,
         task: str,

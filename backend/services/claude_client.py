@@ -16,9 +16,8 @@ class ClaudeClient:
             raise ValueError("ANTHROPIC_API_KEY environment variable is not set")
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
-        # Using Claude 3 Sonnet - stable, widely available model
-        # This is the standard Sonnet model that should work with all API keys
-        self.default_model = "claude-3-sonnet-20240229"
+        # Using Claude Sonnet 4 - verified working model
+        self.default_model = "claude-sonnet-4-20250514"
         self.max_tokens = 8000
 
     async def generate_response(
@@ -84,6 +83,9 @@ class ClaudeClient:
         Yields:
             Text chunks as they arrive
         """
+        import asyncio
+        from concurrent.futures import ThreadPoolExecutor
+
         try:
             messages = [{"role": "user", "content": prompt}]
 
@@ -97,9 +99,42 @@ class ClaudeClient:
             if system_prompt:
                 kwargs["system"] = system_prompt
 
-            with self.client.messages.stream(**kwargs) as stream:
-                for text in stream.text_stream:
-                    yield text
+            # Use a queue to communicate between threads
+            import queue
+            text_queue = queue.Queue()
+
+            def stream_in_thread():
+                """Run the blocking stream in a separate thread."""
+                try:
+                    with self.client.messages.stream(**kwargs) as stream:
+                        for text in stream.text_stream:
+                            text_queue.put(('chunk', text))
+                    text_queue.put(('done', None))
+                except Exception as e:
+                    text_queue.put(('error', str(e)))
+
+            # Start streaming in a background thread
+            executor = ThreadPoolExecutor(max_workers=1)
+            executor.submit(stream_in_thread)
+
+            # Yield chunks as they arrive
+            while True:
+                try:
+                    # Check queue without blocking too long
+                    event_type, data = await asyncio.get_event_loop().run_in_executor(
+                        None, text_queue.get, True, 0.1
+                    )
+
+                    if event_type == 'chunk':
+                        yield data
+                    elif event_type == 'done':
+                        break
+                    elif event_type == 'error':
+                        raise Exception(f"Claude API streaming error: {data}")
+                except queue.Empty:
+                    # No data yet, yield control and continue
+                    await asyncio.sleep(0.01)
+                    continue
 
         except Exception as e:
             raise Exception(f"Claude API streaming error: {str(e)}")

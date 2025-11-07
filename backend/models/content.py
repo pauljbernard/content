@@ -1,6 +1,7 @@
 """
 Content models for lessons, assessments, and activities.
 """
+import json
 from datetime import datetime
 from typing import Optional, List, Dict, Any
 from sqlalchemy import (
@@ -14,6 +15,7 @@ from sqlalchemy import (
     Enum as SQLEnum,
 )
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
 from pydantic import BaseModel, Field
 from enum import Enum
 from database.session import Base
@@ -172,6 +174,17 @@ class ContentInDB(ContentBase):
     submitted_at: Optional[datetime]
     approved_at: Optional[datetime]
     published_at: Optional[datetime]
+
+    @classmethod
+    def model_validate(cls, obj: Any, **kwargs):
+        """Custom validation to deserialize JSON strings from database."""
+        if hasattr(obj, 'standards_aligned') and isinstance(obj.standards_aligned, str):
+            obj.standards_aligned = json.loads(obj.standards_aligned) if obj.standards_aligned else []
+        if hasattr(obj, 'knowledge_files_used') and isinstance(obj.knowledge_files_used, str):
+            obj.knowledge_files_used = json.loads(obj.knowledge_files_used) if obj.knowledge_files_used else []
+        if hasattr(obj, 'learning_objectives') and isinstance(obj.learning_objectives, str):
+            obj.learning_objectives = json.loads(obj.learning_objectives) if obj.learning_objectives else []
+        return super().model_validate(obj, **kwargs)
 
     class Config:
         from_attributes = True
