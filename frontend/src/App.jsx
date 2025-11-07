@@ -8,9 +8,12 @@ import useAuthStore from './store/authStore';
 
 // Pages
 import Login from './pages/Login';
+import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
+import Search from './pages/Search';
 import KnowledgeBase from './pages/KnowledgeBase';
 import ContentList from './pages/ContentList';
+import ContentDetail from './pages/ContentDetail';
 import ContentEditor from './pages/ContentEditor';
 import ReviewQueue from './pages/ReviewQueue';
 import ConfigManager from './pages/ConfigManager';
@@ -69,6 +72,7 @@ function App() {
         <Routes>
           {/* Public Routes */}
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
           {/* Protected Routes */}
           <Route
@@ -76,6 +80,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/search"
+            element={
+              <ProtectedRoute>
+                <Search />
               </ProtectedRoute>
             }
           />
@@ -123,6 +136,15 @@ function App() {
 
           <Route
             path="/content/:id"
+            element={
+              <ProtectedRoute>
+                <ContentDetail />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/content/:id/edit"
             element={
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>

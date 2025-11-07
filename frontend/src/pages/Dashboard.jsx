@@ -2,11 +2,13 @@
  * Dashboard page - role-specific home page
  */
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import {
   BookOpenIcon,
   DocumentTextIcon,
   UsersIcon,
   ChartBarIcon,
+  ExclamationTriangleIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 import { knowledgeAPI, contentAPI } from '../services/api';
@@ -24,6 +26,12 @@ export default function Dashboard() {
     queryKey: ['my-content'],
     queryFn: () => contentAPI.list({ author_id: user?.id }),
     enabled: ['author', 'editor'].includes(user?.role),
+  });
+
+  const { data: needsRevision } = useQuery({
+    queryKey: ['needs-revision'],
+    queryFn: () => contentAPI.list({ status: 'needs_revision', author_id: user?.id }),
+    enabled: user?.role === 'author',
   });
 
   const statCards = [
@@ -65,6 +73,45 @@ export default function Dashboard() {
             Role: <span className="font-medium">{user?.role}</span>
           </p>
         </div>
+
+        {/* Needs Revision Alert */}
+        {user?.role === 'author' && needsRevision && needsRevision.length > 0 && (
+          <div className="bg-orange-50 border-l-4 border-orange-400 p-4 rounded-lg shadow">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <ExclamationTriangleIcon className="h-5 w-5 text-orange-400" />
+              </div>
+              <div className="ml-3 flex-1">
+                <h3 className="text-sm font-medium text-orange-800">
+                  {needsRevision.length} {needsRevision.length === 1 ? 'item' : 'items'} need revision
+                </h3>
+                <div className="mt-2 text-sm text-orange-700">
+                  <p className="mb-3">
+                    The following content has received feedback from reviewers. Please review the comments and make necessary changes, then resubmit for review.
+                  </p>
+                  <ul className="space-y-2">
+                    {needsRevision.map((content) => (
+                      <li key={content.id} className="flex items-center justify-between bg-white rounded-md p-3">
+                        <div className="flex-1">
+                          <p className="font-medium text-gray-900">{content.title}</p>
+                          <p className="text-xs text-gray-500 mt-1">
+                            {content.content_type} • {content.subject}
+                          </p>
+                        </div>
+                        <Link
+                          to={`/content/${content.id}`}
+                          className="ml-4 inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-orange-700 bg-orange-100 hover:bg-orange-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                        >
+                          View Feedback & Edit
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">

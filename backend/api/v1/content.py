@@ -183,7 +183,12 @@ async def submit_content_for_review(
     current_user: User = Depends(get_author),
     db: Session = Depends(get_db),
 ):
-    """Submit content for editorial review."""
+    """
+    Submit content for editorial review.
+
+    Content can be submitted if it's in DRAFT or NEEDS_REVISION status.
+    This allows authors to resubmit content after addressing reviewer feedback.
+    """
     content = db.query(Content).filter(Content.id == content_id).first()
 
     if not content:
@@ -192,8 +197,12 @@ async def submit_content_for_review(
     if content.author_id != current_user.id:
         raise HTTPException(status_code=403, detail="Access denied")
 
-    if content.status != ContentStatus.DRAFT:
-        raise HTTPException(status_code=400, detail="Content is not in draft status")
+    # Allow submission from DRAFT or NEEDS_REVISION status
+    if content.status not in [ContentStatus.DRAFT, ContentStatus.NEEDS_REVISION]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Content must be in draft or needs_revision status to submit. Current status: {content.status}"
+        )
 
     content.status = ContentStatus.IN_REVIEW
     from datetime import datetime

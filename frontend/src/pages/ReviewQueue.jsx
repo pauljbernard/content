@@ -34,7 +34,19 @@ export default function ReviewQueue() {
 
   const createReviewMutation = useMutation({
     mutationFn: reviewAPI.create,
-    onSuccess: () => {
+    onSuccess: async (data) => {
+      // If review status is "approved", automatically publish the content
+      if (reviewForm.status === 'approved') {
+        try {
+          await reviewAPI.approve(selectedContent);
+          alert('Review submitted and content published successfully!');
+        } catch (error) {
+          alert('Review submitted, but publishing failed: ' + (error.response?.data?.detail || error.message));
+        }
+      } else {
+        alert('Review submitted successfully!');
+      }
+
       queryClient.invalidateQueries({ queryKey: ['pending-reviews'] });
       setSelectedContent(null);
       setReviewForm({
@@ -43,13 +55,8 @@ export default function ReviewQueue() {
         rating: 5,
       });
     },
-  });
-
-  const approveMutation = useMutation({
-    mutationFn: reviewAPI.approve,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['pending-reviews'] });
-      setSelectedContent(null);
+    onError: (error) => {
+      alert('Failed to submit review: ' + (error.response?.data?.detail || error.message));
     },
   });
 
@@ -61,12 +68,6 @@ export default function ReviewQueue() {
       ...reviewForm,
       rating: parseInt(reviewForm.rating),
     });
-  };
-
-  const handleApprove = () => {
-    if (selectedContent) {
-      approveMutation.mutate(selectedContent);
-    }
   };
 
   return (
@@ -308,25 +309,25 @@ export default function ReviewQueue() {
                     </button>
                     <button
                       type="submit"
-                      disabled={createReviewMutation.isLoading}
-                      className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
+                      disabled={createReviewMutation.isPending}
+                      className={`px-4 py-2 text-white rounded-lg hover:opacity-90 disabled:opacity-50 ${
+                        reviewForm.status === 'approved'
+                          ? 'bg-green-600 hover:bg-green-700'
+                          : reviewForm.status === 'needs_revision'
+                          ? 'bg-yellow-600 hover:bg-yellow-700'
+                          : 'bg-red-600 hover:bg-red-700'
+                      }`}
                     >
-                      {createReviewMutation.isLoading
-                        ? 'Submitting...'
-                        : 'Submit Review'}
+                      {createReviewMutation.isPending
+                        ? reviewForm.status === 'approved'
+                          ? 'Approving & Publishing...'
+                          : 'Submitting...'
+                        : reviewForm.status === 'approved'
+                        ? 'Approve & Publish'
+                        : reviewForm.status === 'needs_revision'
+                        ? 'Request Revision'
+                        : 'Reject Content'}
                     </button>
-                    {reviewForm.status === 'approved' && (
-                      <button
-                        type="button"
-                        onClick={handleApprove}
-                        disabled={approveMutation.isLoading}
-                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
-                      >
-                        {approveMutation.isLoading
-                          ? 'Publishing...'
-                          : 'Approve & Publish'}
-                      </button>
-                    )}
                   </div>
                 </form>
               </div>

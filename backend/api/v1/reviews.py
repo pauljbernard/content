@@ -126,6 +126,22 @@ async def approve_content(
             status_code=400, detail="Content must be approved before publishing"
         )
 
+    # Validate that at least one approved review exists
+    approved_reviews = (
+        db.query(ContentReview)
+        .filter(
+            ContentReview.content_id == content_id,
+            ContentReview.status == "approved"
+        )
+        .count()
+    )
+
+    if approved_reviews == 0:
+        raise HTTPException(
+            status_code=400,
+            detail="Content must have at least one approved review before publishing"
+        )
+
     content.status = ContentStatus.PUBLISHED
     content.published_at = datetime.utcnow()
 
