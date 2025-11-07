@@ -1,0 +1,14 @@
+# New_Mexico Adoption Criteria
+**State DOE Requirements | Source:** New_Mexico DOE | **Applies To:** All New_Mexico instructional materials
+
+## Key Facts
+**Standards:** CCSS-based | **Language:** WIDA consortium | **Science:** NGSS-based | **EL Assessment:** ACCESS for ELLs
+
+## English Learner Support
+**New_Mexico is a WIDA consortium member.** See: `/districts/illinois/language/illinois-el-standards.md`
+
+## Knowledge Reuse (95%+)
+**Reused:** CCSS-M, NGSS, WIDA, MLRs, universal frameworks
+
+## Resources
+**New_Mexico DOE** | **WIDA:** See Illinois guide
