@@ -21,7 +21,7 @@ from models.content import (
 router = APIRouter(prefix="/content")
 
 
-@router.get("/", response_model=List[ContentPublic])
+@router.get("/")
 async def list_content(
     skip: int = 0,
     limit: int = 20,
@@ -35,7 +35,13 @@ async def list_content(
     db: Session = Depends(get_db),
 ):
     """
-    List content with optional filters.
+    List content with optional filters and pagination.
+
+    Returns:
+    - **items**: List of content items
+    - **total**: Total count of items matching filters
+    - **skip**: Current offset
+    - **limit**: Page size
 
     Filters:
     - **status**: Filter by status (draft, in_review, approved, etc.)
@@ -81,7 +87,18 @@ async def list_content(
     if author_id:
         query = query.filter(Content.author_id == author_id)
 
+    # Get total count BEFORE applying pagination (should not be affected by skip/limit)
+    total = query.count()
+
+    # Debug logging
+    import sys
+    print(f"[DEBUG] Content list - User: {current_user.email}, Role: {current_user.role}", file=sys.stderr, flush=True)
+    print(f"[DEBUG] Pagination params - skip: {skip}, limit: {limit}", file=sys.stderr, flush=True)
+    print(f"[DEBUG] Total count (before pagination): {total}", file=sys.stderr, flush=True)
+
+    # Apply pagination - this should NOT affect the total count above
     content_list = query.offset(skip).limit(limit).all()
+    print(f"[DEBUG] Items returned after pagination: {len(content_list)}", file=sys.stderr, flush=True)
 
     # Deserialize JSON strings back to lists for all items in response
     for content in content_list:
@@ -90,7 +107,23 @@ async def list_content(
         if isinstance(content.learning_objectives, str):
             content.learning_objectives = json.loads(content.learning_objectives)
 
-    return content_list
+    # Calculate pagination metadata
+    total_pages = (total + limit - 1) // limit if limit > 0 else 1  # Ceiling division
+    current_page = (skip // limit) + 1 if limit > 0 else 1
+    has_previous = skip > 0
+    has_next = skip + limit < total
+
+    return {
+        "items": content_list,
+        "total": total,
+        "page": current_page,
+        "page_size": limit,
+        "total_pages": total_pages,
+        "has_previous": has_previous,
+        "has_next": has_next,
+        "skip": skip,
+        "limit": limit,
+    }
 
 
 @router.post("/", response_model=ContentInDB, status_code=status.HTTP_201_CREATED)
@@ -128,6 +161,13 @@ async def create_content(
     db.add(db_content)
     db.commit()
     db.refresh(db_content)
+
+    # Deserialize JSON strings back to lists for response
+    if isinstance(db_content.standards_aligned, str):
+        db_content.standards_aligned = json.loads(db_content.standards_aligned)
+    if isinstance(db_content.learning_objectives, str):
+        db_content.learning_objectives = json.loads(db_content.learning_objectives)
+
     return db_content
 
 

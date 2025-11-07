@@ -8,6 +8,8 @@ import {
   PlusIcon,
   FunnelIcon,
   MagnifyingGlassIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
 } from '@heroicons/react/24/outline';
 import { contentAPI } from '../services/api';
 import useAuthStore from '../store/authStore';
@@ -24,22 +26,66 @@ export default function ContentList() {
     grade_level: '',
   });
   const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
 
-  const { data: content, isLoading } = useQuery({
-    queryKey: ['content', filters],
-    queryFn: () => contentAPI.list(filters),
+  const { data: response, isLoading } = useQuery({
+    queryKey: ['content', filters, page, pageSize],
+    queryFn: () => {
+      const params = {
+        ...filters,
+        skip: (page - 1) * pageSize,
+        limit: pageSize,
+      };
+      console.log('Fetching content with params:', params);
+      return contentAPI.list(params);
+    },
+    keepPreviousData: false,
+    staleTime: 0,
+    cacheTime: 0,
+    refetchOnMount: 'always',
   });
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }));
+    setPage(1); // Reset to first page when filters change
   };
 
-  const filteredContent = content?.filter(
-    (item) =>
-      search === '' ||
-      item.title.toLowerCase().includes(search.toLowerCase()) ||
-      item.subject.toLowerCase().includes(search.toLowerCase())
-  );
+  const handlePageSizeChange = (newSize) => {
+    const numSize = Number(newSize);
+    console.log('Page size changing from', pageSize, 'to', numSize);
+    setPageSize(numSize);
+    setPage(1); // Reset to first page when page size changes
+  };
+
+  const handleSearchChange = (value) => {
+    setSearch(value);
+    setPage(1); // Reset to first page when search changes
+  };
+
+  // Get data from response - backend now provides all pagination metadata
+  const content = response?.items || [];
+  const total = response?.total || 0;
+  const totalPages = response?.total_pages || 1;
+  const currentPage = response?.page || page;
+  const hasPrevious = response?.has_previous || false;
+  const hasNext = response?.has_next || false;
+  const currentPageSize = response?.page_size || pageSize;
+
+  // Calculate display range
+  const startItem = total === 0 ? 0 : (currentPage - 1) * currentPageSize + 1;
+  const endItem = Math.min(currentPage * currentPageSize, total);
+
+  // Debug logging
+  console.log('Response data:', {
+    itemsCount: content.length,
+    total,
+    page: currentPage,
+    totalPages,
+    pageSize: currentPageSize,
+    hasPrevious,
+    hasNext,
+  });
 
   const getStatusColor = (status) => {
     const colors = {
@@ -91,7 +137,7 @@ export default function ContentList() {
                   type="text"
                   placeholder="Search by title or subject..."
                   value={search}
-                  onChange={(e) => setSearch(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                 />
               </div>
@@ -195,9 +241,9 @@ export default function ContentList() {
             <div className="p-6">
               <SkeletonList items={5} />
             </div>
-          ) : filteredContent && filteredContent.length > 0 ? (
+          ) : content && content.length > 0 ? (
             <div className="divide-y divide-gray-200">
-              {filteredContent.map((item) => (
+              {content.map((item) => (
                 <Link
                   key={item.id}
                   to={`/content/${item.id}`}
@@ -265,6 +311,102 @@ export default function ContentList() {
             />
           )}
         </div>
+
+        {/* Pagination Controls */}
+        {!isLoading && total > 0 && (
+          <div className="bg-white shadow rounded-lg px-6 py-4">
+            <div className="flex items-center justify-between">
+              {/* Page Info and Size Selector */}
+              <div className="flex items-center space-x-4">
+                <div className="text-sm text-gray-700">
+                  Showing <span className="font-medium">{startItem}</span> to{' '}
+                  <span className="font-medium">{endItem}</span> of{' '}
+                  <span className="font-medium">{total}</span> results
+                </div>
+                <div className="flex items-center space-x-2">
+                  <label className="text-sm text-gray-700">Items per page:</label>
+                  <select
+                    value={pageSize}
+                    onChange={(e) => handlePageSizeChange(Number(e.target.value))}
+                    className="px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 text-sm"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Page Navigation */}
+              <div className="flex items-center space-x-2">
+                {/* Previous Button */}
+                <button
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={!hasPrevious}
+                  className={`inline-flex items-center px-3 py-2 border rounded-md text-sm font-medium ${
+                    !hasPrevious
+                      ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  <ChevronLeftIcon className="h-5 w-5" />
+                  Previous
+                </button>
+
+                {/* Page Numbers */}
+                <div className="hidden md:flex items-center space-x-1">
+                  {[...Array(Math.min(totalPages, 7))].map((_, idx) => {
+                    let pageNum;
+                    if (totalPages <= 7) {
+                      pageNum = idx + 1;
+                    } else if (currentPage <= 4) {
+                      pageNum = idx + 1;
+                    } else if (currentPage >= totalPages - 3) {
+                      pageNum = totalPages - 6 + idx;
+                    } else {
+                      pageNum = currentPage - 3 + idx;
+                    }
+
+                    return (
+                      <button
+                        key={pageNum}
+                        onClick={() => setPage(pageNum)}
+                        className={`px-3 py-2 border rounded-md text-sm font-medium ${
+                          currentPage === pageNum
+                            ? 'bg-primary-600 text-white border-primary-600'
+                            : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                        }`}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Current Page (Mobile) */}
+                <div className="md:hidden text-sm text-gray-700">
+                  Page {currentPage} of {totalPages}
+                </div>
+
+                {/* Next Button */}
+                <button
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={!hasNext}
+                  className={`inline-flex items-center px-3 py-2 border rounded-md text-sm font-medium ${
+                    !hasNext
+                      ? 'border-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'border-gray-300 text-gray-700 hover:bg-gray-50'
+                  }`}
+                >
+                  Next
+                  <ChevronRightIcon className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </Layout>
   );
