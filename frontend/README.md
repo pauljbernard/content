@@ -33,7 +33,12 @@ frontend/
 │   ├── pages/             # Page components
 │   │   ├── Login.jsx      # Login page
 │   │   ├── Dashboard.jsx  # Home dashboard
-│   │   └── KnowledgeBase.jsx  # Knowledge browser
+│   │   ├── KnowledgeBase.jsx  # Knowledge browser
+│   │   ├── ContentList.jsx    # Content list/management
+│   │   ├── ContentEditor.jsx  # Content create/edit
+│   │   ├── ReviewQueue.jsx    # Review workflow
+│   │   ├── ConfigManager.jsx  # Curriculum configs
+│   │   └── Profile.jsx        # User profile
 │   ├── services/          # API clients
 │   │   └── api.js         # Backend API integration
 │   ├── store/             # State management
@@ -156,6 +161,87 @@ Role-specific home page with statistics and quick actions.
 - Recent content (for authors/editors)
 - Quick action cards
 - Category breakdown
+
+### Content List
+
+Browse and manage all content with advanced filtering.
+
+**Location**: `src/pages/ContentList.jsx`
+
+**Features**:
+- Search by title or subject
+- Filter by status, type, subject, grade level
+- View content metadata
+- Quick create button
+- Status badges (draft, in_review, approved, published)
+
+**Permissions**: Authors, Editors, Knowledge Engineers
+
+### Content Editor
+
+Create and edit lessons, assessments, and activities.
+
+**Location**: `src/pages/ContentEditor.jsx`
+
+**Features**:
+- Create new content or edit existing
+- Rich form with all metadata fields
+- Learning objectives management
+- Markdown content editor
+- Submit for review workflow
+- Save drafts
+- Validation and error handling
+
+**Permissions**: Authors, Editors, Knowledge Engineers
+
+### Review Queue
+
+Editorial review and approval workflow for editors.
+
+**Location**: `src/pages/ReviewQueue.jsx`
+
+**Features**:
+- Pending review queue
+- Content preview panel
+- Review form with approve/needs-revision/reject options
+- Rating system (1-5 stars)
+- Comments and feedback
+- Approve and publish action
+- Real-time queue updates
+
+**Permissions**: Editors, Knowledge Engineers only
+
+### Config Manager
+
+Manage curriculum configurations and knowledge resolution orders.
+
+**Location**: `src/pages/ConfigManager.jsx`
+
+**Features**:
+- List all curriculum configs
+- Create new configurations
+- Edit existing configs
+- Delete configs
+- Define knowledge resolution order
+- Configure grades, subjects, districts
+- JSON export/import
+
+**Permissions**: Knowledge Engineers only
+
+### Profile
+
+User profile and account settings.
+
+**Location**: `src/pages/Profile.jsx`
+
+**Features**:
+- Update full name and email
+- Change password
+- View account role (read-only)
+- Account activity stats
+- Success notifications
+
+**Permissions**: All authenticated users
 
 ## API Integration
 

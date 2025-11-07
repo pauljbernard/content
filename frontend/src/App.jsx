@@ -10,6 +10,11 @@ import useAuthStore from './store/authStore';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import KnowledgeBase from './pages/KnowledgeBase';
+import ContentList from './pages/ContentList';
+import ContentEditor from './pages/ContentEditor';
+import ReviewQueue from './pages/ReviewQueue';
+import ConfigManager from './pages/ConfigManager';
+import Profile from './pages/Profile';
 
 // Create QueryClient
 const queryClient = new QueryClient({
@@ -80,6 +85,73 @@ function App() {
             element={
               <ProtectedRoute>
                 <KnowledgeBase />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Content Routes (Authors, Editors, Engineers) */}
+          <Route
+            path="/content"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <ContentList />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/content/new"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <ContentEditor />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/content/:id"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <ContentEditor />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Review Routes (Editors, Engineers) */}
+          <Route
+            path="/reviews"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ReviewQueue />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Config Routes (Engineers only) */}
+          <Route
+            path="/configs"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['knowledge_engineer']}>
+                  <ConfigManager />
+                </RoleRoute>
               </ProtectedRoute>
             }
           />
