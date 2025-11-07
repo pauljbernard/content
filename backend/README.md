@@ -11,6 +11,60 @@ Comprehensive REST API for the HMH Multi-Curriculum Knowledge Base, built with F
 - **User Management**: Role-based access control (authors, editors, engineers, teachers)
 - **Full-text Search**: Search across knowledge base and content
 - **JWT Authentication**: Secure token-based authentication
+- **MCP Server**: Model Context Protocol server for AI assistant integration
+
+## MCP Server (Model Context Protocol)
+
+The HMH CMS includes a complete **MCP server** that exposes the REST API functionality to AI assistants and MCP-compatible clients. This allows AI assistants like Claude to interact directly with the knowledge base, create educational content, and manage the editorial workflow.
+
+### Features
+
+- **13 MCP Tools**: Login, search, browse, create content, submit for review, manage configs, editorial review
+- **303 Knowledge Files**: Access the complete HMH Knowledge Base (Pre-K-12, 51 states, 8 subjects)
+- **Educational Content Creation**: AI-assisted lesson, assessment, and activity authoring
+- **Editorial Workflow**: Submit, review, and approve content with ratings and feedback
+- **Standards Alignment**: Access TEKS, CCSS, NGSS standards and instructional routines
+
+### Quick Start
+
+```bash
+# Start the REST API first
+python main.py
+
+# In a new terminal, start the MCP server
+./start_mcp_server.sh
+```
+
+### Configuration for Claude Desktop
+
+Add to your Claude Desktop config (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "hmh-cms": {
+      "command": "python",
+      "args": ["-m", "mcp_server"],
+      "cwd": "/Users/colossus/development/content/backend",
+      "env": {
+        "HMH_CMS_API_URL": "http://localhost:8000",
+        "PYTHONPATH": "/Users/colossus/development/content/backend"
+      }
+    }
+  }
+}
+```
+
+### Documentation
+
+For complete MCP server documentation including:
+- Tool reference (all 13 tools)
+- Usage examples and workflows
+- Authentication and configuration
+- Troubleshooting guide
+- Development instructions
+
+See **[MCP_SERVER.md](MCP_SERVER.md)** for full details.
 
 ## Architecture
 
@@ -35,7 +89,12 @@ backend/
 │   └── content.py       # Content models
 ├── services/
 │   └── user_service.py  # User business logic
-└── main.py              # FastAPI application
+├── main.py              # FastAPI application
+├── mcp_server.py        # MCP server (AI assistant integration)
+├── init_db.py           # Database initialization script
+├── start_mcp_server.sh  # MCP server startup script
+├── mcp_config.json      # MCP client configuration example
+└── MCP_SERVER.md        # Complete MCP documentation
 ```
 
 ## User Roles

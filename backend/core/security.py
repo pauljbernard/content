@@ -12,7 +12,6 @@ from sqlalchemy.orm import Session
 from core.config import settings
 from database.session import get_db
 from models.user import User
-from services import user_service
 
 # Password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -75,6 +74,9 @@ async def get_current_user(
     token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
 ) -> User:
     """Get current authenticated user."""
+    # Import here to avoid circular dependency
+    from services import user_service
+
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",

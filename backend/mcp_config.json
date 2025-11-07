@@ -1,0 +1,78 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schema/config.schema.json",
+  "mcpServers": {
+    "hmh-cms": {
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server"
+      ],
+      "cwd": "/Users/colossus/development/content/backend",
+      "env": {
+        "HMH_CMS_API_URL": "http://localhost:8000",
+        "PYTHONPATH": "/Users/colossus/development/content/backend"
+      },
+      "description": "HMH Content Management System - Access educational content authoring, knowledge base (303 files), and curriculum management",
+      "metadata": {
+        "version": "1.0.0",
+        "author": "HMH CMS Team",
+        "capabilities": [
+          "Knowledge Base Search (303 files, Pre-K-12)",
+          "Content Creation (Lessons, Assessments, Activities)",
+          "Editorial Workflow (Submit, Review, Approve)",
+          "Curriculum Configuration Management",
+          "Standards Alignment (TEKS, CCSS, NGSS)",
+          "Multi-State Support (51 US states)",
+          "Subject Coverage (Math, ELA, Science, Social Studies, CS, World Languages, Arts, PE)"
+        ],
+        "authentication": {
+          "method": "JWT",
+          "note": "Use 'login' tool first to authenticate",
+          "demo_accounts": {
+            "admin": {
+              "email": "admin@hmhco.com",
+              "password": "changeme",
+              "role": "knowledge_engineer",
+              "permissions": "Full system access"
+            },
+            "teacher": {
+              "email": "teacher@example.com",
+              "password": "teacher123",
+              "role": "teacher",
+              "permissions": "View content, browse knowledge base"
+            },
+            "author": {
+              "email": "author@example.com",
+              "password": "author123",
+              "role": "author",
+              "permissions": "Create and edit own content, view knowledge base"
+            },
+            "editor": {
+              "email": "editor@example.com",
+              "password": "editor123",
+              "role": "editor",
+              "permissions": "Review and approve content, manage curriculum configs"
+            }
+          }
+        },
+        "knowledge_base": {
+          "total_files": 303,
+          "grade_levels": "Pre-K through Grade 12",
+          "states": 51,
+          "subjects": [
+            "Mathematics",
+            "English Language Arts",
+            "Science",
+            "Social Studies",
+            "Computer Science",
+            "World Languages (Spanish)",
+            "Fine Arts (Visual Arts)",
+            "Physical Education & Health"
+          ],
+          "architecture": "5-level hierarchical resolution",
+          "reuse_percentage": "85-97%"
+        }
+      }
+    }
+  }
+}

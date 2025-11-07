@@ -193,7 +193,7 @@ class ContentReviewCreate(BaseModel):
     """Schema for creating a content review."""
 
     content_id: int
-    status: str = Field(..., regex="^(approved|needs_revision|rejected)$")
+    status: str = Field(..., pattern="^(approved|needs_revision|rejected)$")
     comments: Optional[str] = None
     checklist_results: Optional[Dict[str, Any]] = None
     rating: Optional[int] = Field(None, ge=1, le=5)

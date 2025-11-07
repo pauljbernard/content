@@ -2,11 +2,6 @@
  * Config Manager page - manage curriculum configurations
  */
 import { useState } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tantml:parameter>
-<parameter name="content">/**
- * Config Manager page - manage curriculum configurations
- */
-import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   PlusIcon,
