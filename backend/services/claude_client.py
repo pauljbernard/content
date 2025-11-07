@@ -11,7 +11,7 @@ class ClaudeClient:
     """Wrapper for Anthropic's Claude API with streaming and non-streaming support."""
 
     def __init__(self):
-        self.api_key = os.getenv("ANTHROPIC_API_KEY", "")
+        self.api_key = settings.ANTHROPIC_API_KEY or ""
         if not self.api_key:
             raise ValueError("ANTHROPIC_API_KEY environment variable is not set")
 
