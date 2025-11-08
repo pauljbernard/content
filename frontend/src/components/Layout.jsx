@@ -15,6 +15,7 @@ import {
   SparklesIcon,
   QueueListIcon,
   CodeBracketIcon,
+  ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 
@@ -34,6 +35,12 @@ export default function Layout({ children }) {
       name: 'Knowledge Base',
       href: '/knowledge',
       icon: BookOpenIcon,
+      roles: ['all'],
+    },
+    {
+      name: 'Standards',
+      href: '/standards',
+      icon: ClipboardDocumentListIcon,
       roles: ['all'],
     },
     {

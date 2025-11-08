@@ -301,4 +301,62 @@ export const agentsAPI = {
   },
 };
 
+// Standards API
+export const standardsAPI = {
+  // List all standards with filters
+  list: async (params = {}) => {
+    const response = await apiClient.get('/standards/', { params });
+    return response.data;
+  },
+
+  // Get standard by ID
+  getById: async (standardId) => {
+    const response = await apiClient.get(`/standards/${standardId}`);
+    return response.data;
+  },
+
+  // Create a new standard
+  create: async (standardData) => {
+    const response = await apiClient.post('/standards/', standardData);
+    return response.data;
+  },
+
+  // Update an existing standard
+  update: async (standardId, updateData) => {
+    const response = await apiClient.patch(`/standards/${standardId}`, updateData);
+    return response.data;
+  },
+
+  // Delete a standard
+  delete: async (standardId) => {
+    await apiClient.delete(`/standards/${standardId}`);
+  },
+
+  // Search within a standard
+  search: async (standardId, query) => {
+    const response = await apiClient.get(`/standards/${standardId}/search`, {
+      params: { query },
+    });
+    return response.data;
+  },
+
+  // Create import job
+  createImportJob: async (importData) => {
+    const response = await apiClient.post('/standards/import', importData);
+    return response.data;
+  },
+
+  // Get import job status
+  getImportJob: async (jobId) => {
+    const response = await apiClient.get(`/standards/import/${jobId}`);
+    return response.data;
+  },
+
+  // List import jobs
+  listImportJobs: async (params = {}) => {
+    const response = await apiClient.get('/standards/import', { params });
+    return response.data;
+  },
+};
+
 export default apiClient;
