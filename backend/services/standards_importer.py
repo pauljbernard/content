@@ -402,21 +402,122 @@ class PDFParser:
         """
         Parse standards from PDF document.
 
-        Note: PDF parsing requires external tools like pdftotext or PyPDF2.
-        This is a simplified implementation that would need enhancement
-        for production use.
+        Uses PyPDF2 to extract text, then applies pattern matching to
+        identify standards codes and descriptions.
         """
-        # For now, return a placeholder
-        # In production, you'd use PyPDF2 or pdfplumber
-        return {
-            "name": "PDF Standard",
-            "description": "PDF parsing requires additional setup",
-            "source_url": source_location,
-            "structure": {"domains": []},
-            "standards_list": [],
-            "total_standards_count": 0,
-            "error": "PDF parsing not yet implemented. Please use CASE, HTML, XML, JSON, or CSV formats."
-        }
+        try:
+            import PyPDF2
+            import io
+            import tempfile
+            import re
+
+            # Download PDF
+            async with aiohttp.ClientSession() as session:
+                async with session.get(source_location) as response:
+                    if response.status != 200:
+                        raise ValueError(f"Failed to fetch PDF: HTTP {response.status}")
+
+                    pdf_content = await response.read()
+
+            # Parse PDF
+            pdf_file = io.BytesIO(pdf_content)
+            pdf_reader = PyPDF2.PdfReader(pdf_file)
+
+            # Extract all text
+            full_text = ""
+            for page in pdf_reader.pages:
+                full_text += page.extract_text() + "\n"
+
+            # Try to identify standards using common patterns
+            # Pattern matches things like:
+            #   - "K.CC.1" or "1.OA.3" (Common Core)
+            #   - "5.NF.1.1" (multi-level codes)
+            #   - "TEKS 3.4(A)" (TEKS format)
+            standards_list = []
+
+            # Pattern 1: Grade.Domain.Standard format (e.g., K.CC.1, 5.NF.1.1)
+            pattern1 = re.compile(r'([K-9]{1,2}\.[A-Z]{1,4}\.\d+(?:\.\d+)?)\s+(.+?)(?=\n[K-9]{1,2}\.[A-Z]{1,4}\.\d+|\n\n|\Z)', re.DOTALL)
+
+            # Pattern 2: Generic numbered standards (e.g., "Standard 1.2.3:")
+            pattern2 = re.compile(r'Standard\s+(\d+(?:\.\d+)*):?\s+(.+?)(?=\nStandard\s+\d+|\n\n|\Z)', re.DOTALL | re.IGNORECASE)
+
+            # Pattern 3: Bulleted/numbered list format
+            pattern3 = re.compile(r'^[\d\w]+\.\s+(.+?)(?=^\d+\.|\Z)', re.MULTILINE | re.DOTALL)
+
+            # Try pattern 1 (most specific)
+            matches1 = pattern1.findall(full_text)
+            if matches1:
+                for code, text in matches1:
+                    standards_list.append({
+                        "code": code.strip(),
+                        "text": text.strip().replace('\n', ' ')[:500],  # Limit length
+                        "grade_level": code.split('.')[0] if '.' in code else None
+                    })
+
+            # Try pattern 2 if pattern 1 didn't work
+            elif (matches2 := pattern2.findall(full_text)):
+                for code, text in matches2:
+                    standards_list.append({
+                        "code": f"STD-{code}",
+                        "text": text.strip().replace('\n', ' ')[:500],
+                        "grade_level": None
+                    })
+
+            # If no structured standards found, split into pages
+            if not standards_list:
+                for idx, page in enumerate(pdf_reader.pages):
+                    page_text = page.extract_text().strip()
+                    if page_text:  # Only include non-empty pages
+                        standards_list.append({
+                            "code": f"PAGE-{idx + 1}",
+                            "text": page_text[:500],  # First 500 chars
+                            "grade_level": None,
+                            "note": "Auto-extracted from PDF page"
+                        })
+
+            # Create basic structure
+            structure = {
+                "domains": [{
+                    "name": "PDF Content",
+                    "description": "Standards extracted from PDF document",
+                    "strands": [{
+                        "name": "All Standards",
+                        "standards": [s["code"] for s in standards_list]
+                    }]
+                }]
+            }
+
+            return {
+                "name": "Standards from PDF",
+                "description": f"Extracted {len(standards_list)} items from PDF document",
+                "source_url": source_location,
+                "structure": structure,
+                "standards_list": standards_list,
+                "total_standards_count": len(standards_list),
+                "extraction_method": "PyPDF2 with pattern matching",
+                "grade_levels": list(set(s["grade_level"] for s in standards_list if s.get("grade_level")))
+            }
+
+        except ImportError:
+            return {
+                "name": "PDF Standard",
+                "description": "PyPDF2 library not installed",
+                "source_url": source_location,
+                "structure": {"domains": []},
+                "standards_list": [],
+                "total_standards_count": 0,
+                "error": "PyPDF2 not installed. Run: pip install PyPDF2"
+            }
+        except Exception as e:
+            return {
+                "name": "PDF Standard",
+                "description": f"Error parsing PDF: {str(e)}",
+                "source_url": source_location,
+                "structure": {"domains": []},
+                "standards_list": [],
+                "total_standards_count": 0,
+                "error": str(e)
+            }
 
 
 class StandardsImportService:
