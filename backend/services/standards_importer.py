@@ -475,27 +475,61 @@ class PDFParser:
                             "note": "Auto-extracted from PDF page"
                         })
 
-            # Create basic structure
-            structure = {
-                "domains": [{
-                    "name": "PDF Content",
-                    "description": "Standards extracted from PDF document",
+            # Organize standards by grade level into CASE-compatible structure
+            standards_by_grade = {}
+            for std in standards_list:
+                grade = std.get("grade_level") or "General"
+                if grade not in standards_by_grade:
+                    standards_by_grade[grade] = []
+                standards_by_grade[grade].append(std)
+
+            # Build CASE-compatible domain/strand structure
+            domains = []
+            for grade, grade_standards in sorted(standards_by_grade.items()):
+                domain = {
+                    "id": f"GRADE-{grade}",
+                    "name": f"Grade {grade}" if grade != "General" else "General Standards",
                     "strands": [{
+                        "id": f"GRADE-{grade}-ALL",
                         "name": "All Standards",
-                        "standards": [s["code"] for s in standards_list]
+                        "standards": [
+                            {
+                                "code": s["code"],
+                                "text": s["text"]
+                            }
+                            for s in grade_standards
+                        ]
                     }]
-                }]
-            }
+                }
+                domains.append(domain)
+
+            structure = {"domains": domains}
+
+            # Build standards_list in CASE format (code, text, grade_level only)
+            standards_list_clean = [
+                {
+                    "code": s["code"],
+                    "text": s["text"],
+                    "grade_level": s.get("grade_level")
+                }
+                for s in standards_list
+            ]
+
+            # Extract unique grade levels
+            grade_levels = sorted(list(set(
+                s["grade_level"]
+                for s in standards_list
+                if s.get("grade_level")
+            )))
 
             return {
                 "name": "Standards from PDF",
-                "description": f"Extracted {len(standards_list)} items from PDF document",
+                "description": f"Extracted {len(standards_list)} items from PDF document using PyPDF2 pattern matching",
                 "source_url": source_location,
                 "structure": structure,
-                "standards_list": standards_list,
-                "total_standards_count": len(standards_list),
-                "extraction_method": "PyPDF2 with pattern matching",
-                "grade_levels": list(set(s["grade_level"] for s in standards_list if s.get("grade_level")))
+                "standards_list": standards_list_clean,
+                "total_standards_count": len(standards_list_clean),
+                "grade_levels": grade_levels
             }
 
         except ImportError:
