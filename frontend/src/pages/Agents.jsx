@@ -39,6 +39,7 @@ import {
   ClipboardIcon,
   CodeBracketSquareIcon,
   PresentationChartLineIcon,
+  InformationCircleIcon,
 } from '@heroicons/react/24/outline';
 import Layout from '../components/Layout';
 import { agentsAPI, contentAPI } from '../services/api';
@@ -153,17 +154,8 @@ export default function Agents() {
   const navigate = useNavigate();
 
   // State
-  const [selectedAgent, setSelectedAgent] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [parameters, setParameters] = useState({
-    grade_levels: [],
-    subject: '',
-    state: '',
-    standards: [],
-  });
   const [activeJobId, setActiveJobId] = useState(null);
-  const [showResults, setShowResults] = useState(false);
 
   // Queries
   const { data: agents, isLoading: agentsLoading } = useQuery({
@@ -175,96 +167,6 @@ export default function Agents() {
     queryKey: ['agent-jobs'],
     queryFn: () => agentsAPI.listJobs(null, 10),
   });
-
-  const { data: jobStatus, refetch: refetchJobStatus } = useQuery({
-    queryKey: ['agent-job-status', activeJobId],
-    queryFn: () => agentsAPI.getJobStatus(activeJobId),
-    enabled: !!activeJobId,
-    refetchInterval: (data) => {
-      // Poll every 2 seconds while running, stop when complete/failed
-      if (data?.status === 'running' || data?.status === 'queued') {
-        return 2000;
-      }
-      return false;
-    },
-  });
-
-  const { data: jobResult } = useQuery({
-    queryKey: ['agent-job-result', activeJobId],
-    queryFn: () => agentsAPI.getJobResult(activeJobId),
-    enabled: !!activeJobId && jobStatus?.status === 'completed',
-  });
-
-  // Mutations
-  const invokeMutation = useMutation({
-    mutationFn: () => agentsAPI.invoke(
-      selectedAgent.id,
-      taskDescription,
-      parameters
-    ),
-    onSuccess: (data) => {
-      setActiveJobId(data.id);
-      queryClient.invalidateQueries(['agent-jobs']);
-      setShowResults(false);
-      showSuccess(`${selectedAgent.name} started successfully`);
-    },
-    onError: (error) => {
-      showError('Failed to invoke agent', error);
-    },
-  });
-
-  const cancelMutation = useMutation({
-    mutationFn: (jobId) => agentsAPI.cancelJob(jobId),
-    onSuccess: () => {
-      queryClient.invalidateQueries(['agent-job-status', activeJobId]);
-      queryClient.invalidateQueries(['agent-jobs']);
-      showWarning('Agent job cancelled');
-    },
-    onError: (error) => {
-      showError('Failed to cancel job', error);
-    },
-  });
-
-  // Effects
-  useEffect(() => {
-    if (jobStatus?.status === 'completed') {
-      setShowResults(true);
-      queryClient.invalidateQueries(['agent-jobs']);
-    }
-  }, [jobStatus?.status, queryClient]);
-
-  // Handlers
-  const handleInvoke = () => {
-    if (!taskDescription.trim()) {
-      showWarning('Please provide a task description');
-      return;
-    }
-    invokeMutation.mutate();
-  };
-
-  const handleUseResult = () => {
-    if (!jobResult?.generated_content) return;
-
-    // Navigate to content editor with generated content pre-filled
-    navigate('/content/new', {
-      state: {
-        generatedContent: jobResult.generated_content,
-        metadata: jobResult.metadata,
-      },
-    });
-  };
-
-  const handleStartNew = () => {
-    setActiveJobId(null);
-    setShowResults(false);
-    setTaskDescription('');
-    setParameters({
-      grade_levels: [],
-      subject: '',
-      state: '',
-      standards: [],
-    });
-  };
 
   const getStatusColor = (status) => {
     const colors = {
@@ -313,7 +215,7 @@ export default function Agents() {
         </div>
 
         {/* Main Content */}
-        {!selectedAgent && !activeJobId && (
+        {!activeJobId && (
           <>
             {/* Category Tabs */}
             <div className="mb-6">
@@ -370,10 +272,9 @@ export default function Agents() {
                     const color = AGENT_COLORS[agent.id] || 'blue';
 
                     return (
-                      <button
+                      <div
                         key={agent.id}
-                        onClick={() => setSelectedAgent(agent)}
-                        className="text-left p-6 bg-white rounded-lg border-2 border-gray-200 hover:border-primary-500 hover:shadow-lg transition-all"
+                        className="p-6 bg-white rounded-lg border-2 border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                       >
                         <div className="flex items-start mb-3">
                           <div className={`p-3 bg-${color}-100 rounded-lg mr-4`}>
@@ -391,7 +292,7 @@ export default function Agents() {
                         <p className="text-sm text-gray-600 mb-3">
                           {agent.description}
                         </p>
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-1 mb-4">
                           {agent.capabilities.slice(0, 3).map((cap, idx) => (
                             <span
                               key={idx}
@@ -406,7 +307,25 @@ export default function Agents() {
                             </span>
                           )}
                         </div>
-                      </button>
+
+                        {/* Action Buttons */}
+                        <div className="flex space-x-2">
+                          <Link
+                            to={`/agents/${agent.id}/details`}
+                            className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                          >
+                            <InformationCircleIcon className="h-4 w-4 mr-1.5" />
+                            Details
+                          </Link>
+                          <Link
+                            to={`/agents/${agent.id}/task`}
+                            className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                          >
+                            <SparklesIcon className="h-4 w-4 mr-1.5" />
+                            Task
+                          </Link>
+                        </div>
+                      </div>
                     );
                   })}
                 </div>
@@ -477,264 +396,6 @@ export default function Agents() {
               </div>
             )}
           </>
-        )}
-
-        {/* Agent Configuration (when agent selected) */}
-        {selectedAgent && !activeJobId && (
-          <div className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center">
-                {(() => {
-                  const Icon = AGENT_ICONS[selectedAgent.id] || DocumentTextIcon;
-                  return <Icon className="h-6 w-6 text-primary-600 mr-2" />;
-                })()}
-                <h2 className="text-xl font-semibold text-gray-900">
-                  {selectedAgent.name}
-                </h2>
-              </div>
-              <button
-                onClick={() => setSelectedAgent(null)}
-                className="text-sm text-gray-600 hover:text-gray-900"
-              >
-                ← Back to Agents
-              </button>
-            </div>
-
-            {/* Task Description */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Task Description *
-              </label>
-              <textarea
-                value={taskDescription}
-                onChange={(e) => setTaskDescription(e.target.value)}
-                rows={4}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                placeholder="Describe what you want to create..."
-              />
-              <p className="mt-1 text-xs text-gray-500">
-                Be specific about your requirements, target audience, and desired outcomes
-              </p>
-            </div>
-
-            {/* Parameters */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Subject
-                </label>
-                <select
-                  value={parameters.subject}
-                  onChange={(e) => setParameters({ ...parameters, subject: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">Select subject</option>
-                  <option value="mathematics">Mathematics</option>
-                  <option value="ela">English Language Arts</option>
-                  <option value="science">Science</option>
-                  <option value="social-studies">Social Studies</option>
-                  <option value="computer-science">Computer Science</option>
-                  <option value="world-languages">World Languages</option>
-                  <option value="fine-arts">Fine Arts</option>
-                  <option value="physical-education">Physical Education</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  State/District
-                </label>
-                <select
-                  value={parameters.state}
-                  onChange={(e) => setParameters({ ...parameters, state: e.target.value })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-                >
-                  <option value="">Select state</option>
-                  <option value="texas">Texas</option>
-                  <option value="california">California</option>
-                  <option value="florida">Florida</option>
-                  <option value="new-york">New York</option>
-                  <option value="pennsylvania">Pennsylvania</option>
-                </select>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex justify-end space-x-3">
-              <button
-                onClick={() => setSelectedAgent(null)}
-                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleInvoke}
-                disabled={invokeMutation.isPending || !taskDescription.trim()}
-                className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
-              >
-                {invokeMutation.isPending ? (
-                  <>
-                    <ArrowPathIcon className="h-4 w-4 mr-2 animate-spin" />
-                    Starting...
-                  </>
-                ) : (
-                  <>
-                    <SparklesIcon className="h-4 w-4 mr-2" />
-                    Start Agent
-                  </>
-                )}
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Agent Progress/Results (when job active) */}
-        {activeJobId && jobStatus && (
-          <div className="bg-white rounded-lg shadow p-6">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  {jobStatus.agent_type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                </h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  {jobStatus.task_description}
-                </p>
-              </div>
-              <button
-                onClick={handleStartNew}
-                className="text-sm text-gray-600 hover:text-gray-900"
-              >
-                ← Start New Task
-              </button>
-            </div>
-
-            {/* Progress Bar */}
-            {(jobStatus.status === 'queued' || jobStatus.status === 'running') && (
-              <div className="mb-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-700">
-                    {jobStatus.progress_message || 'Processing...'}
-                  </span>
-                  <span className="text-sm text-gray-600">
-                    {jobStatus.progress_percentage}%
-                  </span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-primary-600 h-2 rounded-full transition-all duration-500"
-                    style={{ width: `${jobStatus.progress_percentage}%` }}
-                  ></div>
-                </div>
-                {jobStatus.status === 'running' && (
-                  <div className="mt-4 flex justify-center">
-                    <button
-                      onClick={() => cancelMutation.mutate(activeJobId)}
-                      disabled={cancelMutation.isPending}
-                      className="text-sm text-red-600 hover:text-red-700 disabled:opacity-50"
-                    >
-                      Cancel Job
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Status Badge */}
-            <div className="mb-6">
-              {(() => {
-                const StatusIcon = getStatusIcon(jobStatus.status);
-                return (
-                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(jobStatus.status)}`}>
-                    <StatusIcon className={`h-5 w-5 mr-2 ${jobStatus.status === 'running' ? 'animate-spin' : ''}`} />
-                    {jobStatus.status.charAt(0).toUpperCase() + jobStatus.status.slice(1)}
-                  </span>
-                );
-              })()}
-            </div>
-
-            {/* Results */}
-            {showResults && jobResult && (
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Generated Content
-                </h3>
-
-                {/* Content Preview */}
-                <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200 max-h-96 overflow-y-auto">
-                  <pre className="whitespace-pre-wrap text-sm text-gray-700 font-mono">
-                    {jobResult.generated_content}
-                  </pre>
-                </div>
-
-                {/* Metadata */}
-                {jobResult.metadata && Object.keys(jobResult.metadata).length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Metadata</h4>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      {Object.entries(jobResult.metadata).map(([key, value]) => (
-                        <div key={key} className="text-sm">
-                          <span className="text-gray-500">{key.replace('_', ' ')}:</span>{' '}
-                          <span className="font-medium text-gray-900">
-                            {Array.isArray(value) ? value.join(', ') : value}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Suggested Next Steps */}
-                {jobResult.suggestions && jobResult.suggestions.length > 0 && (
-                  <div className="mb-6">
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Suggested Next Steps</h4>
-                    <ul className="space-y-2">
-                      {jobResult.suggestions.map((suggestion, idx) => (
-                        <li key={idx} className="flex items-start text-sm text-gray-600">
-                          <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
-                          {suggestion}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex space-x-3">
-                  <button
-                    onClick={handleUseResult}
-                    className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700"
-                  >
-                    Use in Content Editor
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigator.clipboard.writeText(jobResult.generated_content);
-                      showSuccess('Content copied to clipboard!');
-                    }}
-                    className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
-                  >
-                    Copy to Clipboard
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* Error Display */}
-            {jobStatus.status === 'failed' && (
-              <div className="bg-red-50 border-l-4 border-red-400 p-4">
-                <div className="flex">
-                  <XCircleIcon className="h-5 w-5 text-red-400" />
-                  <div className="ml-3">
-                    <h3 className="text-sm font-medium text-red-800">Job Failed</h3>
-                    <p className="mt-2 text-sm text-red-700">
-                      {jobStatus.error_message || 'An error occurred while processing your request.'}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
         )}
       </div>
     </Layout>

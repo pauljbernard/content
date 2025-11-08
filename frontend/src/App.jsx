@@ -22,6 +22,8 @@ import ReviewQueue from './pages/ReviewQueue';
 import ConfigManager from './pages/ConfigManager';
 import Profile from './pages/Profile';
 import Agents from './pages/Agents';
+import AgentDetails from './pages/AgentDetails';
+import AgentTask from './pages/AgentTask';
 import Workflows from './pages/Workflows';
 import WorkflowDetail from './pages/WorkflowDetail';
 import WorkflowEditor from './pages/WorkflowEditor';
@@ -174,6 +176,26 @@ function App() {
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
                   <Agents />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agents/:agentId/details"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <AgentDetails />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agents/:agentId/task"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <AgentTask />
                 </RoleRoute>
               </ProtectedRoute>
             }
