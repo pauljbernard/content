@@ -11,7 +11,8 @@ Provides CRUD operations for educational standards including:
 """
 import json
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from datetime import datetime
+from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks, status
 from sqlalchemy.orm import Session
 from database.session import get_db
 from core.security import get_current_active_user, get_author
@@ -377,6 +378,7 @@ async def search_within_standard(
 @router.post("/import", response_model=StandardImportJobInDB, status_code=status.HTTP_201_CREATED)
 async def create_import_job(
     job: StandardImportJobCreate,
+    background_tasks: BackgroundTasks,
     current_user: User = Depends(get_author),
     db: Session = Depends(get_db),
 ):
@@ -392,7 +394,7 @@ async def create_import_job(
     - **csv**: CSV spreadsheets
     - **manual**: Manual entry (no automatic parsing)
 
-    The import job will be processed asynchronously by the standards-importer agent.
+    The import job will be processed asynchronously by the standards-importer service.
     """
     # Check for duplicate code
     existing = db.query(Standard).filter(Standard.code == job.code).first()
@@ -405,14 +407,15 @@ async def create_import_job(
     # Create import job
     job_dict = job.dict()
     job_dict["status"] = "queued"
+    job_dict["user_id"] = current_user.id
 
     db_job = StandardImportJob(**job_dict)
     db.add(db_job)
     db.commit()
     db.refresh(db_job)
 
-    # TODO: Trigger standards-importer agent to process this job
-    # This would be done via the agent system, similar to how content generation works
+    # Trigger standards import processing in background
+    background_tasks.add_task(process_standards_import_job, db_job.id)
 
     return db_job
 
@@ -473,3 +476,128 @@ async def list_import_jobs(
             job.import_log = json.loads(job.import_log) if job.import_log else {}
 
     return jobs
+
+
+# Background task execution
+async def process_standards_import_job(job_id: int):
+    """
+    Process standards import job in background.
+
+    This function:
+    1. Invokes the StandardsImportService
+    2. Parses the source format (CASE, PDF, etc.)
+    3. Creates the Standard database record
+    4. Updates job status and progress
+    5. Handles errors and timeouts
+    """
+    from database.session import SessionLocal
+    from services.standards_importer import get_standards_import_service
+
+    db = SessionLocal()
+
+    try:
+        job = db.query(StandardImportJob).filter(StandardImportJob.id == job_id).first()
+        if not job:
+            return
+
+        # Update status to running
+        job.status = "running"
+        job.started_at = datetime.utcnow()
+        job.progress_percentage = 10
+        job.progress_message = "Initializing import..."
+        db.commit()
+
+        # Get import service
+        import_service = get_standards_import_service()
+
+        job.progress_percentage = 30
+        job.progress_message = f"Parsing {job.format.upper()} format..."
+        db.commit()
+
+        # Process the import
+        metadata = {
+            "name": job.name,
+            "short_name": job.short_name,
+            "code": job.code,
+            "description": job.description,
+            "type": job.type,
+            "subject": job.subject,
+            "source_organization": job.source_organization,
+            "version": job.version,
+            "year": job.year,
+            "state": job.state,
+            "district": job.district,
+            "country": job.country,
+            "grade_levels": json.loads(job.grade_levels) if isinstance(job.grade_levels, str) else job.grade_levels,
+        }
+
+        result = await import_service.process_import_job(
+            job_id=job_id,
+            source_type=job.source_type,
+            source_location=job.source_location,
+            format=job.format,
+            metadata=metadata
+        )
+
+        job.progress_percentage = 70
+        job.progress_message = "Saving standard to database..."
+        db.commit()
+
+        # Check if processing was successful
+        if result["success"]:
+            # Create Standard record
+            parsed_data = result["parsed_data"]
+
+            # Serialize JSON fields
+            standard_dict = {
+                **parsed_data,
+                "status": StandardStatus.IMPORTED,
+                "imported_by_id": job.user_id,
+                "structure": json.dumps(parsed_data["structure"]),
+                "standards_list": json.dumps(parsed_data["standards_list"]),
+                "grade_levels": json.dumps(parsed_data["grade_levels"]) if parsed_data["grade_levels"] else None,
+            }
+
+            # Create standard
+            db_standard = Standard(**standard_dict)
+            db.add(db_standard)
+            db.commit()
+            db.refresh(db_standard)
+
+            # Update job as completed
+            job.status = "completed"
+            job.completed_at = datetime.utcnow()
+            job.progress_percentage = 100
+            job.progress_message = "Import complete"
+            job.standard_id = db_standard.id
+            job.standards_extracted = result["standards_extracted"]
+            job.import_log = json.dumps({
+                "success": True,
+                "standard_id": db_standard.id,
+                "standards_count": result["standards_extracted"]
+            })
+        else:
+            # Import failed
+            job.status = "failed"
+            job.completed_at = datetime.utcnow()
+            job.error_message = result["error_message"]
+            job.import_log = json.dumps({
+                "success": False,
+                "error": result["error_message"]
+            })
+
+        db.commit()
+
+    except Exception as e:
+        if job:
+            job.status = "failed"
+            job.completed_at = datetime.utcnow()
+            job.error_message = str(e)
+            job.import_log = json.dumps({
+                "success": False,
+                "error": str(e),
+                "traceback": str(e)
+            })
+            db.commit()
+    finally:
+        db.close()
