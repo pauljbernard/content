@@ -379,6 +379,25 @@ AVAILABLE_AGENTS = [
         ],
         "required_role": "author"
     },
+    {
+        "id": "standards-importer",
+        "name": "Standards Importer",
+        "description": "Import and transform educational standards from multiple formats into standardized structure",
+        "category": "data-import",
+        "estimated_time": "5-15 minutes",
+        "productivity_gain": "20x",
+        "capabilities": [
+            "CASE format parsing (IMS Global standard)",
+            "HTML document extraction",
+            "XML format transformation",
+            "JSON format processing",
+            "CSV spreadsheet import",
+            "Hierarchical structure building",
+            "Metadata extraction and inference",
+            "Grade level and subject detection"
+        ],
+        "required_role": "author"
+    },
 ]
 
 
