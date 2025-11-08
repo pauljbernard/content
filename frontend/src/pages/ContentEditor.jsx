@@ -688,6 +688,63 @@ export default function ContentEditor() {
                           Be specific about what you want. The agent will use your subject,
                           grade level, and state automatically.
                         </p>
+
+                        {/* Agent Context Information */}
+                        <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-4">
+                          <h4 className="text-sm font-semibold text-gray-900 mb-3">
+                            Agent Context
+                          </h4>
+
+                          {/* Agent Capabilities */}
+                          {selectedAgent.capabilities && selectedAgent.capabilities.length > 0 && (
+                            <div className="mb-4">
+                              <h5 className="text-xs font-medium text-gray-700 mb-2">
+                                Capabilities:
+                              </h5>
+                              <ul className="space-y-1">
+                                {selectedAgent.capabilities.map((capability, idx) => (
+                                  <li key={idx} className="flex items-start text-xs text-gray-600">
+                                    <span className="text-purple-500 mr-2">•</span>
+                                    <span>{capability}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                          )}
+
+                          {/* Parameters Being Passed */}
+                          <div>
+                            <h5 className="text-xs font-medium text-gray-700 mb-2">
+                              Parameters:
+                            </h5>
+                            <div className="grid grid-cols-2 gap-2 text-xs">
+                              <div className="bg-white rounded px-2 py-1 border border-gray-200">
+                                <span className="font-medium text-gray-700">Subject:</span>
+                                <span className="ml-1 text-gray-600">
+                                  {formData.subject || 'Not set'}
+                                </span>
+                              </div>
+                              <div className="bg-white rounded px-2 py-1 border border-gray-200">
+                                <span className="font-medium text-gray-700">Grade Level:</span>
+                                <span className="ml-1 text-gray-600">
+                                  {formData.grade_level || 'Not set'}
+                                </span>
+                              </div>
+                              <div className="bg-white rounded px-2 py-1 border border-gray-200">
+                                <span className="font-medium text-gray-700">State:</span>
+                                <span className="ml-1 text-gray-600">
+                                  {formData.state || 'Not set'}
+                                </span>
+                              </div>
+                              <div className="bg-white rounded px-2 py-1 border border-gray-200">
+                                <span className="font-medium text-gray-700">Content Type:</span>
+                                <span className="ml-1 text-gray-600">
+                                  {formData.content_type || 'Not set'}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </div>
                     )}
 
