@@ -15,7 +15,7 @@ from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks, status
 from sqlalchemy.orm import Session
 from database.session import get_db
-from core.security import get_current_active_user, get_author
+from core.security import get_current_active_user, get_author, get_editor
 from models.user import User
 from models.standard import (
     Standard,
@@ -113,6 +113,8 @@ async def list_standards(
     for standard in standards_list:
         if isinstance(standard.grade_levels, str):
             standard.grade_levels = json.loads(standard.grade_levels) if standard.grade_levels else []
+        elif standard.grade_levels is None:
+            standard.grade_levels = []
 
     return standards_list
 
@@ -149,12 +151,54 @@ async def get_standard(
     # Deserialize JSON fields
     if isinstance(standard.grade_levels, str):
         standard.grade_levels = json.loads(standard.grade_levels) if standard.grade_levels else []
+    elif standard.grade_levels is None:
+        standard.grade_levels = []
+
     if isinstance(standard.structure, str):
         standard.structure = json.loads(standard.structure) if standard.structure else {}
+    elif standard.structure is None:
+        standard.structure = {}
+
     if isinstance(standard.standards_list, str):
         standard.standards_list = json.loads(standard.standards_list) if standard.standards_list else []
+    elif standard.standards_list is None:
+        standard.standards_list = []
 
     return standard
+
+
+@router.delete("/{standard_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_standard(
+    standard_id: int,
+    current_user: User = Depends(get_editor),  # Only editors and knowledge_engineers can delete
+    db: Session = Depends(get_db),
+):
+    """
+    Delete a standard and all associated data.
+
+    This will:
+    - Delete the standard record
+    - Delete associated import jobs
+    - Delete any alignments to this standard
+
+    Only editors and knowledge engineers can delete standards.
+    """
+    standard = db.query(Standard).filter(Standard.id == standard_id).first()
+
+    if not standard:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Standard not found"
+        )
+
+    # Delete associated import jobs
+    db.query(StandardImportJob).filter(StandardImportJob.standard_id == standard_id).delete()
+
+    # Delete the standard
+    db.delete(standard)
+    db.commit()
+
+    return None
 
 
 @router.post("/", response_model=StandardInDB, status_code=status.HTTP_201_CREATED)
@@ -396,26 +440,28 @@ async def create_import_job(
 
     The import job will be processed asynchronously by the standards-importer service.
     """
-    # Check for duplicate code
-    existing = db.query(Standard).filter(Standard.code == job.code).first()
-    if existing:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"A standard with code '{job.code}' already exists"
-        )
+    # Create import job (store full metadata in import_log for later processing)
+    import json
+    job_data = job.dict()
+    job_data["user_id"] = current_user.id  # Store user ID for later use
 
-    # Create import job
-    job_dict = job.dict()
-    job_dict["status"] = "queued"
-    job_dict["user_id"] = current_user.id
-
-    db_job = StandardImportJob(**job_dict)
+    db_job = StandardImportJob(
+        source_type=job.source_type,
+        source_location=job.source_location,
+        format=job.format,
+        status="queued",
+        import_log=json.dumps(job_data)  # Store all metadata for processing
+    )
     db.add(db_job)
     db.commit()
     db.refresh(db_job)
 
     # Trigger standards import processing in background
     background_tasks.add_task(process_standards_import_job, db_job.id)
+
+    # Parse import_log back to dict for response validation
+    if db_job.import_log:
+        db_job.import_log = json.loads(db_job.import_log)
 
     return db_job
 
@@ -514,21 +560,23 @@ async def process_standards_import_job(job_id: int):
         job.progress_message = f"Parsing {job.format.upper()} format..."
         db.commit()
 
-        # Process the import
+        # Process the import - get metadata from import_log
+        import_log_data = json.loads(job.import_log) if isinstance(job.import_log, str) else job.import_log or {}
+
         metadata = {
-            "name": job.name,
-            "short_name": job.short_name,
-            "code": job.code,
-            "description": job.description,
-            "type": job.type,
-            "subject": job.subject,
-            "source_organization": job.source_organization,
-            "version": job.version,
-            "year": job.year,
-            "state": job.state,
-            "district": job.district,
-            "country": job.country,
-            "grade_levels": json.loads(job.grade_levels) if isinstance(job.grade_levels, str) else job.grade_levels,
+            "name": import_log_data.get("name", "Unknown Standard"),
+            "short_name": import_log_data.get("short_name", ""),
+            "code": import_log_data.get("code", ""),
+            "description": import_log_data.get("description", ""),
+            "type": import_log_data.get("type", "national"),
+            "subject": import_log_data.get("subject", "general"),
+            "source_organization": import_log_data.get("source_organization", ""),
+            "version": import_log_data.get("version"),
+            "year": import_log_data.get("year"),
+            "state": import_log_data.get("state"),
+            "district": import_log_data.get("district"),
+            "country": import_log_data.get("country"),
+            "grade_levels": import_log_data.get("grade_levels"),
         }
 
         result = await import_service.process_import_job(
@@ -548,14 +596,27 @@ async def process_standards_import_job(job_id: int):
             # Create Standard record
             parsed_data = result["parsed_data"]
 
-            # Serialize JSON fields
+            # Build standard_dict with only valid Standard model fields
             standard_dict = {
-                **parsed_data,
+                "name": parsed_data["name"],
+                "short_name": parsed_data["short_name"],
+                "code": parsed_data["code"],
+                "type": parsed_data["type"],
+                "subject": parsed_data["subject"],
+                "source_organization": parsed_data["source_organization"],
+                "source_url": parsed_data.get("source_url"),
+                "version": parsed_data.get("version"),
+                "year": parsed_data.get("year"),
+                "state": parsed_data.get("state"),
+                "district": parsed_data.get("district"),
+                "country": parsed_data.get("country"),
+                "description": parsed_data.get("description"),
                 "status": StandardStatus.IMPORTED,
-                "imported_by_id": job.user_id,
+                "imported_by_id": import_log_data.get("user_id"),
                 "structure": json.dumps(parsed_data["structure"]),
                 "standards_list": json.dumps(parsed_data["standards_list"]),
-                "grade_levels": json.dumps(parsed_data["grade_levels"]) if parsed_data["grade_levels"] else None,
+                "grade_levels": json.dumps(parsed_data["grade_levels"]) if parsed_data.get("grade_levels") else None,
+                "total_standards_count": len(parsed_data["standards_list"]),
             }
 
             # Create standard

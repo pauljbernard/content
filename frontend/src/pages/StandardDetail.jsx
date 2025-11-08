@@ -355,7 +355,7 @@ export default function StandardDetail() {
         )}
 
         {/* Flat List Fallback */}
-        {!searchResults && (!standard.structure || !standard.structure.domains) && standard.standards_list && standard.standards_list.length > 0 && (
+        {!searchResults && (!standard.structure || !standard.structure.domains || standard.structure.domains.length === 0) && standard.standards_list && standard.standards_list.length > 0 && (
           <div className="bg-white rounded-lg shadow overflow-hidden">
             <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
               <h2 className="text-lg font-semibold text-gray-900">All Standards</h2>

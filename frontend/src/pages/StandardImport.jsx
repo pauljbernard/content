@@ -93,7 +93,11 @@ export default function StandardImport() {
             <div className="flex items-center mb-6">
               {getStatusIcon(jobStatus.status)}
               <h2 className="ml-3 text-xl font-semibold text-gray-900">
-                Import {jobStatus.status === 'completed' ? 'Complete' : 'In Progress'}
+                Import {
+                  jobStatus.status === 'completed' ? 'Complete' :
+                  jobStatus.status === 'failed' ? 'Failed' :
+                  'In Progress'
+                }
               </h2>
             </div>
 

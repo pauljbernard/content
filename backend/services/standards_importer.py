@@ -64,6 +64,10 @@ class CASEParser:
         associations: List[Dict]
     ) -> Dict[str, Any]:
         """Build hierarchical structure from CASE items and associations."""
+        # If no associations, use fallback grade-level hierarchy
+        if not associations:
+            return self._build_hierarchy_fallback(items)
+
         # Create lookup maps
         items_by_id = {item["identifier"]: item for item in items}
 
@@ -96,8 +100,8 @@ class CASEParser:
                 continue
 
             domain = {
-                "id": domain_item.get("humanCodingScheme", ""),
-                "name": domain_item.get("fullStatement", ""),
+                "id": domain_item.get("humanCodingScheme", "") or f"DOMAIN-{domain_id[:8]}",
+                "name": domain_item.get("fullStatement", "") or domain_item.get("title", "Unnamed Domain"),
                 "strands": []
             }
 
@@ -109,29 +113,121 @@ class CASEParser:
                     continue
 
                 strand = {
-                    "id": strand_item.get("humanCodingScheme", ""),
-                    "name": strand_item.get("fullStatement", ""),
+                    "id": strand_item.get("humanCodingScheme", "") or f"STRAND-{strand_id[:8]}",
+                    "name": strand_item.get("fullStatement", "") or strand_item.get("title", "Unnamed Strand"),
                     "standards": []
                 }
 
-                # Get standards (level 3)
-                standard_ids = children_by_parent.get(strand_id, [])
-                for std_id in standard_ids:
-                    std_item = items_by_id.get(std_id)
-                    if not std_item:
-                        continue
+                # Recursively collect all standards under this strand
+                self._collect_standards_recursive(
+                    strand_id,
+                    children_by_parent,
+                    items_by_id,
+                    strand["standards"]
+                )
 
-                    standard = {
-                        "code": std_item.get("humanCodingScheme", ""),
-                        "text": std_item.get("fullStatement", ""),
-                        "grade_level": self._extract_single_grade(
-                            std_item.get("educationLevel", [])
-                        )
-                    }
-                    strand["standards"].append(standard)
+                # Only add strand if it has standards
+                if strand["standards"]:
+                    domain["strands"].append(strand)
 
-                domain["strands"].append(strand)
+            # Only add domain if it has strands with standards
+            if domain["strands"]:
+                domains.append(domain)
 
+        return {"domains": domains}
+
+    def _collect_standards_recursive(
+        self,
+        parent_id: str,
+        children_by_parent: Dict[str, List[str]],
+        items_by_id: Dict[str, Dict],
+        standards_list: List[Dict]
+    ):
+        """
+        Recursively collect all standards (leaf nodes with code and text) under a parent node.
+        """
+        child_ids = children_by_parent.get(parent_id, [])
+
+        for child_id in child_ids:
+            child_item = items_by_id.get(child_id)
+            if not child_item:
+                continue
+
+            # Check if this is a standard (has both code and text)
+            code = child_item.get("humanCodingScheme", "")
+            text = child_item.get("fullStatement", "")
+
+            if code and text and len(code) > 0:
+                # This is a standard - add it
+                standards_list.append({
+                    "code": code,
+                    "text": text,
+                    "grade_level": self._extract_single_grade(
+                        child_item.get("educationLevel", [])
+                    )
+                })
+
+            # Recurse into children to find more standards
+            self._collect_standards_recursive(
+                child_id,
+                children_by_parent,
+                items_by_id,
+                standards_list
+            )
+
+    def _build_hierarchy_fallback(self, items: List[Dict]) -> Dict[str, Any]:
+        """
+        Build hierarchical structure from CASE items without associations.
+        Groups standards by grade level when CFAssociations are not available.
+        """
+        # Extract all standards with both code and text
+        standards_by_grade = {}
+        for item in items:
+            code = item.get("humanCodingScheme", "")
+            text = item.get("fullStatement", "")
+
+            # Only include items with both code and text
+            if code and text and len(code) > 0:
+                grade = self._extract_single_grade(item.get("educationLevel", []))
+                grade_key = grade if grade else "General"
+
+                if grade_key not in standards_by_grade:
+                    standards_by_grade[grade_key] = []
+
+                standards_by_grade[grade_key].append({
+                    "code": code,
+                    "text": text,
+                    "grade_level": grade
+                })
+
+        # Build hierarchical structure organized by grade level
+        domains = []
+
+        # Sort grade levels: PK, K, then numeric grades
+        def grade_sort_key(grade):
+            if grade == "PK":
+                return (0, 0)
+            elif grade == "K":
+                return (0, 1)
+            elif grade.isdigit():
+                return (1, int(grade))
+            else:
+                return (2, grade)
+
+        sorted_grades = sorted(standards_by_grade.keys(), key=grade_sort_key)
+
+        for grade in sorted_grades:
+            grade_standards = standards_by_grade[grade]
+
+            domain = {
+                "id": f"GRADE-{grade}",
+                "name": f"Grade {grade}" if grade != "General" else "General Standards",
+                "strands": [{
+                    "id": f"GRADE-{grade}-ALL",
+                    "name": "All Standards",
+                    "standards": grade_standards
+                }]
+            }
             domains.append(domain)
 
         return {"domains": domains}
@@ -140,11 +236,17 @@ class CASEParser:
         """Extract flat list of all standards."""
         standards = []
         for item in items:
-            # Only include leaf items (actual standards)
-            if item.get("CFItemType") == "Standard":
+            # Extract items that have both a code and a statement
+            # This handles various CASE formats (some use CFItemType, some don't)
+            code = item.get("humanCodingScheme", "")
+            text = item.get("fullStatement", "")
+
+            # Only include items with both code and text
+            # Skip items that are just containers (no code or very short codes)
+            if code and text and len(code) > 0:
                 standards.append({
-                    "code": item.get("humanCodingScheme", ""),
-                    "text": item.get("fullStatement", ""),
+                    "code": code,
+                    "text": text,
                     "grade_level": self._extract_single_grade(
                         item.get("educationLevel", [])
                     )
@@ -428,51 +530,78 @@ class PDFParser:
             for page in pdf_reader.pages:
                 full_text += page.extract_text() + "\n"
 
-            # Try to identify standards using common patterns
-            # Pattern matches things like:
-            #   - "K.CC.1" or "1.OA.3" (Common Core)
-            #   - "5.NF.1.1" (multi-level codes)
-            #   - "TEKS 3.4(A)" (TEKS format)
+            # Common Core format: Domain heading followed by numbered standards
+            # Example: "Counting and Cardinality  K.CC" then "1. Count to 100..."
+            # High School: "N-RN", "A-SSE", "F-IF", "G-CO", "S-ID"
             standards_list = []
 
-            # Pattern 1: Grade.Domain.Standard format (e.g., K.CC.1, 5.NF.1.1)
-            pattern1 = re.compile(r'([K-9]{1,2}\.[A-Z]{1,4}\.\d+(?:\.\d+)?)\s+(.+?)(?=\n[K-9]{1,2}\.[A-Z]{1,4}\.\d+|\n\n|\Z)', re.DOTALL)
+            # Pattern for domain headings - captures both K-8 and high school formats
+            # K-8: "K.CC", "1.OA", "5.NF"
+            # High School: "N-RN", "A-SSE", "F-IF", "G-CO", "S-ID"
+            domain_pattern = re.compile(r'\s+((?:(?:K|\d{1,2})\.[A-Z]{2,4})|(?:[A-ZGFNS]-[A-Z]{2,4}))\s*\n', re.MULTILINE)
 
-            # Pattern 2: Generic numbered standards (e.g., "Standard 1.2.3:")
-            pattern2 = re.compile(r'Standard\s+(\d+(?:\.\d+)*):?\s+(.+?)(?=\nStandard\s+\d+|\n\n|\Z)', re.DOTALL | re.IGNORECASE)
+            # Find all domain codes and their positions
+            domain_matches = [(m.group(1), m.start(), m.end()) for m in domain_pattern.finditer(full_text)]
 
-            # Pattern 3: Bulleted/numbered list format
-            pattern3 = re.compile(r'^[\d\w]+\.\s+(.+?)(?=^\d+\.|\Z)', re.MULTILINE | re.DOTALL)
+            if domain_matches:
+                # Common Core format detected
+                for i, (domain_code, start, end) in enumerate(domain_matches):
+                    # Get text from this domain to the next (or end of document)
+                    next_start = domain_matches[i + 1][1] if i + 1 < len(domain_matches) else len(full_text)
+                    domain_text = full_text[end:next_start]
 
-            # Try pattern 1 (most specific)
-            matches1 = pattern1.findall(full_text)
-            if matches1:
-                for code, text in matches1:
+                    # Extract grade level from domain code
+                    # K-8: "K" from "K.CC", "5" from "5.NF"
+                    # High School: "HS" for all high school standards
+                    if '.' in domain_code:
+                        grade_level = domain_code.split('.')[0]
+                    else:
+                        # High school standard (e.g., N-RN, A-SSE)
+                        grade_level = "HS"
+
+                    # Find numbered standards in this domain (1., 2., 3., etc.)
+                    # Match number at start of line followed by text until next number or section
+                    std_pattern = re.compile(r'^\s*(\d+)\.\s+(.+?)(?=^\s*\d+\.|^\s*[A-Z][a-z]+\s+[a-z]+|\Z)', re.MULTILINE | re.DOTALL)
+
+                    for std_num, std_text in std_pattern.findall(domain_text):
+                        # Clean up the text
+                        cleaned_text = std_text.strip().replace('\n', ' ').replace('\t', ' ')
+                        # Remove multiple spaces
+                        cleaned_text = re.sub(r'\s+', ' ', cleaned_text)
+
+                        # Limit to first 500 characters for display
+                        if len(cleaned_text) > 500:
+                            cleaned_text = cleaned_text[:497] + "..."
+
+                        standards_list.append({
+                            "code": f"{domain_code}.{std_num}",
+                            "text": cleaned_text,
+                            "grade_level": grade_level,
+                            "domain": domain_code
+                        })
+
+            # Fallback: Try explicit Grade.Domain.Standard format if no domains found
+            if not standards_list:
+                explicit_pattern = re.compile(r'((?:K|\d{1,2})\.[A-Z]{2,4}\.\d+)\s+(.+?)(?=\n(?:K|\d{1,2})\.[A-Z]{2,4}\.\d+|\n\n|\Z)', re.DOTALL)
+                explicit_matches = explicit_pattern.findall(full_text)
+                for code, text in explicit_matches:
+                    cleaned_text = text.strip().replace('\n', ' ').replace('\t', ' ')
+                    cleaned_text = re.sub(r'\s+', ' ', cleaned_text)[:500]
                     standards_list.append({
-                        "code": code.strip(),
-                        "text": text.strip().replace('\n', ' ')[:500],  # Limit length
-                        "grade_level": code.split('.')[0] if '.' in code else None
+                        "code": code,
+                        "text": cleaned_text,
+                        "grade_level": code.split('.')[0]
                     })
 
-            # Try pattern 2 if pattern 1 didn't work
-            elif (matches2 := pattern2.findall(full_text)):
-                for code, text in matches2:
-                    standards_list.append({
-                        "code": f"STD-{code}",
-                        "text": text.strip().replace('\n', ' ')[:500],
-                        "grade_level": None
-                    })
-
-            # If no structured standards found, split into pages
+            # Last resort: split into pages
             if not standards_list:
                 for idx, page in enumerate(pdf_reader.pages):
                     page_text = page.extract_text().strip()
-                    if page_text:  # Only include non-empty pages
+                    if page_text:
                         standards_list.append({
                             "code": f"PAGE-{idx + 1}",
-                            "text": page_text[:500],  # First 500 chars
-                            "grade_level": None,
-                            "note": "Auto-extracted from PDF page"
+                            "text": page_text[:500],
+                            "grade_level": None
                         })
 
             # Organize standards by grade level into CASE-compatible structure

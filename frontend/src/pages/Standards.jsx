@@ -2,14 +2,16 @@
  * Standards page - Browse and manage educational standards
  */
 import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import {
   ClipboardDocumentListIcon,
   MagnifyingGlassIcon,
   PlusIcon,
   EyeIcon,
   FunnelIcon,
+  TrashIcon,
 } from '@heroicons/react/24/outline';
 import Layout from '../components/Layout';
 import { standardsAPI } from '../services/api';
@@ -20,6 +22,7 @@ import useAuthStore from '../store/authStore';
 export default function Standards() {
   const { user } = useAuthStore();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   // State
   const [typeFilter, setTypeFilter] = useState('');
@@ -43,7 +46,25 @@ export default function Standards() {
     queryFn: () => standardsAPI.list(queryParams),
   });
 
+  // Delete mutation
+  const deleteMutation = useMutation({
+    mutationFn: standardsAPI.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries(['standards']);
+      toast.success('Standard deleted successfully');
+    },
+    onError: (error) => {
+      toast.error(`Failed to delete standard: ${error.response?.data?.detail || error.message}`);
+    },
+  });
+
   const canImport = ['author', 'editor', 'knowledge_engineer'].includes(user?.role);
+  const canDelete = ['editor', 'knowledge_engineer'].includes(user?.role);
+
+  const handleDelete = async (standardId, standardName) => {
+    // Direct delete without confirmation for now
+    deleteMutation.mutate(standardId);
+  };
 
   const getTypeBadgeColor = (type) => {
     const colors = {
@@ -224,54 +245,67 @@ export default function Standards() {
             <ul className="divide-y divide-gray-200">
               {standards.map((standard) => (
                 <li key={standard.id} className="hover:bg-gray-50">
-                  <Link to={`/standards/${standard.id}`} className="block px-6 py-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center mb-2">
-                          <h3 className="text-lg font-semibold text-gray-900 truncate">
-                            {standard.name}
-                          </h3>
-                          <span className={`ml-3 px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeBadgeColor(standard.type)}`}>
-                            {standard.type}
-                          </span>
-                          <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColor(standard.status)}`}>
-                            {standard.status}
-                          </span>
-                        </div>
-                        <div className="flex items-center text-sm text-gray-500 space-x-4">
-                          <span className="font-medium text-primary-600">{standard.code}</span>
-                          <span>•</span>
-                          <span>{standard.subject.replace('_', ' ')}</span>
-                          <span>•</span>
-                          <span>{standard.source_organization}</span>
-                          {standard.state && (
-                            <>
-                              <span>•</span>
-                              <span className="capitalize">{standard.state}</span>
-                            </>
-                          )}
-                          {standard.version && (
-                            <>
-                              <span>•</span>
-                              <span>v{standard.version}</span>
-                            </>
-                          )}
-                        </div>
-                        <div className="mt-2 flex items-center text-sm text-gray-500">
-                          <span>{standard.total_standards_count} standards</span>
-                          {standard.grade_levels && standard.grade_levels.length > 0 && (
-                            <>
-                              <span className="mx-2">•</span>
-                              <span>Grades: {standard.grade_levels.join(', ')}</span>
-                            </>
-                          )}
-                        </div>
+                  <div className="px-6 py-4 flex items-center justify-between">
+                    <Link to={`/standards/${standard.id}`} className="flex-1 min-w-0">
+                      <div className="flex items-center mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900 truncate">
+                          {standard.name}
+                        </h3>
+                        <span className={`ml-3 px-2.5 py-0.5 rounded-full text-xs font-medium ${getTypeBadgeColor(standard.type)}`}>
+                          {standard.type}
+                        </span>
+                        <span className={`ml-2 px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeColor(standard.status)}`}>
+                          {standard.status}
+                        </span>
                       </div>
-                      <div className="ml-4 flex-shrink-0">
-                        <EyeIcon className="h-5 w-5 text-gray-400" />
+                      <div className="flex items-center text-sm text-gray-500 space-x-4">
+                        <span className="font-medium text-primary-600">{standard.code}</span>
+                        <span>•</span>
+                        <span>{standard.subject.replace('_', ' ')}</span>
+                        <span>•</span>
+                        <span>{standard.source_organization}</span>
+                        {standard.state && (
+                          <>
+                            <span>•</span>
+                            <span className="capitalize">{standard.state}</span>
+                          </>
+                        )}
+                        {standard.version && (
+                          <>
+                            <span>•</span>
+                            <span>v{standard.version}</span>
+                          </>
+                        )}
                       </div>
+                      <div className="mt-2 flex items-center text-sm text-gray-500">
+                        <span>{standard.total_standards_count} standards</span>
+                        {standard.grade_levels && standard.grade_levels.length > 0 && (
+                          <>
+                            <span className="mx-2">•</span>
+                            <span>Grades: {standard.grade_levels.join(', ')}</span>
+                          </>
+                        )}
+                      </div>
+                    </Link>
+                    <div className="ml-4 flex-shrink-0 flex items-center space-x-3">
+                      <Link to={`/standards/${standard.id}`}>
+                        <EyeIcon className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                      </Link>
+                      {canDelete && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            handleDelete(standard.id, standard.name);
+                          }}
+                          className="text-red-600 hover:text-red-800"
+                          title="Delete standard"
+                        >
+                          <TrashIcon className="h-5 w-5" />
+                        </button>
+                      )}
                     </div>
-                  </Link>
+                  </div>
                 </li>
               ))}
             </ul>

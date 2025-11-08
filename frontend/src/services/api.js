@@ -327,11 +327,6 @@ export const standardsAPI = {
     return response.data;
   },
 
-  // Delete a standard
-  delete: async (standardId) => {
-    await apiClient.delete(`/standards/${standardId}`);
-  },
-
   // Search within a standard
   search: async (standardId, query) => {
     const response = await apiClient.get(`/standards/${standardId}/search`, {
@@ -349,6 +344,12 @@ export const standardsAPI = {
   // Get import job status
   getImportJob: async (jobId) => {
     const response = await apiClient.get(`/standards/import/${jobId}`);
+    return response.data;
+  },
+
+  // Delete standard
+  delete: async (standardId) => {
+    const response = await apiClient.delete(`/standards/${standardId}`);
     return response.data;
   },
 

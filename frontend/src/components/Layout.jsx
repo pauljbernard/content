@@ -1,7 +1,7 @@
 /**
  * Main layout component with navigation
  */
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import {
@@ -16,6 +16,10 @@ import {
   QueueListIcon,
   CodeBracketIcon,
   ClipboardDocumentListIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  ChatBubbleBottomCenterTextIcon,
+  ServerIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 
@@ -23,61 +27,39 @@ export default function Layout({ children }) {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
   const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
 
-  const navigation = [
-    { name: 'Dashboard', href: '/', icon: AcademicCapIcon, roles: ['all'] },
+  // Navigation organized into sections
+  const navigationSections = [
     {
-      name: 'Knowledge Base',
-      href: '/knowledge',
-      icon: BookOpenIcon,
-      roles: ['all'],
+      name: 'Main',
+      items: [
+        { name: 'Dashboard', href: '/', icon: AcademicCapIcon, roles: ['all'] },
+        { name: 'Curriculums', href: '/configs', icon: Cog6ToothIcon, roles: ['knowledge_engineer'] },
+        { name: 'Knowledge Base', href: '/knowledge', icon: BookOpenIcon, roles: ['all'] },
+        { name: 'Standards', href: '/standards', icon: ClipboardDocumentListIcon, roles: ['all'] },
+        { name: 'Content', href: '/content', icon: DocumentTextIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
+        { name: 'Reviews', href: '/reviews', icon: ChatBubbleBottomCenterTextIcon, roles: ['editor', 'knowledge_engineer'] },
+      ],
     },
     {
-      name: 'Standards',
-      href: '/standards',
-      icon: ClipboardDocumentListIcon,
-      roles: ['all'],
+      name: 'Automation',
+      items: [
+        { name: 'Agents', href: '/agents', icon: SparklesIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
+        { name: 'Workflows', href: '/workflows', icon: QueueListIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
+        { name: 'Skills', href: '/skills', icon: CodeBracketIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
+      ],
     },
     {
-      name: 'Content',
-      href: '/content',
-      icon: DocumentTextIcon,
-      roles: ['author', 'editor', 'knowledge_engineer'],
-    },
-    {
-      name: 'Agents',
-      href: '/agents',
-      icon: SparklesIcon,
-      roles: ['author', 'editor', 'knowledge_engineer'],
-    },
-    {
-      name: 'Workflows',
-      href: '/workflows',
-      icon: QueueListIcon,
-      roles: ['author', 'editor', 'knowledge_engineer'],
-    },
-    {
-      name: 'Skills',
-      href: '/skills',
-      icon: CodeBracketIcon,
-      roles: ['author', 'editor', 'knowledge_engineer'],
-    },
-    {
-      name: 'Reviews',
-      href: '/reviews',
-      icon: Bars3Icon,
-      roles: ['editor', 'knowledge_engineer'],
-    },
-    {
-      name: 'Configs',
-      href: '/configs',
-      icon: Cog6ToothIcon,
-      roles: ['knowledge_engineer'],
+      name: 'System',
+      items: [
+        { name: 'Your Profile', href: '/profile', icon: UserCircleIcon, roles: ['all'] },
+      ],
     },
   ];
 
@@ -92,46 +74,83 @@ export default function Layout({ children }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Top Navigation */}
-      <nav className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
-            <div className="flex">
-              {/* Logo */}
-              <div className="flex-shrink-0 flex items-center">
-                <Link to="/" className="flex items-center">
-                  <BookOpenIcon className="h-8 w-8 text-primary-600" />
-                  <span className="ml-2 text-xl font-bold text-gray-900">
-                    Nova
-                  </span>
-                </Link>
-              </div>
+    <div className="min-h-screen bg-gray-50 flex">
+      {/* Left Sidebar */}
+      <aside
+        className={`bg-white border-r border-gray-200 flex flex-col transition-all duration-300 ${
+          sidebarCollapsed ? 'w-16' : 'w-64'
+        }`}
+      >
+        {/* Sidebar Header - Empty space to match top bar height */}
+        <div className="h-16 border-b border-gray-200"></div>
 
-              {/* Navigation Links */}
-              <div className="hidden sm:ml-6 sm:flex sm:space-x-4">
-                {navigation
+        {/* Navigation Sections */}
+        <nav className="flex-1 overflow-y-auto py-4">
+          {navigationSections.map((section, sectionIdx) => (
+            <div key={section.name} className={sectionIdx > 0 ? 'mt-8' : ''}>
+              {!sidebarCollapsed && (
+                <div className="px-4 mb-2">
+                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                    {section.name}
+                  </h3>
+                </div>
+              )}
+              <div className="space-y-1 px-2">
+                {section.items
                   .filter((item) => canAccessRoute(item))
                   .map((item) => (
                     <Link
                       key={item.name}
                       to={item.href}
-                      className={`inline-flex items-center px-3 py-2 text-sm font-medium rounded-md ${
+                      className={`flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors ${
                         isActive(item.href)
-                          ? 'bg-primary-50 text-primary-700 border-b-2 border-primary-700'
+                          ? 'bg-primary-50 text-primary-700'
                           : 'text-gray-700 hover:bg-gray-50 hover:text-gray-900'
                       }`}
+                      title={sidebarCollapsed ? item.name : ''}
                     >
-                      <item.icon className="h-5 w-5 mr-2" />
-                      {item.name}
+                      <item.icon className="h-5 w-5 flex-shrink-0" />
+                      {!sidebarCollapsed && <span className="ml-3">{item.name}</span>}
                     </Link>
                   ))}
               </div>
             </div>
+          ))}
+        </nav>
 
-            {/* User Menu */}
+        {/* Collapse Toggle Button */}
+        <div className="border-t border-gray-200 p-4">
+          <button
+            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+            className="flex items-center justify-center w-full px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-50 hover:text-gray-900"
+            title={sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+          >
+            {sidebarCollapsed ? (
+              <ChevronRightIcon className="h-5 w-5" />
+            ) : (
+              <>
+                <ChevronLeftIcon className="h-5 w-5" />
+                <span className="ml-2">Collapse</span>
+              </>
+            )}
+          </button>
+        </div>
+      </aside>
+
+      {/* Main Content Area */}
+      <div className="flex-1 flex flex-col">
+        {/* Top Navigation Bar */}
+        <nav className="bg-white shadow-sm border-b border-gray-200 h-16">
+          <div className="h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            {/* Logo on the left */}
+            <Link to="/" className="flex items-center">
+              <BookOpenIcon className="h-8 w-8 text-primary-600" />
+              <span className="ml-2 text-xl font-bold text-gray-900">Nova</span>
+            </Link>
+
+            {/* User Menu on the right */}
             <div className="flex items-center">
-              <Menu as="div" className="relative ml-3">
+              <Menu as="div" className="relative">
                 <Menu.Button className="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-primary-500">
                   <UserCircleIcon className="h-8 w-8 text-gray-400" />
                   <span className="ml-2 text-gray-700">{user?.full_name || user?.email}</span>
@@ -180,13 +199,15 @@ export default function Layout({ children }) {
               </Menu>
             </div>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        {children}
-      </main>
+        {/* Page Content */}
+        <main className="flex-1 overflow-auto">
+          <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            {children}
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
