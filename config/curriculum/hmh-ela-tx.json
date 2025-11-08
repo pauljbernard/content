@@ -19,7 +19,9 @@
 
   "standards": {
     "content": "TEKS ELA",
+    "content_standard_code": "TEKS-ELA-TX",
     "language": "ELPS",
+    "language_standard_code": "ELPS-TX",
     "accessibility": "WCAG 2.1 AA"
   },
 

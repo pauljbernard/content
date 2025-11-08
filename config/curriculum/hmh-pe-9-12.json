@@ -17,6 +17,9 @@
   },
   "standards": {
     "primary": "SHAPE America National Standards for K-12 Physical Education",
+    "content_standard_code": "SHAPE-PE",
+    "health_education": "National Health Education Standards",
+    "health_standard_code": "NHES",
     "standards_count": 5
   },
   "shape_america_standards": [

@@ -18,8 +18,11 @@
   },
   "standards": {
     "content": "MAFS",
+    "content_standard_code": "MAFS-FL",
     "content_transition": "B.E.S.T. Mathematics (transitioning)",
+    "content_transition_standard_code": "BEST-MATH-FL",
     "language": "ESOL (WIDA)",
+    "language_standard_code": "WIDA-ELD-FL",
     "accessibility": "WCAG 2.1 AA",
     "note": "Florida is transitioning from MAFS to B.E.S.T. Mathematics. Materials should support both during transition period."
   },

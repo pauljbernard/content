@@ -21,8 +21,11 @@
   },
   "standards": {
     "primary": "TEKS Science - Biology",
+    "content_standard_code": "TEKS-SCI-TX",
     "secondary": "NGSS HS-LS (Life Science)",
+    "secondary_standard_code": "NGSS",
     "language": "ELPS",
+    "language_standard_code": "ELPS-TX",
     "assessments": ["STAAR Biology EOC"]
   },
   "compliance": {

@@ -21,7 +21,9 @@
   },
   "standards": {
     "primary": "TEKS Mathematics - Algebra I",
+    "content_standard_code": "TEKS-MATH-TX",
     "language": "ELPS",
+    "language_standard_code": "ELPS-TX",
     "assessments": ["STAAR Algebra I EOC"]
   },
   "compliance": {

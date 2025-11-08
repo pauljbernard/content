@@ -19,7 +19,9 @@
 
   "standards": {
     "content": "CCSS-M",
+    "content_standard_code": "CCSS-M-CA",
     "language": "ELD Standards",
+    "language_standard_code": "ELD-CA",
     "accessibility": "WCAG 2.1 AA"
   },
 

@@ -19,7 +19,9 @@
   },
   "standards": {
     "primary": "College Board AP Calculus AB",
+    "content_standard_code": "AP-CALC-AB",
     "secondary": "Common Core State Standards - Mathematics (HS)",
+    "secondary_standard_code": "CCSS-M",
     "frameworks": ["College/Career Readiness"]
   },
   "assessments": {

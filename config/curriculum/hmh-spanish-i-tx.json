@@ -22,8 +22,11 @@
   },
   "standards": {
     "primary": "TEKS Languages Other Than English (LOTE) - Spanish Level I",
+    "content_standard_code": "TEKS-LOTE-TX",
     "national": "ACTFL World Readiness Standards",
-    "proficiency_framework": "ACTFL Proficiency Guidelines"
+    "national_standard_code": "ACTFL-WR",
+    "proficiency_framework": "ACTFL Proficiency Guidelines",
+    "proficiency_standard_code": "ACTFL-PG"
   },
   "communication_modes": [
     "Interpersonal",

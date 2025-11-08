@@ -19,7 +19,9 @@
   },
   "standards": {
     "primary": "College Board AP English Literature and Composition",
+    "content_standard_code": "AP-ENG-LIT",
     "secondary": "Common Core State Standards - ELA (HS)",
+    "secondary_standard_code": "CCSS-ELA",
     "frameworks": ["College/Career Readiness"]
   },
   "assessments": {

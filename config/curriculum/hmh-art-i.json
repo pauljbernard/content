@@ -19,6 +19,7 @@
   },
   "standards": {
     "primary": "National Core Arts Standards (Visual Arts)",
+    "content_standard_code": "NCAS-VA",
     "artistic_processes": [
       "Creating",
       "Presenting",
