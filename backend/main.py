@@ -18,6 +18,7 @@ from api.v1 import (
     agents,
     workflows,
     skills,
+    standards,
 )
 
 # Create database tables
@@ -82,6 +83,10 @@ app = FastAPI(
             "name": "Skills",
             "description": "Professor Framework composable skills. Access and invoke 92 granular skills across 19 categories for specific educational development tasks. Skills are lightweight, reusable functions that can be chained together.",
         },
+        {
+            "name": "Standards",
+            "description": "Educational standards management. Import, browse, and reference standards from various sources (TEKS, CCSS, NGSS, etc.) in CASE format or other formats. Standards are first-class data entities that can be referenced by content, skills, and agents.",
+        },
     ],
 )
 
@@ -133,6 +138,7 @@ app.include_router(
 app.include_router(content.router, prefix=settings.API_V1_STR, tags=["Content"])
 app.include_router(reviews.router, prefix=settings.API_V1_STR, tags=["Reviews"])
 app.include_router(search.router, prefix=settings.API_V1_STR, tags=["Search"])
+app.include_router(standards.router, prefix=settings.API_V1_STR, tags=["Standards"])
 app.include_router(agents.router, prefix=settings.API_V1_STR, tags=["Agents"])
 app.include_router(workflows.router, prefix=f"{settings.API_V1_STR}/workflows", tags=["Workflows"])
 app.include_router(skills.router, prefix=f"{settings.API_V1_STR}/skills", tags=["Skills"])

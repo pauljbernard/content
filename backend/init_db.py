@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 from database.session import engine, Base, get_db
 from models.user import User
 from models.agent import AgentJob  # Import to register table with SQLAlchemy
+from models.standard import Standard, StandardImportJob  # Import to register tables with SQLAlchemy
 from core.security import get_password_hash
 from core.config import settings
 
