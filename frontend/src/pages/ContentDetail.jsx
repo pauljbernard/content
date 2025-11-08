@@ -39,7 +39,7 @@ export default function ContentDetail() {
 
   // Submit for review mutation
   const submitMutation = useMutation({
-    mutationFn: () => contentAPI.submit(id),
+    mutationFn: contentAPI.submit,
     onSuccess: () => {
       queryClient.invalidateQueries(['content', id]);
       alert('Content submitted for review successfully!');
@@ -101,10 +101,18 @@ export default function ContentDetail() {
     (content.status === 'draft' || content.status === 'needs_revision')
   );
 
+  console.log('ContentDetail - canSubmit:', canSubmit, {
+    user,
+    content,
+    userId: user?.id,
+    authorId: content?.author_id,
+    status: content?.status,
+  });
+
   const handleSubmit = () => {
-    if (confirm('Are you sure you want to submit this content for review?')) {
-      submitMutation.mutate();
-    }
+    console.log('handleSubmit called, id:', id);
+    console.log('Calling submitMutation.mutate with id:', id);
+    submitMutation.mutate(id);
   };
 
   const renderStars = (rating) => {
@@ -176,7 +184,7 @@ export default function ContentDetail() {
                   className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
                 >
                   <DocumentCheckIcon className="h-4 w-4 mr-2" />
-                  {content.status === 'needs_revision' ? 'Resubmit for Review' : 'Submit for Review'}
+                  {submitMutation.isPending ? 'Submitting...' : (content.status === 'needs_revision' ? 'Resubmit for Review' : 'Submit for Review')}
                 </button>
               )}
 

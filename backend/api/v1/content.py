@@ -302,4 +302,11 @@ async def submit_content_for_review(
 
     db.commit()
     db.refresh(content)
+
+    # Deserialize JSON strings back to lists for response
+    if isinstance(content.standards_aligned, str):
+        content.standards_aligned = json.loads(content.standards_aligned)
+    if isinstance(content.learning_objectives, str):
+        content.learning_objectives = json.loads(content.learning_objectives)
+
     return content
