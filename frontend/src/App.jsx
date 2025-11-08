@@ -28,6 +28,9 @@ import Workflows from './pages/Workflows';
 import WorkflowDetail from './pages/WorkflowDetail';
 import WorkflowEditor from './pages/WorkflowEditor';
 import Skills from './pages/Skills';
+import Standards from './pages/Standards';
+import StandardDetail from './pages/StandardDetail';
+import StandardImport from './pages/StandardImport';
 
 // Create QueryClient
 const queryClient = new QueryClient({
@@ -251,6 +254,34 @@ function App() {
                 <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
                   <Skills />
                 </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Standards Routes (All authenticated users) */}
+          <Route
+            path="/standards"
+            element={
+              <ProtectedRoute>
+                <Standards />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/standards/import"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <StandardImport />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/standards/:standardId"
+            element={
+              <ProtectedRoute>
+                <StandardDetail />
               </ProtectedRoute>
             }
           />
