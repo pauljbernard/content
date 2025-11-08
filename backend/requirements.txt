@@ -11,12 +11,10 @@ psycopg2-binary==2.9.9
 # Authentication & Security
 python-jose[cryptography]==3.3.0
 passlib[bcrypt]==1.7.4
+bcrypt==4.0.1
 python-dateutil==2.8.2
 pydantic[email]==2.5.0
 pydantic-settings==2.1.0
-
-# CORS
-fastapi-cors==0.0.6
 
 # File handling
 aiofiles==23.2.1
@@ -31,9 +29,6 @@ gitpython==3.1.40
 # Markdown processing
 markdown==3.5.1
 pymdown-extensions==10.5
-
-# API documentation
-fastapi-swagger-ui==0.3.0
 
 # Testing
 pytest==7.4.3

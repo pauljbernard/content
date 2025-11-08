@@ -10,7 +10,7 @@
  *
  * Note: For orchestrating multiple agents in sequence, see the Workflows page.
  */
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, useNavigate } from 'react-router-dom';
 import {
@@ -155,7 +155,6 @@ export default function Agents() {
 
   // State
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [activeJobId, setActiveJobId] = useState(null);
 
   // Queries
   const { data: agents, isLoading: agentsLoading } = useQuery({
@@ -215,8 +214,7 @@ export default function Agents() {
         </div>
 
         {/* Main Content */}
-        {!activeJobId && (
-          <>
+        <>
             {/* Category Tabs */}
             <div className="mb-6">
               <div className="border-b border-gray-200">
@@ -380,12 +378,12 @@ export default function Agents() {
                               {new Date(job.created_at).toLocaleDateString()}
                             </td>
                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                              <button
-                                onClick={() => setActiveJobId(job.id)}
+                              <Link
+                                to={`/agents/jobs/${job.id}`}
                                 className="text-primary-600 hover:text-primary-900"
                               >
                                 View
-                              </button>
+                              </Link>
                             </td>
                           </tr>
                         );
@@ -396,7 +394,6 @@ export default function Agents() {
               </div>
             )}
           </>
-        )}
       </div>
     </Layout>
   );
