@@ -68,10 +68,6 @@ class Content(Base):
     file_path = Column(String, nullable=True)  # Path to markdown/content file
     file_content = Column(Text, nullable=True)  # Actual content
 
-    # AI Generation metadata
-    generated_by_agent = Column(String, nullable=True)  # Agent ID that generated content
-    generated_using_skills = Column(Text, nullable=True)  # JSON array of skills used
-
     # Authoring
     author_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -129,8 +125,6 @@ class ContentCreate(ContentBase):
     standards_aligned: Optional[List[str]] = []
     learning_objectives: Optional[List[str]] = []
     duration_minutes: Optional[int] = None
-    generated_by_agent: Optional[str] = None
-    generated_using_skills: Optional[List[str]] = None
 
     class Config:
         json_schema_extra = {
@@ -161,8 +155,6 @@ class ContentUpdate(BaseModel):
     learning_objectives: Optional[List[str]] = None
     duration_minutes: Optional[int] = None
     status: Optional[ContentStatus] = None
-    generated_by_agent: Optional[str] = None
-    generated_using_skills: Optional[List[str]] = None
 
 
 class ContentInDB(ContentBase):
@@ -176,8 +168,6 @@ class ContentInDB(ContentBase):
     knowledge_files_used: Optional[List[str]] = []
     learning_objectives: Optional[List[str]] = []
     duration_minutes: Optional[int]
-    generated_by_agent: Optional[str] = None
-    generated_using_skills: Optional[List[str]] = []
     author_id: int
     created_at: datetime
     updated_at: datetime
@@ -194,8 +184,6 @@ class ContentInDB(ContentBase):
             obj.knowledge_files_used = json.loads(obj.knowledge_files_used) if obj.knowledge_files_used else []
         if hasattr(obj, 'learning_objectives') and isinstance(obj.learning_objectives, str):
             obj.learning_objectives = json.loads(obj.learning_objectives) if obj.learning_objectives else []
-        if hasattr(obj, 'generated_using_skills') and isinstance(obj.generated_using_skills, str):
-            obj.generated_using_skills = json.loads(obj.generated_using_skills) if obj.generated_using_skills else []
         return super().model_validate(obj, **kwargs)
 
     class Config:

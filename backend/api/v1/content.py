@@ -106,8 +106,6 @@ async def list_content(
             content.standards_aligned = json.loads(content.standards_aligned)
         if isinstance(content.learning_objectives, str):
             content.learning_objectives = json.loads(content.learning_objectives)
-        if isinstance(content.generated_using_skills, str):
-            content.generated_using_skills = json.loads(content.generated_using_skills)
 
     # Calculate pagination metadata
     total_pages = (total + limit - 1) // limit if limit > 0 else 1  # Ceiling division
@@ -157,11 +155,6 @@ async def create_content(
     else:
         content_dict["learning_objectives"] = json.dumps([])
 
-    if content_dict.get("generated_using_skills"):
-        content_dict["generated_using_skills"] = json.dumps(content_dict["generated_using_skills"])
-    else:
-        content_dict["generated_using_skills"] = None
-
     db_content = Content(
         **content_dict, author_id=current_user.id, status=ContentStatus.DRAFT
     )
@@ -174,8 +167,6 @@ async def create_content(
         db_content.standards_aligned = json.loads(db_content.standards_aligned)
     if isinstance(db_content.learning_objectives, str):
         db_content.learning_objectives = json.loads(db_content.learning_objectives)
-    if isinstance(db_content.generated_using_skills, str):
-        db_content.generated_using_skills = json.loads(db_content.generated_using_skills)
 
     return db_content
 
@@ -207,8 +198,6 @@ async def get_content(
         content.standards_aligned = json.loads(content.standards_aligned)
     if isinstance(content.learning_objectives, str):
         content.learning_objectives = json.loads(content.learning_objectives)
-    if isinstance(content.generated_using_skills, str):
-        content.generated_using_skills = json.loads(content.generated_using_skills)
 
     return content
 
@@ -238,8 +227,6 @@ async def update_content(
         update_data["standards_aligned"] = json.dumps(update_data["standards_aligned"])
     if "learning_objectives" in update_data and update_data["learning_objectives"] is not None:
         update_data["learning_objectives"] = json.dumps(update_data["learning_objectives"])
-    if "generated_using_skills" in update_data and update_data["generated_using_skills"] is not None:
-        update_data["generated_using_skills"] = json.dumps(update_data["generated_using_skills"])
 
     for key, value in update_data.items():
         setattr(content, key, value)
@@ -252,8 +239,6 @@ async def update_content(
         content.standards_aligned = json.loads(content.standards_aligned)
     if isinstance(content.learning_objectives, str):
         content.learning_objectives = json.loads(content.learning_objectives)
-    if isinstance(content.generated_using_skills, str):
-        content.generated_using_skills = json.loads(content.generated_using_skills)
 
     return content
 
@@ -323,7 +308,5 @@ async def submit_content_for_review(
         content.standards_aligned = json.loads(content.standards_aligned)
     if isinstance(content.learning_objectives, str):
         content.learning_objectives = json.loads(content.learning_objectives)
-    if isinstance(content.generated_using_skills, str):
-        content.generated_using_skills = json.loads(content.generated_using_skills)
 
     return content
