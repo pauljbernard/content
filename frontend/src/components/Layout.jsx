@@ -15,11 +15,12 @@ import {
   SparklesIcon,
   QueueListIcon,
   CodeBracketIcon,
-  ClipboardDocumentListIcon,
+  ArrowDownTrayIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
-  ChatBubbleBottomCenterTextIcon,
   ServerIcon,
+  CubeIcon,
+  RectangleStackIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 
@@ -40,11 +41,18 @@ export default function Layout({ children }) {
       name: 'Main',
       items: [
         { name: 'Dashboard', href: '/', icon: AcademicCapIcon, roles: ['all'] },
-        { name: 'Curriculums', href: '/configs', icon: Cog6ToothIcon, roles: ['knowledge_engineer'] },
         { name: 'Knowledge Base', href: '/knowledge', icon: BookOpenIcon, roles: ['all'] },
-        { name: 'Standards', href: '/standards', icon: ClipboardDocumentListIcon, roles: ['all'] },
+        { name: 'Import', href: '/importers', icon: ArrowDownTrayIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
         { name: 'Content', href: '/content', icon: DocumentTextIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
-        { name: 'Reviews', href: '/reviews', icon: ChatBubbleBottomCenterTextIcon, roles: ['editor', 'knowledge_engineer'] },
+        { name: 'Queues', href: '/queues', icon: QueueListIcon, roles: ['author', 'editor', 'knowledge_engineer'] },
+      ],
+    },
+    {
+      name: 'Taxonomy',
+      items: [
+        { name: 'Content Types', href: '/content-types', icon: CubeIcon, roles: ['editor', 'knowledge_engineer'] },
+        { name: 'Core Setup', href: '/content-types/setup', icon: Cog6ToothIcon, roles: ['knowledge_engineer'] },
+        { name: 'Templates', href: '/content-types/templates', icon: RectangleStackIcon, roles: ['editor', 'knowledge_engineer'] },
       ],
     },
     {

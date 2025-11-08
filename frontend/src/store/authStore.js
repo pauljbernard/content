@@ -13,17 +13,30 @@ const useAuthStore = create((set, get) => ({
   // Login
   login: async (email, password) => {
     try {
+      console.log('[AUTH] Starting login...');
       set({ isLoading: true, error: null });
+
+      console.log('[AUTH] Calling authAPI.login...');
       const tokens = await authAPI.login(email, password);
+      console.log('[AUTH] Login successful, got tokens:', {
+        hasAccessToken: !!tokens.access_token,
+        hasRefreshToken: !!tokens.refresh_token
+      });
 
       localStorage.setItem('access_token', tokens.access_token);
       localStorage.setItem('refresh_token', tokens.refresh_token);
+      console.log('[AUTH] Tokens saved to localStorage');
 
+      console.log('[AUTH] Fetching current user...');
       const user = await userAPI.getCurrentUser();
+      console.log('[AUTH] Got user:', user);
+
       set({ user, isAuthenticated: true, isLoading: false });
+      console.log('[AUTH] Login complete, state updated');
 
       return true;
     } catch (error) {
+      console.error('[AUTH] Login error:', error);
       set({
         error: error.response?.data?.detail || 'Login failed',
         isLoading: false,

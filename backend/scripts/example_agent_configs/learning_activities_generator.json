@@ -1,0 +1,41 @@
+{
+  "agent_id": "learning-activities-generator",
+  "agent_name": "Learning Activities Generator",
+  "description": "Generates engaging, standards-aligned learning activities for lessons. Uses RAG to retrieve instructional routines, pedagogical frameworks, and subject-specific strategies from the knowledge base.",
+  "target_content_types": ["lesson-plan"],
+  "target_fields": ["activities", "instructional_sequence"],
+  "retrieval_config": {
+    "content_types": [],
+    "knowledge_base_paths": [
+      "/subjects/{subject}/common/",
+      "/universal/frameworks/udl-principles-guide.md",
+      "/universal/frameworks/eb-scaffolding-guide.md"
+    ],
+    "filters": {}
+  },
+  "prompt_template": "You are an expert educational content developer creating engaging, research-based learning activities.\n\n{context}\n\n## Task\n\nCreate a detailed learning activity sequence for a {grade_level} {subject} lesson with the following objectives:\n\n{learning_objectives}\n\n## Requirements\n\n1. Apply instructional routines and strategies from the context above\n2. Incorporate UDL principles (multiple means of representation, action/expression, engagement)\n3. Include scaffolding for emergent bilinguals and struggling learners\n4. Sequence activities from engagement → exploration → explanation → elaboration → evaluation\n5. Estimate time for each activity\n6. Specify grouping (whole class, small group, pairs, individual)\n\n## Format\n\nProvide the activities as a JSON array of objects:\n\n```json\n[\n  {\n    \"name\": \"Activity Name\",\n    \"duration_minutes\": 10,\n    \"grouping\": \"whole_class\",\n    \"description\": \"Detailed description of what students and teacher do...\",\n    \"materials\": [\"material 1\", \"material 2\"],\n    \"scaffolds\": [\"scaffold for ELLs\", \"scaffold for struggling learners\"],\n    \"assessment_opportunity\": \"How to formatively assess during this activity\"\n  }\n]\n```\n\nReturn ONLY the JSON array, no additional text.",
+  "required_user_inputs": ["subject", "grade_level", "learning_objectives"],
+  "field_dependencies": ["learning_objectives"],
+  "validation_rules": {
+    "min_activities": 3,
+    "max_activities": 7,
+    "total_duration_minutes_max": 60
+  },
+  "model_config": {
+    "model": "claude-3-5-sonnet-20241022",
+    "temperature": 0.8,
+    "max_tokens": 4096
+  },
+  "examples": [
+    {
+      "input": "5th grade Mathematics, Objectives: Compare fractions, explain reasoning",
+      "output": "[{\"name\": \"Fraction Warm-Up\", \"duration_minutes\": 5, \"grouping\": \"whole_class\", \"description\": \"Display two fractions (e.g., 2/3 and 3/4) and ask students to show thumbs up for the larger fraction. Use Math Language Routine 8 (Discussion Supports) to have students explain their thinking to a partner before sharing with the class.\", \"materials\": [\"Visual fraction models\", \"Document camera\"], \"scaffolds\": [\"Provide sentence frame: 'I think ___ is larger because ___'\", \"Show visual models for students who need concrete representation\"], \"assessment_opportunity\": \"Listen for use of benchmark fractions and mathematical vocabulary during partner discussions.\"}]"
+    }
+  ],
+  "active": true,
+  "trigger_mode": "manual",
+  "confidence_threshold": 0.8,
+  "version": "1.0.0",
+  "created_by": "system",
+  "tags": ["lesson-planning", "activities", "instructional-design", "UDL"]
+}

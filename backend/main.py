@@ -13,12 +13,14 @@ from api.v1 import (
     knowledge_base,
     curriculum_configs,
     content,
+    content_types,
     reviews,
     search,
     agents,
     workflows,
     skills,
     standards,
+    migrations,
 )
 
 # Create database tables
@@ -64,6 +66,10 @@ app = FastAPI(
             "description": "Content authoring and management endpoints. Authors create lessons/assessments, editors review and approve, and knowledge engineers manage all content. Supports draft → submit → review → approve → publish workflow.",
         },
         {
+            "name": "Content Types",
+            "description": "Flexible content modeling system (like Contentful/Strapi). Define custom content types with attributes, create instances, and manage schemas. Enables building any kind of content structure beyond built-in types.",
+        },
+        {
             "name": "Reviews",
             "description": "Editorial review workflow for content approval. Editors and knowledge engineers review submitted content, provide ratings and feedback, and approve for publication.",
         },
@@ -87,18 +93,30 @@ app = FastAPI(
             "name": "Standards",
             "description": "Educational standards management. Import, browse, and reference standards from various sources (TEKS, CCSS, NGSS, etc.) in CASE format or other formats. Standards are first-class data entities that can be referenced by content, skills, and agents.",
         },
+        {
+            "name": "Migrations",
+            "description": "System migration utilities. Knowledge engineers only. Migrate legacy Content records to the flexible content type system, create system content types for backward compatibility, and track migration progress.",
+        },
     ],
 )
 
 # Configure CORS
-if settings.BACKEND_CORS_ORIGINS:
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-    )
+# Always enable CORS with configured origins or default to localhost for development
+cors_origins = settings.BACKEND_CORS_ORIGINS if settings.BACKEND_CORS_ORIGINS else [
+    "http://localhost:3000",
+    "http://localhost:3001",
+    "http://localhost:5173",
+    "http://localhost:5174",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"],  # Important for streaming responses
+)
 
 
 # Root endpoint
@@ -136,12 +154,14 @@ app.include_router(
     curriculum_configs.router, prefix=settings.API_V1_STR, tags=["Curriculum Configs"]
 )
 app.include_router(content.router, prefix=settings.API_V1_STR, tags=["Content"])
+app.include_router(content_types.router, prefix=settings.API_V1_STR, tags=["Content Types"])
 app.include_router(reviews.router, prefix=settings.API_V1_STR, tags=["Reviews"])
 app.include_router(search.router, prefix=settings.API_V1_STR, tags=["Search"])
 app.include_router(standards.router, prefix=settings.API_V1_STR, tags=["Standards"])
 app.include_router(agents.router, prefix=settings.API_V1_STR, tags=["Agents"])
 app.include_router(workflows.router, prefix=f"{settings.API_V1_STR}/workflows", tags=["Workflows"])
 app.include_router(skills.router, prefix=f"{settings.API_V1_STR}/skills", tags=["Skills"])
+app.include_router(migrations.router, prefix=f"{settings.API_V1_STR}/migrations", tags=["Migrations"])
 
 
 # Exception handlers

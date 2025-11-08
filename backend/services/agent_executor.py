@@ -281,13 +281,56 @@ class AgentExecutor:
             if kb_context:
                 prompt_parts.append(f"## Knowledge Base Context\n\n{kb_context}\n\n")
 
-        # Add parameters context
+        # Check if this is a JSON output request
+        output_schema = parameters.get("output_schema") if parameters else None
+        is_json_output = output_schema is not None
+
+        # Add parameters context (excluding output_schema from display)
         if parameters:
-            param_text = "\n".join([f"- {k}: {v}" for k, v in parameters.items()])
-            prompt_parts.append(f"## Parameters\n\n{param_text}\n\n")
+            # Filter out output_schema from parameter display
+            display_params = {k: v for k, v in parameters.items() if k != "output_schema"}
+            if display_params:
+                param_text = "\n".join([f"- {k}: {v}" for k, v in display_params.items()])
+                prompt_parts.append(f"## Parameters\n\n{param_text}\n\n")
+
+        # Add JSON output instructions if schema provided
+        if is_json_output:
+            prompt_parts.append(f"""## ⚠️ CRITICAL OUTPUT FORMAT REQUIREMENT ⚠️
+
+YOU MUST OUTPUT ONLY RAW JSON. NO OTHER TEXT ALLOWED.
+
+### Required JSON Schema:
+```json
+{output_schema}
+```
+
+### STRICT JSON-ONLY OUTPUT RULES:
+1. ❌ DO NOT include any explanatory text before the JSON
+2. ❌ DO NOT include any explanatory text after the JSON
+3. ❌ DO NOT include markdown headings (# or ##)
+4. ❌ DO NOT wrap JSON in code fences (```json or ```)
+5. ❌ DO NOT add comments or descriptions
+6. ✅ DO output ONLY the raw JSON object/array
+7. ✅ DO ensure JSON is valid and parseable
+8. ✅ DO match the schema structure exactly
+
+### CORRECT OUTPUT EXAMPLE:
+{{"field": "value", "items": [...]}}
+
+### INCORRECT OUTPUT EXAMPLES:
+❌ "Here is the JSON: {{"field": "value"}}"
+❌ "```json\n{{"field": "value"}}\n```"
+❌ "# Title\n{{"field": "value"}}"
+
+YOUR RESPONSE MUST START WITH {{ or [ and END WITH }} or ]
+
+""")
 
         # Add the main task
         prompt_parts.append(f"## Task\n\n{task}")
+
+        if is_json_output:
+            prompt_parts.append("\n**Remember: Output ONLY valid JSON matching the schema. No other text.**")
 
         return "\n".join(prompt_parts)
 

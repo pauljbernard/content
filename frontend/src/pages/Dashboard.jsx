@@ -6,13 +6,15 @@ import { Link } from 'react-router-dom';
 import {
   BookOpenIcon,
   DocumentTextIcon,
-  UsersIcon,
   ChartBarIcon,
   ExclamationTriangleIcon,
   SparklesIcon,
+  QueueListIcon,
+  CodeBracketIcon,
+  CubeIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
-import { knowledgeAPI, contentAPI } from '../services/api';
+import { knowledgeAPI, contentTypesAPI } from '../services/api';
 import Layout from '../components/Layout';
 
 export default function Dashboard() {
@@ -25,14 +27,20 @@ export default function Dashboard() {
 
   const { data: myContent } = useQuery({
     queryKey: ['my-content'],
-    queryFn: () => contentAPI.list({ author_id: user?.id }),
+    queryFn: () => contentTypesAPI.listAllInstances({ author_id: user?.id, limit: 10000 }),
     enabled: ['author', 'editor'].includes(user?.role),
   });
 
   const { data: needsRevision } = useQuery({
     queryKey: ['needs-revision'],
-    queryFn: () => contentAPI.list({ status: 'needs_revision', author_id: user?.id }),
+    queryFn: () => contentTypesAPI.listAllInstances({ status: 'needs_revision', author_id: user?.id, limit: 10000 }),
     enabled: user?.role === 'author',
+  });
+
+  // Fetch content stats
+  const { data: contentStats } = useQuery({
+    queryKey: ['content-stats'],
+    queryFn: contentTypesAPI.getStats,
   });
 
   const statCards = [
@@ -49,16 +57,34 @@ export default function Dashboard() {
       color: 'bg-green-500',
     },
     {
-      name: 'Subjects',
-      value: Object.keys(kbStats?.files_by_subject || {}).length,
-      icon: UsersIcon,
+      name: 'Content Types',
+      value: contentStats?.total_content_types || '0',
+      icon: CubeIcon,
       color: 'bg-purple-500',
     },
     {
-      name: 'States',
-      value: Object.keys(kbStats?.files_by_state || {}).length,
+      name: 'Content Instances',
+      value: contentStats?.total_instances || '0',
       icon: DocumentTextIcon,
-      color: 'bg-orange-500',
+      color: 'bg-cyan-500',
+    },
+    {
+      name: 'Agents',
+      value: '22',
+      icon: SparklesIcon,
+      color: 'bg-violet-500',
+    },
+    {
+      name: 'Workflows',
+      value: '0',
+      icon: QueueListIcon,
+      color: 'bg-amber-500',
+    },
+    {
+      name: 'Skills',
+      value: '92',
+      icon: CodeBracketIcon,
+      color: 'bg-rose-500',
     },
   ];
 
@@ -115,7 +141,7 @@ export default function Dashboard() {
         )}
 
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {statCards.map((stat) => (
             <div
               key={stat.name}

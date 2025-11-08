@@ -6,39 +6,55 @@ import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const API_V1 = `${API_BASE_URL}/api/v1`;
 
+console.log('[API CONFIG] API_BASE_URL:', API_BASE_URL);
+console.log('[API CONFIG] API_V1:', API_V1);
+
 // Create axios instance
 const apiClient = axios.create({
   baseURL: API_V1,
   headers: {
     'Content-Type': 'application/json',
   },
+  timeout: 10000, // 10 second timeout
 });
 
 // Request interceptor to add auth token
 apiClient.interceptors.request.use(
   (config) => {
+    const fullUrl = config.baseURL + config.url;
+    console.log('[INTERCEPTOR] Request:', config.method.toUpperCase(), fullUrl);
     const token = localStorage.getItem('access_token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+      console.log('[INTERCEPTOR] Added auth token');
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error('[INTERCEPTOR] Request error:', error);
+    return Promise.reject(error);
+  }
 );
 
 // Response interceptor to handle token refresh
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    console.log('[INTERCEPTOR] Response:', response.status, response.config.url);
+    return response;
+  },
   async (error) => {
+    console.error('[INTERCEPTOR] Response error:', error.response?.status, error.config?.url);
     const originalRequest = error.config;
 
     // If 401 and not already retried, try to refresh token
     if (error.response?.status === 401 && !originalRequest._retry) {
+      console.log('[INTERCEPTOR] 401 error, attempting token refresh...');
       originalRequest._retry = true;
 
       try {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
+          console.log('[INTERCEPTOR] Refreshing token...');
           const response = await axios.post(`${API_V1}/auth/refresh`, {
             refresh_token: refreshToken,
           });
@@ -46,11 +62,13 @@ apiClient.interceptors.response.use(
           const { access_token, refresh_token: newRefreshToken } = response.data;
           localStorage.setItem('access_token', access_token);
           localStorage.setItem('refresh_token', newRefreshToken);
+          console.log('[INTERCEPTOR] Token refreshed successfully');
 
           originalRequest.headers.Authorization = `Bearer ${access_token}`;
           return apiClient(originalRequest);
         }
       } catch (refreshError) {
+        console.error('[INTERCEPTOR] Token refresh failed:', refreshError);
         // Refresh failed, logout user
         localStorage.removeItem('access_token');
         localStorage.removeItem('refresh_token');
@@ -66,13 +84,17 @@ apiClient.interceptors.response.use(
 // Auth API
 export const authAPI = {
   login: async (email, password) => {
+    console.log('[API] login called with:', { email, password: '***' });
     const formData = new URLSearchParams();
     formData.append('username', email);
     formData.append('password', password);
+    console.log('[API] formData created:', formData.toString());
 
+    console.log('[API] Making POST request to /auth/login...');
     const response = await apiClient.post('/auth/login', formData, {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     });
+    console.log('[API] Got response:', response);
     return response.data;
   },
 
@@ -356,6 +378,230 @@ export const standardsAPI = {
   // List import jobs
   listImportJobs: async (params = {}) => {
     const response = await apiClient.get('/standards/import', { params });
+    return response.data;
+  },
+};
+
+// Content Types API (Flexible CMS)
+export const contentTypesAPI = {
+  // Get content statistics
+  getStats: async () => {
+    const response = await apiClient.get('/content-types/stats');
+    return response.data;
+  },
+
+  // List all content instances across all types
+  listAllInstances: async (params = {}) => {
+    const response = await apiClient.get('/content-types/instances/all', { params });
+    return response.data;
+  },
+
+  // List all content types
+  list: async (params = {}) => {
+    const response = await apiClient.get('/content-types/', { params });
+    return response.data;
+  },
+
+  // Get a specific content type
+  get: async (contentTypeId) => {
+    const response = await apiClient.get(`/content-types/${contentTypeId}`);
+    return response.data;
+  },
+
+  // Create a new content type
+  create: async (contentTypeData) => {
+    const response = await apiClient.post('/content-types/', contentTypeData);
+    return response.data;
+  },
+
+  // Update a content type
+  update: async (contentTypeId, contentTypeData) => {
+    const response = await apiClient.put(`/content-types/${contentTypeId}`, contentTypeData);
+    return response.data;
+  },
+
+  // Delete a content type
+  delete: async (contentTypeId) => {
+    const response = await apiClient.delete(`/content-types/${contentTypeId}`);
+    return response.data;
+  },
+
+  // List instances of a specific content type
+  listInstances: async (contentTypeId, params = {}) => {
+    const response = await apiClient.get(`/content-types/${contentTypeId}/instances`, { params });
+    return response.data;
+  },
+
+  // Create an instance of a content type
+  createInstance: async (contentTypeId, instanceData) => {
+    const response = await apiClient.post(`/content-types/${contentTypeId}/instances`, instanceData);
+    return response.data;
+  },
+
+  // Get a specific content instance
+  getInstance: async (instanceId) => {
+    const response = await apiClient.get(`/content-types/instances/${instanceId}`);
+    return response.data;
+  },
+
+  // Update a content instance
+  updateInstance: async (instanceId, instanceData) => {
+    const response = await apiClient.put(`/content-types/instances/${instanceId}`, instanceData);
+    return response.data;
+  },
+
+  // Delete a content instance
+  deleteInstance: async (instanceId) => {
+    const response = await apiClient.delete(`/content-types/instances/${instanceId}`);
+    return response.data;
+  },
+
+  // Export content type as JSON
+  exportContentType: async (contentTypeId) => {
+    const response = await apiClient.get(`/content-types/${contentTypeId}/export`);
+    return response.data;
+  },
+
+  // Import content type from JSON
+  importContentType: async (importData) => {
+    const response = await apiClient.post('/content-types/import', importData);
+    return response.data;
+  },
+
+  // Export all instances of a content type
+  exportInstances: async (contentTypeId, includeContentType = true) => {
+    const response = await apiClient.get(
+      `/content-types/${contentTypeId}/instances/export`,
+      { params: { include_content_type: includeContentType } }
+    );
+    return response.data;
+  },
+
+  // Import instances from JSON
+  importInstances: async (contentTypeId, importData) => {
+    const response = await apiClient.post(
+      `/content-types/${contentTypeId}/instances/import`,
+      importData
+    );
+    return response.data;
+  },
+
+  // Generate field value using AI agent (non-streaming)
+  generateField: async (instanceId, fieldName, agentConfigId = null) => {
+    const params = { field_name: fieldName, stream: false };
+    if (agentConfigId) {
+      params.agent_config_id = agentConfigId;
+    }
+
+    const response = await apiClient.post(
+      `/content-types/instances/${instanceId}/generate-field`,
+      null,
+      { params }
+    );
+    return response.data;
+  },
+
+  // Generate field value with streaming (Server-Sent Events)
+  generateFieldStream: async (instanceId, fieldName, agentConfigId = null, callbacks = {}) => {
+    const params = new URLSearchParams({ field_name: fieldName, stream: true });
+    if (agentConfigId) {
+      params.append('agent_config_id', agentConfigId);
+    }
+
+    const token = localStorage.getItem('access_token');
+    const url = `${API_V1}/content-types/instances/${instanceId}/generate-field?${params}`;
+
+    console.log('[STREAM] Starting SSE connection to:', url);
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Accept': 'text/event-stream',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split('\n');
+        buffer = lines.pop() || ''; // Keep incomplete line in buffer
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6));
+              console.log('[STREAM] Received:', data.type || 'unknown', data);
+
+              if (data.error) {
+                // Handle error in data
+                console.error('[STREAM] Error in data:', data.error);
+                if (callbacks.onError) {
+                  callbacks.onError(data.error);
+                }
+              } else if (data.type === 'start' && callbacks.onStart) {
+                callbacks.onStart(data);
+              } else if (data.type === 'info' && callbacks.onInfo) {
+                callbacks.onInfo(data.message);
+              } else if (data.type === 'content' && callbacks.onContent) {
+                callbacks.onContent(data.text);
+              } else if (data.type === 'done' && callbacks.onDone) {
+                callbacks.onDone(data);
+              } else if (data.type === 'error' && callbacks.onError) {
+                callbacks.onError(data.error);
+              }
+            } catch (parseError) {
+              console.error('[STREAM] Failed to parse line:', line, parseError);
+            }
+          }
+        }
+      }
+    } finally {
+      reader.releaseLock();
+    }
+  },
+
+  // Get available agents for a content instance
+  getAvailableAgents: async (instanceId, fieldName = null) => {
+    const params = fieldName ? { field_name: fieldName } : {};
+    const response = await apiClient.get(
+      `/content-types/instances/${instanceId}/available-agents`,
+      { params }
+    );
+    return response.data;
+  },
+};
+
+// Migrations API
+export const migrationsAPI = {
+  // Setup legacy content type
+  setupLegacyContentType: async () => {
+    const response = await apiClient.post('/migrations/setup-legacy-content-type');
+    return response.data;
+  },
+
+  // Migrate legacy content
+  migrateLegacyContent: async (limit = 10, offset = 0) => {
+    const response = await apiClient.post('/migrations/migrate-legacy-content', null, {
+      params: { limit, offset },
+    });
+    return response.data;
+  },
+
+  // Get migration status
+  getMigrationStatus: async () => {
+    const response = await apiClient.get('/migrations/migration-status');
     return response.data;
   },
 };

@@ -15,11 +15,8 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import Search from './pages/Search';
 import KnowledgeBase from './pages/KnowledgeBase';
-import ContentList from './pages/ContentList';
-import ContentDetail from './pages/ContentDetail';
-import ContentEditor from './pages/ContentEditor';
-import ReviewQueue from './pages/ReviewQueue';
-import ConfigManager from './pages/ConfigManager';
+import AllContent from './pages/AllContent';
+import Queues from './pages/Queues';
 import Profile from './pages/Profile';
 import Agents from './pages/Agents';
 import AgentDetails from './pages/AgentDetails';
@@ -28,9 +25,15 @@ import Workflows from './pages/Workflows';
 import WorkflowDetail from './pages/WorkflowDetail';
 import WorkflowEditor from './pages/WorkflowEditor';
 import Skills from './pages/Skills';
-import Standards from './pages/Standards';
-import StandardDetail from './pages/StandardDetail';
-import StandardImport from './pages/StandardImport';
+import Importers from './pages/Importers';
+import CASEStandardsImporter from './pages/CASEStandardsImporter';
+import ContentTypes from './pages/ContentTypes';
+import ContentTypeBuilder from './pages/ContentTypeBuilder';
+import ContentInstances from './pages/ContentInstances';
+import ContentInstanceEditor from './pages/ContentInstanceEditor';
+import ContentInstanceDetail from './pages/ContentInstanceDetail';
+import ContentTypeTemplates from './pages/ContentTypeTemplates';
+import ContentTypeSetup from './pages/ContentTypeSetup';
 
 // Create QueryClient
 const queryClient = new QueryClient({
@@ -135,38 +138,7 @@ function App() {
             element={
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
-                  <ContentList />
-                </RoleRoute>
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/content/new"
-            element={
-              <ProtectedRoute>
-                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
-                  <ContentEditor />
-                </RoleRoute>
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/content/:id"
-            element={
-              <ProtectedRoute>
-                <ContentDetail />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/content/:id/edit"
-            element={
-              <ProtectedRoute>
-                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
-                  <ContentEditor />
+                  <AllContent />
                 </RoleRoute>
               </ProtectedRoute>
             }
@@ -258,53 +230,127 @@ function App() {
             }
           />
 
-          {/* Standards Routes (All authenticated users) */}
+          {/* Importers Routes (Authors+) */}
           <Route
-            path="/standards"
-            element={
-              <ProtectedRoute>
-                <Standards />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/standards/import"
+            path="/importers"
             element={
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
-                  <StandardImport />
+                  <Importers />
                 </RoleRoute>
               </ProtectedRoute>
             }
           />
           <Route
-            path="/standards/:standardId"
+            path="/importers/case-standards"
             element={
               <ProtectedRoute>
-                <StandardDetail />
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <CASEStandardsImporter />
+                </RoleRoute>
               </ProtectedRoute>
             }
           />
 
-          {/* Review Routes (Editors, Engineers) */}
+          {/* Content Types Routes (Editors+) */}
           <Route
-            path="/reviews"
+            path="/content-types"
             element={
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
-                  <ReviewQueue />
+                  <ContentTypes />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/templates"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentTypeTemplates />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/setup"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['knowledge_engineer']}>
+                  <ContentTypeSetup />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/new"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentTypeBuilder />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/:id/edit"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentTypeBuilder />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/:contentTypeId/instances"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentInstances />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/:contentTypeId/instances/new"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentInstanceEditor />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/:contentTypeId/instances/:instanceId"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentInstanceDetail />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/content-types/:contentTypeId/instances/:instanceId/edit"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['editor', 'knowledge_engineer']}>
+                  <ContentInstanceEditor />
                 </RoleRoute>
               </ProtectedRoute>
             }
           />
 
-          {/* Config Routes (Engineers only) */}
+          {/* Queues Routes (Authors, Editors, Engineers) */}
           <Route
-            path="/configs"
+            path="/queues"
             element={
               <ProtectedRoute>
-                <RoleRoute allowedRoles={['knowledge_engineer']}>
-                  <ConfigManager />
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <Queues />
                 </RoleRoute>
               </ProtectedRoute>
             }

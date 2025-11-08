@@ -1,0 +1,41 @@
+{
+  "agent_id": "lesson-objectives-generator",
+  "agent_name": "Lesson Objectives Generator",
+  "description": "Generates standards-aligned learning objectives for lessons based on subject, grade level, and topic. Uses RAG to retrieve relevant standards and instructional frameworks.",
+  "target_content_types": ["lesson-plan"],
+  "target_fields": ["learning_objectives"],
+  "retrieval_config": {
+    "content_types": [],
+    "knowledge_base_paths": [
+      "/subjects/{subject}/common/",
+      "/districts/{state}/",
+      "/universal/frameworks/"
+    ],
+    "filters": {}
+  },
+  "prompt_template": "You are an expert educational content developer creating standards-aligned learning objectives.\n\n{context}\n\n## Task\n\nCreate 3-5 measurable learning objectives for a {grade_level} {subject} lesson on the topic: {topic}\n\n## Requirements\n\n1. Use measurable action verbs from Bloom's Taxonomy\n2. Align to relevant standards shown in the context above\n3. Be specific and achievable within a single lesson\n4. Progress from lower to higher cognitive levels when appropriate\n5. Consider diverse learner needs (UDL principles)\n\n## Format\n\nProvide the learning objectives as a JSON array of strings:\n\n```json\n[\n  \"Students will [action verb] [content] [condition/criteria]...\",\n  \"Students will...\"\n]\n```\n\nReturn ONLY the JSON array, no additional text.",
+  "required_user_inputs": ["subject", "grade_level", "topic"],
+  "field_dependencies": [],
+  "validation_rules": {
+    "min_objectives": 3,
+    "max_objectives": 5,
+    "must_include_action_verb": true
+  },
+  "model_config": {
+    "model": "claude-3-5-sonnet-20241022",
+    "temperature": 0.7,
+    "max_tokens": 2048
+  },
+  "examples": [
+    {
+      "input": "5th grade Mathematics lesson on fractions",
+      "output": "[\"Students will compare two fractions with unlike denominators using visual models and benchmark fractions.\", \"Students will explain their reasoning when determining which of two fractions is larger using mathematical vocabulary.\", \"Students will create equivalent fractions to solve comparison problems.\"]"
+    }
+  ],
+  "active": true,
+  "trigger_mode": "manual",
+  "confidence_threshold": 0.8,
+  "version": "1.0.0",
+  "created_by": "system",
+  "tags": ["lesson-planning", "objectives", "standards-alignment"]
+}

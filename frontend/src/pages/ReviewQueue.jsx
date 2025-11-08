@@ -4,69 +4,72 @@
 import { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import {
   CheckCircleIcon,
   XCircleIcon,
   ClockIcon,
 } from '@heroicons/react/24/outline';
-import { reviewAPI, contentAPI } from '../services/api';
+import { contentTypesAPI } from '../services/api';
 import Layout from '../components/Layout';
 
 export default function ReviewQueue() {
   const queryClient = useQueryClient();
-  const [selectedContent, setSelectedContent] = useState(null);
-  const [reviewForm, setReviewForm] = useState({
-    status: 'approved',
-    comments: '',
-    rating: 5,
-  });
+  const [selectedInstance, setSelectedInstance] = useState(null);
+  const [reviewDecision, setReviewDecision] = useState('published');
+  const [reviewComments, setReviewComments] = useState('');
 
+  // Fetch all content instances with "in_review" status
   const { data: pendingContent, isLoading } = useQuery({
     queryKey: ['pending-reviews'],
-    queryFn: reviewAPI.getPending,
+    queryFn: () => contentTypesAPI.listAllInstances({ status: 'in_review' }),
   });
 
+  // Fetch selected content instance details
   const { data: contentDetails } = useQuery({
-    queryKey: ['content', selectedContent],
-    queryFn: () => contentAPI.get(selectedContent),
-    enabled: !!selectedContent,
+    queryKey: ['content-instance', selectedInstance],
+    queryFn: () => contentTypesAPI.getInstance(selectedInstance),
+    enabled: !!selectedInstance,
   });
 
-  const createReviewMutation = useMutation({
-    mutationFn: reviewAPI.create,
-    onSuccess: async (data) => {
-      // If review status is "approved", automatically publish the content
-      if (reviewForm.status === 'approved') {
-        try {
-          await reviewAPI.approve(selectedContent);
-          alert('Review submitted and content published successfully!');
-        } catch (error) {
-          alert('Review submitted, but publishing failed: ' + (error.response?.data?.detail || error.message));
-        }
-      } else {
-        alert('Review submitted successfully!');
-      }
+  // Update content instance status mutation
+  const updateStatusMutation = useMutation({
+    mutationFn: ({ instanceId, status }) =>
+      contentTypesAPI.updateInstance(instanceId, { status }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['pending-reviews']);
+      queryClient.invalidateQueries(['all-content-instances']);
+      queryClient.invalidateQueries(['content-instance', selectedInstance]);
 
-      queryClient.invalidateQueries({ queryKey: ['pending-reviews'] });
-      setSelectedContent(null);
-      setReviewForm({
-        status: 'approved',
-        comments: '',
-        rating: 5,
-      });
+      toast.success(
+        reviewDecision === 'published'
+          ? 'Content approved and published!'
+          : reviewDecision === 'draft'
+          ? 'Content sent back for revision'
+          : 'Content archived'
+      );
+
+      setSelectedInstance(null);
+      setReviewDecision('published');
+      setReviewComments('');
     },
     onError: (error) => {
-      alert('Failed to submit review: ' + (error.response?.data?.detail || error.message));
+      toast.error(
+        `Failed to update content: ${
+          error.response?.data?.detail || error.message
+        }`
+      );
     },
   });
 
   const handleReview = (e) => {
     e.preventDefault();
 
-    createReviewMutation.mutate({
-      content_id: selectedContent,
-      ...reviewForm,
-      rating: parseInt(reviewForm.rating),
+    if (!selectedInstance) return;
+
+    updateStatusMutation.mutate({
+      instanceId: selectedInstance,
+      status: reviewDecision,
     });
   };
 
@@ -97,23 +100,24 @@ export default function ReviewQueue() {
                 ) : pendingContent && pendingContent.length > 0 ? (
                   pendingContent.map((item) => (
                     <button
-                      key={item.content_id}
-                      onClick={() => setSelectedContent(item.content_id)}
+                      key={item.id}
+                      onClick={() => setSelectedInstance(item.id)}
                       className={`w-full text-left p-4 hover:bg-gray-50 transition-colors ${
-                        selectedContent === item.content_id ? 'bg-blue-50' : ''
+                        selectedInstance === item.id ? 'bg-blue-50' : ''
                       }`}
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-gray-900 truncate">
-                            {item.title}
+                            {item.data?.title || item.data?.name || `Content ${item.id.substring(0, 8)}`}
                           </p>
-                          <p className="text-sm text-gray-500 mt-1 capitalize">
-                            {item.content_type} • {item.subject}
+                          <p className="text-sm text-gray-500 mt-1">
+                            {item.content_type.name}
+                            {item.data?.subject && ` • ${item.data.subject}`}
                           </p>
                           <p className="text-xs text-gray-400 mt-1">
-                            Submitted{' '}
-                            {new Date(item.submitted_at).toLocaleDateString()}
+                            Updated{' '}
+                            {new Date(item.updated_at).toLocaleDateString()}
                           </p>
                         </div>
                         <ClockIcon className="h-5 w-5 text-yellow-500 ml-2" />
@@ -132,31 +136,33 @@ export default function ReviewQueue() {
 
           {/* Review Panel */}
           <div className="lg:col-span-2">
-            {selectedContent && contentDetails ? (
+            {selectedInstance && contentDetails ? (
               <div className="bg-white shadow rounded-lg">
                 {/* Content Preview */}
                 <div className="p-6 border-b">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h2 className="text-xl font-bold text-gray-900">
-                        {contentDetails.title}
+                        {contentDetails.data?.title || contentDetails.data?.name || `Content ${contentDetails.id.substring(0, 8)}`}
                       </h2>
                       <div className="mt-2 flex items-center space-x-4 text-sm text-gray-500">
-                        <span className="capitalize">
-                          {contentDetails.content_type}
-                        </span>
-                        <span>•</span>
-                        <span>{contentDetails.subject}</span>
-                        {contentDetails.grade_level && (
+                        <span>{contentDetails.content_type.name}</span>
+                        {contentDetails.data?.subject && (
                           <>
                             <span>•</span>
-                            <span>Grade {contentDetails.grade_level}</span>
+                            <span className="capitalize">{contentDetails.data.subject}</span>
+                          </>
+                        )}
+                        {contentDetails.data?.grade_level && (
+                          <>
+                            <span>•</span>
+                            <span>Grade {contentDetails.data.grade_level}</span>
                           </>
                         )}
                       </div>
                     </div>
                     <Link
-                      to={`/content/${selectedContent}`}
+                      to={`/content-types/${contentDetails.content_type_id}/instances/${selectedInstance}`}
                       className="text-sm text-primary-600 hover:text-primary-700"
                     >
                       View Full Content →
@@ -164,133 +170,104 @@ export default function ReviewQueue() {
                   </div>
 
                   {/* Learning Objectives */}
-                  {contentDetails.learning_objectives &&
-                    contentDetails.learning_objectives.length > 0 && (
-                      <div className="mt-4">
-                        <h3 className="text-sm font-medium text-gray-700 mb-2">
-                          Learning Objectives:
-                        </h3>
-                        <ul className="list-disc list-inside space-y-1 text-sm text-gray-600">
-                          {contentDetails.learning_objectives.map((obj, idx) => (
-                            <li key={idx}>{obj}</li>
-                          ))}
-                        </ul>
+                  {contentDetails.data?.learning_objectives && (
+                    <div className="mt-4">
+                      <h3 className="text-sm font-medium text-gray-700 mb-2">
+                        Learning Objectives:
+                      </h3>
+                      <div className="text-sm text-gray-600 bg-gray-50 p-3 rounded">
+                        <pre className="whitespace-pre-wrap font-sans">
+                          {typeof contentDetails.data.learning_objectives === 'string'
+                            ? contentDetails.data.learning_objectives.substring(0, 300)
+                            : JSON.stringify(contentDetails.data.learning_objectives, null, 2).substring(0, 300)}
+                          ...
+                        </pre>
                       </div>
-                    )}
+                    </div>
+                  )}
 
                   {/* Content Preview */}
-                  <div className="mt-4 p-4 bg-gray-50 rounded-md">
-                    <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans overflow-auto max-h-64">
-                      {contentDetails.file_content?.substring(0, 500)}...
-                    </pre>
-                  </div>
+                  {contentDetails.data?.lesson_content && (
+                    <div className="mt-4 p-4 bg-gray-50 rounded-md">
+                      <h3 className="text-sm font-medium text-gray-700 mb-2">
+                        Content Preview:
+                      </h3>
+                      <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans overflow-auto max-h-64">
+                        {contentDetails.data.lesson_content.substring(0, 500)}...
+                      </pre>
+                    </div>
+                  )}
                 </div>
 
                 {/* Review Form */}
                 <form onSubmit={handleReview} className="p-6">
                   <h3 className="text-lg font-medium text-gray-900 mb-4">
-                    Your Review
+                    Review Decision
                   </h3>
 
                   <div className="space-y-4">
                     {/* Decision */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Decision *
+                        Action *
                       </label>
                       <div className="space-y-2">
-                        <label className="flex items-center">
+                        <label className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                           <input
                             type="radio"
-                            name="status"
-                            value="approved"
-                            checked={reviewForm.status === 'approved'}
-                            onChange={(e) =>
-                              setReviewForm({
-                                ...reviewForm,
-                                status: e.target.value,
-                              })
-                            }
-                            className="mr-2"
+                            name="decision"
+                            value="published"
+                            checked={reviewDecision === 'published'}
+                            onChange={(e) => setReviewDecision(e.target.value)}
+                            className="mr-3"
                           />
-                          <CheckCircleIcon className="h-5 w-5 text-green-500 mr-1" />
-                          <span className="text-sm">Approve</span>
+                          <CheckCircleIcon className="h-5 w-5 text-green-500 mr-2" />
+                          <div>
+                            <span className="text-sm font-medium">Approve & Publish</span>
+                            <p className="text-xs text-gray-500">Make this content live</p>
+                          </div>
                         </label>
-                        <label className="flex items-center">
+                        <label className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                           <input
                             type="radio"
-                            name="status"
-                            value="needs_revision"
-                            checked={reviewForm.status === 'needs_revision'}
-                            onChange={(e) =>
-                              setReviewForm({
-                                ...reviewForm,
-                                status: e.target.value,
-                              })
-                            }
-                            className="mr-2"
+                            name="decision"
+                            value="draft"
+                            checked={reviewDecision === 'draft'}
+                            onChange={(e) => setReviewDecision(e.target.value)}
+                            className="mr-3"
                           />
-                          <ClockIcon className="h-5 w-5 text-yellow-500 mr-1" />
-                          <span className="text-sm">Needs Revision</span>
+                          <ClockIcon className="h-5 w-5 text-yellow-500 mr-2" />
+                          <div>
+                            <span className="text-sm font-medium">Send Back for Revision</span>
+                            <p className="text-xs text-gray-500">Author can make changes</p>
+                          </div>
                         </label>
-                        <label className="flex items-center">
+                        <label className="flex items-center p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                           <input
                             type="radio"
-                            name="status"
-                            value="rejected"
-                            checked={reviewForm.status === 'rejected'}
-                            onChange={(e) =>
-                              setReviewForm({
-                                ...reviewForm,
-                                status: e.target.value,
-                              })
-                            }
-                            className="mr-2"
+                            name="decision"
+                            value="archived"
+                            checked={reviewDecision === 'archived'}
+                            onChange={(e) => setReviewDecision(e.target.value)}
+                            className="mr-3"
                           />
-                          <XCircleIcon className="h-5 w-5 text-red-500 mr-1" />
-                          <span className="text-sm">Reject</span>
+                          <XCircleIcon className="h-5 w-5 text-red-500 mr-2" />
+                          <div>
+                            <span className="text-sm font-medium">Archive</span>
+                            <p className="text-xs text-gray-500">Remove from active content</p>
+                          </div>
                         </label>
-                      </div>
-                    </div>
-
-                    {/* Rating */}
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Quality Rating (1-5)
-                      </label>
-                      <div className="flex items-center space-x-2">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <button
-                            key={star}
-                            type="button"
-                            onClick={() =>
-                              setReviewForm({ ...reviewForm, rating: star })
-                            }
-                            className={`text-2xl ${
-                              star <= reviewForm.rating
-                                ? 'text-yellow-400'
-                                : 'text-gray-300'
-                            }`}
-                          >
-                            ★
-                          </button>
-                        ))}
                       </div>
                     </div>
 
                     {/* Comments */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Comments & Feedback
+                        Comments & Feedback (Optional)
                       </label>
                       <textarea
-                        value={reviewForm.comments}
-                        onChange={(e) =>
-                          setReviewForm({
-                            ...reviewForm,
-                            comments: e.target.value,
-                          })
-                        }
+                        value={reviewComments}
+                        onChange={(e) => setReviewComments(e.target.value)}
                         rows={4}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                         placeholder="Provide feedback to the author..."
@@ -302,31 +279,29 @@ export default function ReviewQueue() {
                   <div className="mt-6 flex justify-end space-x-3">
                     <button
                       type="button"
-                      onClick={() => setSelectedContent(null)}
+                      onClick={() => setSelectedInstance(null)}
                       className="px-4 py-2 text-gray-700 hover:text-gray-900"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      disabled={createReviewMutation.isPending}
+                      disabled={updateStatusMutation.isPending}
                       className={`px-4 py-2 text-white rounded-lg hover:opacity-90 disabled:opacity-50 ${
-                        reviewForm.status === 'approved'
+                        reviewDecision === 'published'
                           ? 'bg-green-600 hover:bg-green-700'
-                          : reviewForm.status === 'needs_revision'
+                          : reviewDecision === 'draft'
                           ? 'bg-yellow-600 hover:bg-yellow-700'
                           : 'bg-red-600 hover:bg-red-700'
                       }`}
                     >
-                      {createReviewMutation.isPending
-                        ? reviewForm.status === 'approved'
-                          ? 'Approving & Publishing...'
-                          : 'Submitting...'
-                        : reviewForm.status === 'approved'
+                      {updateStatusMutation.isPending
+                        ? 'Updating...'
+                        : reviewDecision === 'published'
                         ? 'Approve & Publish'
-                        : reviewForm.status === 'needs_revision'
-                        ? 'Request Revision'
-                        : 'Reject Content'}
+                        : reviewDecision === 'draft'
+                        ? 'Send Back for Revision'
+                        : 'Archive Content'}
                     </button>
                   </div>
                 </form>
