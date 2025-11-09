@@ -32,10 +32,12 @@ export default function ContentTypeSetup() {
   const [importedTypes, setImportedTypes] = useState(new Set());
 
   // Fetch existing content types
-  const { data: existingTypes, isLoading } = useQuery({
+  const { data: existingTypesData, isLoading } = useQuery({
     queryKey: ['content-types'],
     queryFn: () => contentTypesAPI.list(),
   });
+
+  const existingTypes = existingTypesData?.items || existingTypesData || [];
 
   // Import template mutation
   const importMutation = useMutation({

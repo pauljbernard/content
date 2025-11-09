@@ -10,6 +10,7 @@ from database.session import engine, Base
 from api.v1 import (
     auth,
     users,
+    profile,
     knowledge_base,
     curriculum_configs,
     content,
@@ -21,6 +22,10 @@ from api.v1 import (
     skills,
     standards,
     migrations,
+    database_config,
+    llm_config,
+    secrets,
+    indexing,
 )
 
 # Create database tables
@@ -97,6 +102,14 @@ app = FastAPI(
             "name": "Migrations",
             "description": "System migration utilities. Knowledge engineers only. Migrate legacy Content records to the flexible content type system, create system content types for backward compatibility, and track migration progress.",
         },
+        {
+            "name": "Database Configuration",
+            "description": "Database configuration and management. Knowledge engineers only. Configure PostgreSQL databases with pgvector for semantic search, test connections, initialize schemas, migrate data from SQLite, and manage vector embeddings for AI-powered RAG search across all content types.",
+        },
+        {
+            "name": "LLM Configuration",
+            "description": "LLM provider and model management. Knowledge engineers only. Configure API keys for OpenAI, Anthropic, and other LLM providers. Define models for chat, embeddings, and agent tasks. Set default models and pricing information. Enables Claude Code integration and vector embeddings for semantic search.",
+        },
     ],
 )
 
@@ -147,6 +160,7 @@ async def health_check():
 # Include API routers
 app.include_router(auth.router, prefix=settings.API_V1_STR, tags=["Authentication"])
 app.include_router(users.router, prefix=settings.API_V1_STR, tags=["Users"])
+app.include_router(profile.router, prefix=settings.API_V1_STR, tags=["Profile"])
 app.include_router(
     knowledge_base.router, prefix=settings.API_V1_STR, tags=["Knowledge Base"]
 )
@@ -162,6 +176,10 @@ app.include_router(agents.router, prefix=settings.API_V1_STR, tags=["Agents"])
 app.include_router(workflows.router, prefix=f"{settings.API_V1_STR}/workflows", tags=["Workflows"])
 app.include_router(skills.router, prefix=f"{settings.API_V1_STR}/skills", tags=["Skills"])
 app.include_router(migrations.router, prefix=f"{settings.API_V1_STR}/migrations", tags=["Migrations"])
+app.include_router(database_config.router, prefix=settings.API_V1_STR, tags=["Database Configuration"])
+app.include_router(llm_config.router, prefix=settings.API_V1_STR, tags=["LLM Configuration"])
+app.include_router(secrets.router, prefix=settings.API_V1_STR, tags=["Secrets"])
+app.include_router(indexing.router, prefix=settings.API_V1_STR, tags=["Indexing"])
 
 
 # Exception handlers

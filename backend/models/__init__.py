@@ -11,6 +11,8 @@ from models.content_type import (
     ContentInstanceModel,
     ContentRelationshipModel,
 )
+from models.secret import Secret
+from models.knowledge_base import KnowledgeBaseEmbeddingModel
 
 __all__ = [
     "User",
@@ -26,4 +28,6 @@ __all__ = [
     "ContentTypeModel",
     "ContentInstanceModel",
     "ContentRelationshipModel",
+    "Secret",
+    "KnowledgeBaseEmbeddingModel",
 ]

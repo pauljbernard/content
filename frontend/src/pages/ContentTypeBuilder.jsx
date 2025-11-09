@@ -132,6 +132,7 @@ export default function ContentTypeBuilder() {
   const [attrAiEnabled, setAttrAiEnabled] = useState(false);
   const [attrAiAgents, setAttrAiAgents] = useState([]);
   const [attrAiRagContentTypes, setAttrAiRagContentTypes] = useState([]);
+  const [attrAiCustomPrompt, setAttrAiCustomPrompt] = useState('');
   const [attrAiOutputSchema, setAttrAiOutputSchema] = useState('');
 
   // Fetch content type if editing
@@ -148,10 +149,12 @@ export default function ContentTypeBuilder() {
   });
 
   // Fetch available content types for reference fields
-  const { data: availableContentTypes } = useQuery({
+  const { data: availableContentTypesData } = useQuery({
     queryKey: ['content-types-list'],
-    queryFn: contentTypesAPI.list,
+    queryFn: () => contentTypesAPI.list(),
   });
+
+  const availableContentTypes = availableContentTypesData?.items || availableContentTypesData || [];
 
   // Load content type data into form
   useEffect(() => {
@@ -223,6 +226,7 @@ export default function ContentTypeBuilder() {
     setAttrAiEnabled(attr.ai_assist_enabled || false);
     setAttrAiAgents(attr.ai_agents || []);
     setAttrAiRagContentTypes(attr.ai_rag_content_types || []);
+    setAttrAiCustomPrompt(attr.ai_custom_prompt || '');
     setAttrAiOutputSchema(attr.ai_output_schema || '');
     setEditingAttributeIndex(index);
     setShowAttributeForm(true);
@@ -240,6 +244,7 @@ export default function ContentTypeBuilder() {
       ai_assist_enabled: attrAiEnabled,
       ai_agents: attrAiAgents,
       ai_rag_content_types: attrAiRagContentTypes,
+      ai_custom_prompt: attrAiCustomPrompt || null,
       ai_output_schema: attrAiOutputSchema || null,
     };
 
@@ -278,6 +283,7 @@ export default function ContentTypeBuilder() {
     setAttrAiEnabled(false);
     setAttrAiAgents([]);
     setAttrAiRagContentTypes([]);
+    setAttrAiCustomPrompt('');
     setAttrAiOutputSchema('');
   };
 
@@ -691,6 +697,26 @@ export default function ContentTypeBuilder() {
                                 ⚠ No content types selected - AI will search all content types for context
                               </p>
                             )}
+                          </div>
+
+                          {/* Custom Prompt for Field Generation */}
+                          <div className="mt-6 border-t border-gray-200 pt-4">
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Custom Generation Prompt (Optional)
+                            </label>
+                            <p className="text-xs text-gray-500 mb-3">
+                              Provide specific instructions for how the AI should generate content for this field. This prompt will be included with the context when generating this field.
+                            </p>
+                            <textarea
+                              value={attrAiCustomPrompt}
+                              onChange={(e) => setAttrAiCustomPrompt(e.target.value)}
+                              rows={6}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500 text-sm"
+                              placeholder={`Example:\n- Use Bloom's taxonomy verbs (analyze, evaluate, create)\n- Ensure objectives are measurable and observable\n- Include specific success criteria\n- Target grade 5 reading level`}
+                            />
+                            <p className="mt-1 text-xs text-gray-500">
+                              The AI agent will receive this prompt along with retrieved context to customize generation for this specific field
+                            </p>
                           </div>
 
                           {/* JSON Output Schema - only for JSON fields */}

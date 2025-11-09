@@ -4,6 +4,7 @@ Advanced validation utilities for content type attributes.
 import re
 from typing import Any, Dict, List, Optional
 from datetime import datetime
+from core.security import encrypt_secret, decrypt_secret, mask_secret
 
 
 class ValidationRule:
@@ -296,6 +297,18 @@ def validate_attribute(attribute_name: str, attribute_def: Dict, value: Any) -> 
         if error:
             errors.append(error)
 
+    elif attribute_type == "password_secret":
+        # Password/secret fields have same validations as text
+        if config.get("minLength"):
+            error = MinLengthRule(config["minLength"]).validate(value, attribute_def.get("label", attribute_name))
+            if error:
+                errors.append(error)
+
+        if config.get("maxLength"):
+            error = MaxLengthRule(config["maxLength"]).validate(value, attribute_def.get("label", attribute_name))
+            if error:
+                errors.append(error)
+
     # Custom validation rules
     if config.get("customValidation"):
         custom_rules = config.get("customValidation", [])
@@ -329,3 +342,88 @@ def validate_instance_data(content_type_attributes: List[Dict], instance_data: D
         all_errors.extend(errors)
 
     return all_errors
+
+
+def encrypt_password_secret_fields(content_type_attributes: List[Dict], instance_data: Dict) -> Dict:
+    """
+    Encrypt all password_secret fields in instance data before saving to database.
+
+    Args:
+        content_type_attributes: List of attribute definitions from content type
+        instance_data: Instance data dictionary to encrypt
+
+    Returns:
+        New dictionary with password_secret fields encrypted
+    """
+    encrypted_data = instance_data.copy()
+
+    for attr in content_type_attributes:
+        if attr.get("type") == "password_secret":
+            attr_name = attr["name"]
+            value = encrypted_data.get(attr_name)
+
+            if value and isinstance(value, str) and value.strip():
+                # Only encrypt non-empty strings
+                # Check if already encrypted (starts with specific pattern)
+                if not value.startswith("gAAAAA"):  # Fernet tokens start with this
+                    encrypted_data[attr_name] = encrypt_secret(value)
+
+    return encrypted_data
+
+
+def decrypt_password_secret_fields(content_type_attributes: List[Dict], instance_data: Dict) -> Dict:
+    """
+    Decrypt all password_secret fields in instance data after reading from database.
+
+    Args:
+        content_type_attributes: List of attribute definitions from content type
+        instance_data: Instance data dictionary to decrypt
+
+    Returns:
+        New dictionary with password_secret fields decrypted
+    """
+    decrypted_data = instance_data.copy()
+
+    for attr in content_type_attributes:
+        if attr.get("type") == "password_secret":
+            attr_name = attr["name"]
+            value = decrypted_data.get(attr_name)
+
+            if value and isinstance(value, str):
+                try:
+                    decrypted_data[attr_name] = decrypt_secret(value)
+                except Exception:
+                    # If decryption fails, leave as is (might already be decrypted)
+                    pass
+
+    return decrypted_data
+
+
+def mask_password_secret_fields(content_type_attributes: List[Dict], instance_data: Dict) -> Dict:
+    """
+    Mask all password_secret fields in instance data for API responses.
+
+    Args:
+        content_type_attributes: List of attribute definitions from content type
+        instance_data: Instance data dictionary to mask
+
+    Returns:
+        New dictionary with password_secret fields masked
+    """
+    masked_data = instance_data.copy()
+
+    for attr in content_type_attributes:
+        if attr.get("type") == "password_secret":
+            attr_name = attr["name"]
+            value = masked_data.get(attr_name)
+
+            if value and isinstance(value, str):
+                try:
+                    # Decrypt first, then mask
+                    decrypted = decrypt_secret(value)
+                    masked_data[attr_name] = mask_secret(decrypted)
+                except Exception:
+                    # If decryption fails, just mask what we have
+                    masked_data[attr_name] = mask_secret(value)
+
+    return masked_data

@@ -369,6 +369,12 @@ export const standardsAPI = {
     return response.data;
   },
 
+  // Get available CASE Network frameworks
+  getCASENetworkFrameworks: async () => {
+    const response = await apiClient.get('/standards/case-network/frameworks');
+    return response.data;
+  },
+
   // Delete standard
   delete: async (standardId) => {
     const response = await apiClient.delete(`/standards/${standardId}`);
@@ -393,12 +399,22 @@ export const contentTypesAPI = {
   // List all content instances across all types
   listAllInstances: async (params = {}) => {
     const response = await apiClient.get('/content-types/instances/all', { params });
+    // Return full paginated response {items, total, limit, offset, has_more}
+    // For backwards compatibility, if it's an array, wrap it
+    if (Array.isArray(response.data)) {
+      return { items: response.data, total: response.data.length, limit: response.data.length, offset: 0, has_more: false };
+    }
     return response.data;
   },
 
   // List all content types
   list: async (params = {}) => {
     const response = await apiClient.get('/content-types/', { params });
+    // Return full paginated response {items, total, limit, offset, has_more}
+    // For backwards compatibility, if it's an array, wrap it
+    if (Array.isArray(response.data)) {
+      return { items: response.data, total: response.data.length, limit: response.data.length, offset: 0, has_more: false };
+    }
     return response.data;
   },
 
@@ -429,6 +445,13 @@ export const contentTypesAPI = {
   // List instances of a specific content type
   listInstances: async (contentTypeId, params = {}) => {
     const response = await apiClient.get(`/content-types/${contentTypeId}/instances`, { params });
+    // Handle paginated response format {items, total, ...} or legacy array format
+    return response.data.items || response.data;
+  },
+
+  // List instances in tree/hierarchical structure (for hierarchical content types)
+  listInstancesTree: async (contentTypeId, params = {}) => {
+    const response = await apiClient.get(`/content-types/${contentTypeId}/instances/tree`, { params });
     return response.data;
   },
 
@@ -602,6 +625,169 @@ export const migrationsAPI = {
   // Get migration status
   getMigrationStatus: async () => {
     const response = await apiClient.get('/migrations/migration-status');
+    return response.data;
+  },
+};
+
+// Database Configuration API
+export const databaseAPI = {
+  // List all database configurations
+  listConfigs: async () => {
+    const response = await apiClient.get('/database-configs');
+    return response.data;
+  },
+
+  // Get database configuration by ID
+  getConfig: async (configId) => {
+    const response = await apiClient.get(`/database-configs/${configId}`);
+    return response.data;
+  },
+
+  // Create database configuration
+  createConfig: async (configData) => {
+    const response = await apiClient.post('/database-configs', configData);
+    return response.data;
+  },
+
+  // Update database configuration
+  updateConfig: async (configId, configData) => {
+    const response = await apiClient.put(`/database-configs/${configId}`, configData);
+    return response.data;
+  },
+
+  // Delete database configuration
+  deleteConfig: async (configId) => {
+    const response = await apiClient.delete(`/database-configs/${configId}`);
+    return response.data;
+  },
+
+  // Test database connection
+  testConnection: async (configId) => {
+    const response = await apiClient.post(`/database-configs/${configId}/test`);
+    return response.data;
+  },
+
+  // Initialize database schema
+  initializeSchema: async (configId, enablePgvector = true) => {
+    const response = await apiClient.post(
+      `/database-configs/${configId}/initialize`,
+      null,
+      { params: { enable_pgvector: enablePgvector } }
+    );
+    return response.data;
+  },
+
+  // Activate database configuration
+  activateConfig: async (configId) => {
+    const response = await apiClient.post(`/database-configs/${configId}/activate`);
+    return response.data;
+  },
+
+  // Get database statistics
+  getStatistics: async (configId) => {
+    const response = await apiClient.get(`/database-configs/${configId}/statistics`);
+    return response.data;
+  },
+
+  // List migration jobs
+  listMigrations: async () => {
+    const response = await apiClient.get('/migrations');
+    return response.data;
+  },
+
+  // Get migration job by ID
+  getMigration: async (jobId) => {
+    const response = await apiClient.get(`/migrations/${jobId}`);
+    return response.data;
+  },
+
+  // Start migration
+  startMigration: async (migrationData) => {
+    const response = await apiClient.post('/migrations', migrationData);
+    return response.data;
+  },
+
+  // Generate vector embeddings
+  generateEmbeddings: async () => {
+    const response = await apiClient.post('/vector-search/generate-embeddings');
+    return response.data;
+  },
+
+  // Vector semantic search
+  vectorSearch: async (query, contentTypeIds = null, limit = 5) => {
+    const response = await apiClient.post('/vector-search/search', null, {
+      params: {
+        query,
+        content_type_ids: contentTypeIds,
+        limit,
+      },
+    });
+    return response.data;
+  },
+};
+
+// LLM Configuration API
+export const llmAPI = {
+  // Provider management
+  listProviders: async () => {
+    const response = await apiClient.get('/llm-providers');
+    return response.data;
+  },
+
+  getProvider: async (providerId) => {
+    const response = await apiClient.get(`/llm-providers/${providerId}`);
+    return response.data;
+  },
+
+  createProvider: async (providerData) => {
+    const response = await apiClient.post('/llm-providers', providerData);
+    return response.data;
+  },
+
+  updateProvider: async (providerId, providerData) => {
+    const response = await apiClient.put(`/llm-providers/${providerId}`, providerData);
+    return response.data;
+  },
+
+  deleteProvider: async (providerId) => {
+    const response = await apiClient.delete(`/llm-providers/${providerId}`);
+    return response.data;
+  },
+
+  testProvider: async (providerId) => {
+    const response = await apiClient.post(`/llm-providers/${providerId}/test`);
+    return response.data;
+  },
+
+  // Model management
+  listModels: async (params = {}) => {
+    const response = await apiClient.get('/llm-models', { params });
+    return response.data;
+  },
+
+  getModel: async (modelId) => {
+    const response = await apiClient.get(`/llm-models/${modelId}`);
+    return response.data;
+  },
+
+  createModel: async (modelData) => {
+    const response = await apiClient.post('/llm-models', modelData);
+    return response.data;
+  },
+
+  updateModel: async (modelId, modelData) => {
+    const response = await apiClient.put(`/llm-models/${modelId}`, modelData);
+    return response.data;
+  },
+
+  deleteModel: async (modelId) => {
+    const response = await apiClient.delete(`/llm-models/${modelId}`);
+    return response.data;
+  },
+
+  // Defaults
+  getDefaults: async () => {
+    const response = await apiClient.get('/llm-defaults');
     return response.data;
   },
 };

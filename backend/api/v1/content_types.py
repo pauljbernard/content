@@ -20,6 +20,8 @@ from database.session import get_db
 from core.security import get_current_active_user, get_editor
 from models.user import User
 from utils.validation import validate_instance_data
+from services.content_instance_service import content_instance_service
+from services.vector_search import get_vector_search_service
 from models.content_type import (
     ContentTypeModel,
     ContentInstanceModel,
@@ -107,10 +109,10 @@ async def get_content_stats(
 # CONTENT TYPE ENDPOINTS
 # ============================================================================
 
-@router.get("/instances/all", response_model=List[ContentInstanceWithType])
+@router.get("/instances/all")
 async def list_all_content_instances(
-    skip: int = 0,
-    limit: int = 20,
+    skip: int = Query(0, ge=0, description="Number of items to skip"),
+    limit: int = Query(50, ge=1, le=500, description="Maximum items to return (1-500)"),
     status: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
     content_type_id: Optional[str] = Query(None),
@@ -118,14 +120,19 @@ async def list_all_content_instances(
     db: Session = Depends(get_db),
 ):
     """
-    List all content instances across all content types.
+    List all content instances across all content types with pagination.
 
-    Parameters:
-    - **skip**: Offset for pagination
-    - **limit**: Maximum number of items to return
+    **Pagination (REQUIRED)**:
+    - **skip**: Offset for pagination (default: 0, min: 0)
+    - **limit**: Maximum items to return (default: 50, min: 1, max: 500)
+
+    **Filters**:
     - **status**: Filter by status (draft, in_review, published, archived)
     - **search**: Search in instance data (basic JSON text search)
     - **content_type_id**: Filter by content type ID
+
+    **Returns**:
+    Paginated response with items, total count, and pagination metadata.
     """
     query = db.query(ContentInstanceModel).options(
         joinedload(ContentInstanceModel.content_type)
@@ -159,7 +166,7 @@ async def list_all_content_instances(
     instances = query.order_by(ContentInstanceModel.updated_at.desc()).offset(skip).limit(limit).all()
 
     # Transform to response model with content type info
-    result = []
+    items = []
     for instance in instances:
         instance_dict = {
             "id": instance.id,
@@ -184,39 +191,52 @@ async def list_all_content_instances(
                 "instance_count": 0
             }
         }
-        result.append(instance_dict)
+        items.append(instance_dict)
 
-    return result
+    # Return paginated response with metadata
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": skip,
+        "has_more": (skip + len(items)) < total
+    }
 
 
-@router.get("/", response_model=List[ContentTypeInDB])
+@router.get("/")
 async def list_content_types(
-    skip: int = 0,
-    limit: int = 100,
+    skip: int = Query(0, ge=0, description="Number of items to skip"),
+    limit: int = Query(100, ge=1, le=500, description="Maximum items to return (1-500)"),
     include_system: bool = True,
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
     """
-    List all content type definitions.
+    List all content type definitions with pagination.
 
-    Parameters:
-    - **skip**: Offset for pagination
-    - **limit**: Maximum number of items to return
-    - **include_system**: Whether to include system content types
+    **Pagination (REQUIRED)**:
+    - **skip**: Offset for pagination (default: 0, min: 0)
+    - **limit**: Maximum items to return (default: 100, min: 1, max: 500)
 
-    Returns list of content types with instance counts.
+    **Filters**:
+    - **include_system**: Whether to include system content types (default: true)
+
+    **Returns**:
+    Paginated response with items, total count, and pagination metadata.
     """
     query = db.query(ContentTypeModel)
 
     if not include_system:
         query = query.filter(ContentTypeModel.is_system == False)
 
-    # Get content types
+    # Get total count
+    total = query.count()
+
+    # Get content types with pagination
     content_types = query.offset(skip).limit(limit).all()
 
     # Add instance counts
-    result = []
+    items = []
     for ct in content_types:
         ct_dict = {
             "id": ct.id,
@@ -225,6 +245,8 @@ async def list_content_types(
             "icon": ct.icon,
             "is_system": ct.is_system,
             "attributes": ct.attributes,
+            "is_hierarchical": ct.is_hierarchical,
+            "hierarchy_config": ct.hierarchy_config,
             "created_by": ct.created_by,
             "created_at": ct.created_at,
             "updated_at": ct.updated_at,
@@ -232,9 +254,16 @@ async def list_content_types(
                 ContentInstanceModel.content_type_id == ct.id
             ).count()
         }
-        result.append(ContentTypeInDB(**ct_dict))
+        items.append(ContentTypeInDB(**ct_dict))
 
-    return result
+    # Return paginated response with metadata
+    return {
+        "items": items,
+        "total": total,
+        "limit": limit,
+        "offset": skip,
+        "has_more": (skip + len(items)) < total
+    }
 
 
 @router.post("/", response_model=ContentTypeInDB, status_code=status.HTTP_201_CREATED)
@@ -282,6 +311,16 @@ async def create_content_type(
     db.add(db_content_type)
     db.commit()
     db.refresh(db_content_type)
+
+    # Create filtered vector index for this content type
+    # This enables efficient semantic search on instances of this type
+    try:
+        vector_service = get_vector_search_service(db)
+        await vector_service.create_content_type_vector_index(db, db_content_type.id)
+        logger.info(f"✓ Created vector index for content type: {db_content_type.name}")
+    except Exception as e:
+        # Non-fatal - log warning but don't fail content type creation
+        logger.warning(f"Could not create vector index for content type {db_content_type.id}: {e}")
 
     return ContentTypeInDB(
         id=db_content_type.id,
@@ -469,24 +508,29 @@ async def delete_content_type(
 # CONTENT INSTANCE ENDPOINTS
 # ============================================================================
 
-@router.get("/{content_type_id}/instances", response_model=List[ContentInstanceInDB])
+@router.get("/{content_type_id}/instances")
 async def list_content_instances(
     content_type_id: str,
-    skip: int = 0,
-    limit: int = 20,
+    skip: int = Query(0, ge=0, description="Number of items to skip"),
+    limit: int = Query(50, ge=1, le=500, description="Maximum items to return (1-500)"),
     status: Optional[str] = Query(None),
     search: Optional[str] = Query(None),
     current_user: User = Depends(get_current_active_user),
     db: Session = Depends(get_db),
 ):
     """
-    List content instances of a specific type.
+    List content instances of a specific type with pagination.
 
-    Parameters:
-    - **skip**: Offset for pagination
-    - **limit**: Maximum number of items to return
+    **Pagination (REQUIRED)**:
+    - **skip**: Offset for pagination (default: 0, min: 0)
+    - **limit**: Maximum items to return (default: 50, min: 1, max: 500)
+
+    **Filters**:
     - **status**: Filter by status (draft, in_review, published, archived)
     - **search**: Search in instance data (basic JSON text search)
+
+    **Returns**:
+    Paginated response with items, total count, and pagination metadata.
     """
     # Verify content type exists
     content_type = db.query(ContentTypeModel).filter(
@@ -514,6 +558,18 @@ async def list_content_instances(
             func.json_extract(ContentInstanceModel.data, '$').contains(search)
         )
 
+    # Apply tenant isolation (except for superusers and system content types)
+    is_system_type = content_instance_service.is_system_content_type(db, content_type_id)
+    is_superuser = hasattr(current_user, 'is_superuser') and current_user.is_superuser
+
+    if not is_superuser and not is_system_type:
+        # Get user's tenant_id
+        user_tenant_id = getattr(current_user, 'tenant_id', None)
+        if user_tenant_id:
+            # Filter by tenant_id in the instance data JSON
+            # Note: This is a Python-level filter since JSON querying is database-specific
+            logger.info(f"Applying tenant filter: {user_tenant_id} for content type {content_type.name}")
+
     # Apply role-based filtering
     if current_user.role == "author":
         query = query.filter(
@@ -523,10 +579,36 @@ async def list_content_instances(
     elif current_user.role == "teacher":
         query = query.filter(ContentInstanceModel.status == "published")
 
-    # Execute query with pagination
-    instances = query.order_by(ContentInstanceModel.created_at.desc()).offset(skip).limit(limit).all()
+    # Get total count (before tenant filtering)
+    total_db_count = query.count()
 
-    return [ContentInstanceInDB.model_validate(inst) for inst in instances]
+    # Execute query with pagination
+    # Note: For tenant filtering, we fetch more than limit and filter at Python level
+    fetch_limit = limit * 2 if (not is_superuser and not is_system_type) else limit
+    instances = query.order_by(ContentInstanceModel.created_at.desc()).offset(skip).limit(fetch_limit).all()
+
+    # Apply tenant filtering at Python level (for non-system types)
+    if not is_superuser and not is_system_type:
+        user_tenant_id = getattr(current_user, 'tenant_id', None)
+        if user_tenant_id:
+            instances = [
+                inst for inst in instances
+                if inst.data.get("tenant_id") == user_tenant_id
+            ][:limit]  # Re-apply limit after filtering
+    else:
+        instances = instances[:limit]
+
+    # Convert to response models
+    items = [ContentInstanceInDB.model_validate(inst) for inst in instances]
+
+    # Return paginated response with metadata
+    return {
+        "items": items,
+        "total": total_db_count,  # Note: This is total in DB, not after tenant filtering
+        "limit": limit,
+        "offset": skip,
+        "has_more": (skip + len(items)) < total_db_count
+    }
 
 
 @router.post("/{content_type_id}/instances", response_model=ContentInstanceInDB, status_code=status.HTTP_201_CREATED)
@@ -573,10 +655,20 @@ async def create_content_instance(
             detail={"validation_errors": errors}
         )
 
+    # Automatically add tenant_id to non-system content types
+    instance_data = instance.data.copy()
+    is_system_type = content_instance_service.is_system_content_type(db, content_type_id)
+
+    if not is_system_type:
+        user_tenant_id = getattr(current_user, 'tenant_id', None)
+        if user_tenant_id:
+            instance_data["tenant_id"] = user_tenant_id
+            logger.info(f"Auto-injecting tenant_id {user_tenant_id} for new {content_type.name} instance")
+
     # Create instance
     db_instance = ContentInstanceModel(
         content_type_id=content_type_id,
-        data=instance.data,
+        data=instance_data,
         status=instance.status or "draft",
         created_by=current_user.id,
         updated_by=current_user.id
@@ -586,7 +678,148 @@ async def create_content_instance(
     db.commit()
     db.refresh(db_instance)
 
+    # Generate and store vector embedding for semantic search
+    # This happens asynchronously and non-blocking
+    try:
+        vector_service = get_vector_search_service(db)
+        await vector_service.update_instance_embedding(
+            db=db,
+            instance_id=db_instance.id,
+            content_data=instance_data
+        )
+        logger.info(f"✓ Generated embedding for new instance {db_instance.id}")
+    except Exception as e:
+        # Non-fatal - log warning but don't fail instance creation
+        logger.warning(f"Could not generate embedding for instance {db_instance.id}: {e}")
+
     return ContentInstanceInDB.model_validate(db_instance)
+
+
+@router.get("/{content_type_id}/instances/tree")
+async def list_content_instances_tree(
+    content_type_id: str,
+    parent_id: Optional[str] = Query(None, description="Parent identifier to get children of (null for root nodes)"),
+    skip: int = Query(0, ge=0, description="Number of items to skip at this level"),
+    limit: int = Query(100, ge=1, le=500, description="Maximum items to return at this level"),
+    current_user: User = Depends(get_current_active_user),
+    db: Session = Depends(get_db),
+):
+    """
+    List content instances in tree/hierarchical structure.
+
+    For hierarchical content types (like CASE Standards), this endpoint:
+    - Returns root nodes when parent_id is null
+    - Returns children when parent_id is specified
+    - Includes children_count for each node
+    - Supports lazy-loading children on-demand
+
+    **Query Parameters**:
+    - **parent_id**: Filter by parent identifier (null/empty for root nodes)
+    - **skip**: Offset for pagination
+    - **limit**: Maximum items to return
+
+    **Returns**:
+    Paginated response with hierarchical metadata for each item.
+    """
+    from sqlalchemy import cast, String, or_, and_, func
+
+    # Verify content type exists and is hierarchical
+    content_type = db.query(ContentTypeModel).filter(
+        ContentTypeModel.id == content_type_id
+    ).first()
+
+    if not content_type:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Content type not found"
+        )
+
+    if not content_type.is_hierarchical:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Content type '{content_type.name}' is not hierarchical. Use the regular list endpoint instead."
+        )
+
+    # Get hierarchy configuration
+    hierarchy_config = content_type.hierarchy_config or {}
+    parent_field = hierarchy_config.get("parent_field", "parent")
+    children_field = hierarchy_config.get("children_field", "children")
+    identifier_field = hierarchy_config.get("identifier_field", "id")
+    display_field = hierarchy_config.get("display_field", "name")
+
+    # Build query for instances at this level
+    query = db.query(ContentInstanceModel).filter(
+        ContentInstanceModel.content_type_id == content_type_id,
+        ContentInstanceModel.status == "published"  # Only show published items in tree
+    )
+
+    # Filter by parent
+    if parent_id is None or parent_id == "" or parent_id == "null":
+        # Get root nodes (parent is null, empty, or missing)
+        # Use raw SQL for proper ->> operator support
+        from sqlalchemy import text as sql_text
+        query = query.filter(
+            sql_text(f"(data->>'{parent_field}' IS NULL OR data->>'{parent_field}' = '' OR data->>'{parent_field}' = 'null')")
+        )
+    else:
+        # Get children of specific parent
+        from sqlalchemy import text as sql_text
+        query = query.filter(
+            sql_text(f"data->>'{parent_field}' = :parent_val")
+        ).params(parent_val=parent_id)
+
+    # Get total count at this level
+    total = query.count()
+
+    # Debug logging
+    logger.info(f"Tree query: content_type={content_type_id}, parent_id={parent_id}, total={total}")
+
+    # Apply pagination
+    items = query.order_by(ContentInstanceModel.created_at).offset(skip).limit(limit).all()
+    logger.info(f"Tree query returned {len(items)} items")
+
+    # Build response with hierarchical metadata
+    tree_items = []
+    for item in items:
+        item_data = item.data if isinstance(item.data, dict) else {}
+        item_identifier = item_data.get(identifier_field, "")
+
+        # Count children for this node
+        children_ids = item_data.get(children_field, [])
+        children_count = len(children_ids) if isinstance(children_ids, list) else 0
+
+        # Alternatively, count actual child instances in database
+        if children_count == 0 and item_identifier:
+            from sqlalchemy import text as sql_text
+            children_count = db.query(func.count(ContentInstanceModel.id)).filter(
+                ContentInstanceModel.content_type_id == content_type_id,
+                sql_text(f"data->>'{parent_field}' = :parent_val")
+            ).params(parent_val=item_identifier).scalar()
+
+        tree_items.append({
+            "id": item.id,
+            "identifier": item_identifier,
+            "display_text": item_data.get(display_field, "Untitled"),
+            "data": item_data,
+            "status": item.status,
+            "created_at": item.created_at.isoformat() if item.created_at else None,
+            "children_count": children_count,
+            "has_children": children_count > 0,
+            "is_leaf": children_count == 0
+        })
+
+    return {
+        "items": tree_items,
+        "total": total,
+        "limit": limit,
+        "offset": skip,
+        "has_more": (skip + limit) < total,
+        "parent_id": parent_id,
+        "level_info": {
+            "is_root_level": parent_id is None or parent_id == "" or parent_id == "null",
+            "hierarchy_config": hierarchy_config
+        }
+    }
 
 
 # Generic content instance endpoints (not type-specific)
@@ -607,6 +840,18 @@ async def get_content_instance(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Content instance not found"
         )
+
+    # Check tenant isolation (except for superusers and system content types)
+    is_superuser = hasattr(current_user, 'is_superuser') and current_user.is_superuser
+    is_system_type = content_instance_service.is_system_content_type(db, instance.content_type_id)
+
+    if not is_superuser and not is_system_type:
+        user_tenant_id = getattr(current_user, 'tenant_id', None)
+        if not content_instance_service.instance_belongs_to_tenant(instance, user_tenant_id, db):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Content instance not found"  # Don't reveal it exists in another tenant
+            )
 
     # Check permissions
     if current_user.role == "author" and instance.created_by != current_user.id and instance.status != "published":
@@ -671,6 +916,18 @@ async def update_content_instance(
             detail="Content instance not found"
         )
 
+    # Check tenant isolation (except for superusers and system content types)
+    is_superuser = hasattr(current_user, 'is_superuser') and current_user.is_superuser
+    is_system_type = content_instance_service.is_system_content_type(db, db_instance.content_type_id)
+
+    if not is_superuser and not is_system_type:
+        user_tenant_id = getattr(current_user, 'tenant_id', None)
+        if not content_instance_service.instance_belongs_to_tenant(db_instance, user_tenant_id, db):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Content instance not found"  # Don't reveal it exists in another tenant
+            )
+
     # Check permissions
     if current_user.role == "author" and db_instance.created_by != current_user.id:
         raise HTTPException(
@@ -715,6 +972,21 @@ async def update_content_instance(
     db.commit()
     db.refresh(db_instance)
 
+    # Regenerate vector embedding if data was updated
+    # This keeps the semantic search index up-to-date
+    if "data" in update_data:
+        try:
+            vector_service = get_vector_search_service(db)
+            await vector_service.update_instance_embedding(
+                db=db,
+                instance_id=db_instance.id,
+                content_data=db_instance.data
+            )
+            logger.info(f"✓ Regenerated embedding for updated instance {db_instance.id}")
+        except Exception as e:
+            # Non-fatal - log warning but don't fail instance update
+            logger.warning(f"Could not regenerate embedding for instance {db_instance.id}: {e}")
+
     return ContentInstanceInDB.model_validate(db_instance)
 
 
@@ -739,6 +1011,18 @@ async def delete_content_instance(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Content instance not found"
         )
+
+    # Check tenant isolation (except for superusers and system content types)
+    is_superuser = hasattr(current_user, 'is_superuser') and current_user.is_superuser
+    is_system_type = content_instance_service.is_system_content_type(db, db_instance.content_type_id)
+
+    if not is_superuser and not is_system_type:
+        user_tenant_id = getattr(current_user, 'tenant_id', None)
+        if not content_instance_service.instance_belongs_to_tenant(db_instance, user_tenant_id, db):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Content instance not found"  # Don't reveal it exists in another tenant
+            )
 
     # Check permissions
     if current_user.role == "author" and db_instance.created_by != current_user.id:

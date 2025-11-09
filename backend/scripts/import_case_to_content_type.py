@@ -607,15 +607,13 @@ def import_case_package(token: str, case_url: str):
         parent_cf_id = parent_map.get(cf_identifier)
         child_cf_ids = children_map.get(cf_identifier, [])
 
-        # Convert to instance IDs
-        parent_instance_id = identifier_to_instance_id.get(parent_cf_id) if parent_cf_id else None
-        child_instance_ids = [
-            identifier_to_instance_id[cid]
-            for cid in child_cf_ids
-            if cid in identifier_to_instance_id
-        ]
+        # Keep CASE identifiers for hierarchical relationships (not instance IDs)
+        # The tree view expects parent/children to contain CASE identifiers
+        # IMPORTANT: If parent doesn't exist in imported set, set to None (makes it a root)
+        parent_identifier = parent_cf_id if parent_cf_id in identifier_to_instance_id else None
+        child_identifiers = child_cf_ids  # CASE identifiers, not instance IDs
 
-        if parent_instance_id or child_instance_ids:
+        if parent_identifier is not None or child_identifiers:
             # Fetch current instance to get data
             response = requests.get(
                 f"{API_BASE}/content-types/instances/{instance_id}",
@@ -626,9 +624,9 @@ def import_case_package(token: str, case_url: str):
                 instance = response.json()
                 data = instance["data"]
 
-                # Update relationships
-                data["parent"] = parent_instance_id
-                data["children"] = child_instance_ids
+                # Update relationships using CASE identifiers (for hierarchical tree view)
+                data["parent"] = parent_identifier  # CASE identifier
+                data["children"] = child_identifiers  # List of CASE identifiers
 
                 # Update instance
                 response = requests.put(
@@ -641,6 +639,114 @@ def import_case_package(token: str, case_url: str):
                     updated_count += 1
 
     print(f"✅ Updated {updated_count} instances with hierarchical relationships")
+
+    # 5. Ensure root node exists - create synthetic root if needed
+    print(f"\n🌳 Ensuring root node exists...")
+
+    # Check if any root nodes exist (parent = None or null)
+    root_count = 0
+    for instance_id in identifier_to_instance_id.values():
+        response = requests.get(
+            f"{API_BASE}/content-types/instances/{instance_id}",
+            headers=headers,
+        )
+        if response.status_code == 200:
+            instance = response.json()
+            data = instance.get("data", {})
+            parent = data.get("parent")
+            if parent is None or parent == "" or parent == "null":
+                root_count += 1
+                if root_count == 1:
+                    print(f"   Found existing root: {data.get('full_statement', 'Unknown')[:60]}...")
+
+    if root_count == 0:
+        print(f"   ⚠️  No root node found - creating synthetic root...")
+
+        # Create synthetic root from CFDocument metadata
+        synthetic_root_data = {
+            "identifier": f"ROOT-{cf_document.get('identifier', 'unknown')}",
+            "uri": cf_document.get("uri"),
+            "human_coding_scheme": cf_document.get("identifier", "ROOT"),
+            "full_statement": cf_document.get("title", "Framework Root"),
+            "abbreviated_statement": cf_document.get("title", "Framework Root"),
+            "concept_keywords": [],
+            "notes": cf_document.get("description", "Synthetic root node for framework"),
+            "language": cf_document.get("language", "en"),
+
+            # Root has no parent
+            "parent": None,
+            "children": [],
+            "related_items": [],
+            "prerequisite_items": [],
+
+            # Metadata from CFDocument
+            "cf_item_type": "Domain",  # Root is typically a domain
+            "education_level": [],
+            "license_uri": cf_document.get("licenseURI", {}).get("uri") if isinstance(cf_document.get("licenseURI"), dict) else cf_document.get("licenseURI"),
+            "status_start_date": cf_document.get("statusStartDate"),
+            "status_end_date": cf_document.get("statusEndDate"),
+            "last_change_date_time": cf_document.get("lastChangeDateTime"),
+
+            # Framework context
+            "cf_document_uri": cf_document.get("uri"),
+            "framework_title": cf_document.get("title"),
+            "subject": cf_document.get("subject", [None])[0] if cf_document.get("subject") else None,
+
+            # Full CASE JSON
+            "case_json": cf_document,
+        }
+
+        # Create the synthetic root instance
+        response = requests.post(
+            f"{API_BASE}/content-types/instances",
+            json={
+                "content_type_id": content_type_id,
+                "data": synthetic_root_data,
+                "status": "published",
+            },
+            headers=headers,
+        )
+
+        if response.status_code == 201:
+            synthetic_root = response.json()
+            synthetic_root_id = synthetic_root["id"]
+            synthetic_root_identifier = synthetic_root_data["identifier"]
+            print(f"   ✅ Created synthetic root: {synthetic_root_data['full_statement'][:60]}...")
+
+            # Update all orphaned items to have this synthetic root as parent
+            orphaned_count = 0
+            for cf_identifier, instance_id in identifier_to_instance_id.items():
+                # Check if this item has no parent or orphaned parent
+                parent_cf_id = parent_map.get(cf_identifier)
+
+                if parent_cf_id is None or parent_cf_id not in identifier_to_instance_id:
+                    # This is an orphaned item - attach to synthetic root
+                    response = requests.get(
+                        f"{API_BASE}/content-types/instances/{instance_id}",
+                        headers=headers,
+                    )
+
+                    if response.status_code == 200:
+                        instance = response.json()
+                        data = instance["data"]
+                        data["parent"] = synthetic_root_identifier
+
+                        # Update instance
+                        response = requests.put(
+                            f"{API_BASE}/content-types/instances/{instance_id}",
+                            json={"data": data},
+                            headers=headers,
+                        )
+
+                        if response.status_code == 200:
+                            orphaned_count += 1
+
+            print(f"   ✅ Attached {orphaned_count} orphaned items to synthetic root")
+        else:
+            print(f"   ❌ Failed to create synthetic root: {response.status_code}")
+            print(f"   {response.text}")
+    else:
+        print(f"   ✅ Root node(s) already exist: {root_count}")
 
     # Summary
     print("\n" + "=" * 70)

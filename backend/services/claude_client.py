@@ -5,20 +5,64 @@ import os
 import anthropic
 from typing import Dict, Any, Optional, AsyncIterator
 from core.config import settings
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class ClaudeClient:
     """Wrapper for Anthropic's Claude API with streaming and non-streaming support."""
 
-    def __init__(self):
-        self.api_key = settings.ANTHROPIC_API_KEY or ""
+    def __init__(self, db_session=None):
+        """
+        Initialize Claude client.
+
+        Args:
+            db_session: Optional database session to load configuration from database.
+                       If not provided, uses .env configuration.
+        """
+        # Try to load configuration from database first
+        api_key_from_db = None
+        model_from_db = None
+
+        if db_session:
+            try:
+                from models.llm_config import LLMProvider, LLMModel
+
+                # Get default agent model from database
+                default_model = db_session.query(LLMModel).filter(
+                    LLMModel.is_default_for_agents == True,
+                    LLMModel.is_active == True
+                ).first()
+
+                if default_model:
+                    model_from_db = default_model.model_id
+                    logger.info(f"Using model from database: {model_from_db}")
+
+                    # Get the provider for this model
+                    provider = db_session.query(LLMProvider).filter(
+                        LLMProvider.id == default_model.provider_id,
+                        LLMProvider.is_active == True
+                    ).first()
+
+                    if provider and provider.api_key:
+                        api_key_from_db = provider.api_key
+                        logger.info(f"Using API key from database provider: {provider.name}")
+                else:
+                    logger.warning("No default agent model found in database, falling back to .env config")
+            except Exception as e:
+                logger.warning(f"Failed to load LLM config from database: {e}. Falling back to .env config")
+
+        # Use database config if available, otherwise fall back to .env
+        self.api_key = api_key_from_db or settings.ANTHROPIC_API_KEY or ""
         if not self.api_key:
-            raise ValueError("ANTHROPIC_API_KEY environment variable is not set")
+            raise ValueError("No API key available. Configure LLM provider in database or set ANTHROPIC_API_KEY in .env")
 
         self.client = anthropic.Anthropic(api_key=self.api_key)
-        # Using Claude Sonnet 4 - verified working model
-        self.default_model = "claude-sonnet-4-20250514"
+        self.default_model = model_from_db or "claude-sonnet-4-20250514"
         self.max_tokens = 8000
+
+        logger.info(f"ClaudeClient initialized with model: {self.default_model}")
 
     async def generate_response(
         self,
@@ -151,9 +195,30 @@ class ClaudeClient:
 _claude_client: Optional[ClaudeClient] = None
 
 
-def get_claude_client() -> ClaudeClient:
-    """Get or create the Claude client singleton."""
+def get_claude_client(db_session=None) -> ClaudeClient:
+    """
+    Get or create the Claude client singleton.
+
+    Args:
+        db_session: Optional database session to load configuration.
+                   If provided on first call, will load config from database.
+
+    Returns:
+        ClaudeClient instance
+    """
     global _claude_client
     if _claude_client is None:
-        _claude_client = ClaudeClient()
+        # On first initialization, try to get database session if not provided
+        if db_session is None:
+            try:
+                from database.session import SessionLocal
+                db_session = SessionLocal()
+                _claude_client = ClaudeClient(db_session=db_session)
+                db_session.close()
+            except Exception as e:
+                logger.warning(f"Could not access database for LLM config: {e}. Using .env config.")
+                _claude_client = ClaudeClient(db_session=None)
+        else:
+            _claude_client = ClaudeClient(db_session=db_session)
+
     return _claude_client

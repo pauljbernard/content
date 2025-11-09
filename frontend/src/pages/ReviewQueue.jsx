@@ -20,10 +20,12 @@ export default function ReviewQueue() {
   const [reviewComments, setReviewComments] = useState('');
 
   // Fetch all content instances with "in_review" status
-  const { data: pendingContent, isLoading } = useQuery({
+  const { data: pendingData, isLoading } = useQuery({
     queryKey: ['pending-reviews'],
     queryFn: () => contentTypesAPI.listAllInstances({ status: 'in_review' }),
   });
+
+  const pendingContent = pendingData?.items || pendingData || [];
 
   // Fetch selected content instance details
   const { data: contentDetails } = useQuery({

@@ -8,25 +8,251 @@ import json
 import re
 import asyncio
 from typing import Dict, List, Any, Optional
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 import aiohttp
 from bs4 import BeautifulSoup
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class CASEParser:
     """Parser for CASE (Competency and Academic Standards Exchange) format."""
 
-    async def parse(self, source_location: str) -> Dict[str, Any]:
+    # OAuth2 token cache
+    _token_cache = {
+        "access_token": None,
+        "expires_at": None
+    }
+
+    async def _get_oauth2_token(
+        self,
+        client_id: str,
+        client_secret: str,
+        token_url: str = "https://casenetwork.1edtech.org/case-oauth2/clienttoken"
+    ) -> str:
+        """
+        Get OAuth2 access token using client credentials grant.
+
+        Args:
+            client_id: OAuth2 client ID
+            client_secret: OAuth2 client secret
+            token_url: OAuth2 token endpoint
+
+        Returns:
+            Access token string
+
+        Raises:
+            ValueError: If authentication fails
+        """
+        # Check if we have a cached valid token
+        if (self._token_cache["access_token"] and
+            self._token_cache["expires_at"] and
+            datetime.utcnow() < self._token_cache["expires_at"]):
+            logger.info("Using cached OAuth2 token")
+            return self._token_cache["access_token"]
+
+        logger.info("Requesting new OAuth2 token from CASE Network")
+
+        # Request new token
+        async with aiohttp.ClientSession() as session:
+            # OAuth2 client credentials grant
+            auth = aiohttp.BasicAuth(client_id, client_secret)
+            data = {
+                "grant_type": "client_credentials"
+            }
+            headers = {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+
+            async with session.post(token_url, auth=auth, data=data, headers=headers) as response:
+                # Accept both 200 OK and 201 Created as success
+                if response.status not in (200, 201):
+                    error_text = await response.text()
+                    logger.error(f"OAuth2 token request failed: {response.status} - {error_text}")
+                    raise ValueError(
+                        f"Failed to get OAuth2 token: HTTP {response.status}. "
+                        f"Check your CASE Network credentials in Secrets."
+                    )
+
+                # Try to parse JSON, handle different content types
+                content_type = response.headers.get('Content-Type', '')
+                if 'application/json' in content_type:
+                    token_data = await response.json()
+                else:
+                    # Response might be JSON but with wrong content-type
+                    text = await response.text()
+                    try:
+                        import json
+                        token_data = json.loads(text)
+                    except json.JSONDecodeError:
+                        logger.error(f"OAuth2 response not JSON. Content-Type: {content_type}, Body: {text[:200]}")
+                        raise ValueError(
+                            f"OAuth2 endpoint returned non-JSON response (Content-Type: {content_type}). "
+                            f"Check your CASE Network credentials."
+                        )
+
+        # Extract access token
+        access_token = token_data.get("access_token")
+        if not access_token:
+            raise ValueError("OAuth2 response missing access_token")
+
+        # Cache token (default to 1 hour if no expires_in)
+        expires_in = token_data.get("expires_in", 3600)
+        self._token_cache["access_token"] = access_token
+        self._token_cache["expires_at"] = datetime.utcnow() + timedelta(seconds=expires_in - 60)  # Refresh 1 min early
+
+        logger.info("Successfully obtained OAuth2 token")
+        return access_token
+
+    async def get_available_frameworks(
+        self,
+        base_url: str = "https://casenetwork.1edtech.org",
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None,
+        limit: int = 100,
+        offset: int = 0
+    ) -> List[Dict[str, Any]]:
+        """
+        Get list of available CASE frameworks from CASE Network.
+
+        Args:
+            base_url: Base URL for CASE Network API
+            client_id: OAuth2 client ID
+            client_secret: OAuth2 client secret
+
+        Returns:
+            List of CFDocuments with metadata:
+            [
+                {
+                    "identifier": "uuid",
+                    "uri": "full URI to CFPackage",
+                    "title": "Framework title",
+                    "description": "Framework description",
+                    "subject": "Subject area",
+                    "creator": "Organization"
+                },
+                ...
+            ]
+
+        Raises:
+            ValueError: If authentication fails or API request fails
+        """
+        # Get OAuth2 token
+        access_token = await self._get_oauth2_token(client_id, client_secret)
+
+        # Prepare headers
+        headers = {"Authorization": f"Bearer {access_token}"}
+
+        # Fetch CFDocuments list using CASE v1.0 REST binding path
+        documents_url = f"{base_url}/ims/case/v1p0/CFDocuments"
+        params = {
+            "limit": limit,
+            "offset": offset
+        }
+        logger.info(f"Fetching available CASE frameworks from {documents_url} (limit={limit}, offset={offset})")
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(documents_url, headers=headers, params=params) as response:
+                if response.status != 200:
+                    error_text = await response.text()
+                    logger.error(f"Failed to fetch CFDocuments: {response.status} - {error_text}")
+                    raise ValueError(f"Failed to fetch available frameworks: HTTP {response.status}")
+
+                # Try to parse JSON, handle different content types
+                content_type = response.headers.get('Content-Type', '')
+                if 'application/json' in content_type:
+                    data = await response.json()
+                else:
+                    # Response might be JSON but with wrong content-type
+                    text = await response.text()
+                    try:
+                        import json as json_module
+                        data = json_module.loads(text)
+                    except json_module.JSONDecodeError:
+                        logger.error(f"CFDocuments response not JSON. Content-Type: {content_type}, Body: {text[:200]}")
+                        raise ValueError(
+                            f"CFDocuments endpoint returned non-JSON response (Content-Type: {content_type}). "
+                            f"The endpoint might not be available or requires different authentication."
+                        )
+
+        # Extract CFDocuments array
+        cf_documents = data.get("CFDocuments", [])
+
+        frameworks = []
+        for doc in cf_documents:
+            # Extract package URI (CFPackageURI is an object with 'title', 'identifier', and 'uri')
+            package_uri = doc.get("CFPackageURI", {})
+            uri = package_uri.get("uri") if isinstance(package_uri, dict) else None
+
+            # If no URI provided, construct it using CASE v1.0 REST binding format
+            doc_identifier = doc.get("identifier", "")
+            if not uri and doc_identifier:
+                uri = f"{base_url}/ims/case/v1p0/CFPackages/{doc_identifier}"
+
+            # Extract subjects (may be array of URIs)
+            subjects = doc.get("subjectURI", [])
+            subject = subjects[0] if subjects else "General"
+
+            frameworks.append({
+                "identifier": doc_identifier,
+                "uri": uri,
+                "title": doc.get("title", "Untitled Framework"),
+                "description": doc.get("description", ""),
+                "subject": self._infer_subject(subjects) if subjects else "general",
+                "creator": doc.get("creator", ""),
+                "version": doc.get("version", ""),
+                "adoptionStatus": doc.get("adoptionStatus", ""),
+                "statusStartDate": doc.get("statusStartDate", ""),
+                "statusEndDate": doc.get("statusEndDate", ""),
+                "officialSourceURL": doc.get("officialSourceURL", ""),
+                "lastChangeDateTime": doc.get("lastChangeDateTime", "")
+            })
+
+        logger.info(f"Found {len(frameworks)} available frameworks")
+        return frameworks
+
+    async def parse(
+        self,
+        source_location: str,
+        use_oauth: bool = False,
+        client_id: Optional[str] = None,
+        client_secret: Optional[str] = None
+    ) -> Dict[str, Any]:
         """
         Parse CASE format from URL.
 
         CASE is the IMS Global standard format for educational standards.
         Returns hierarchical structure with domains, strands, and standards.
+
+        Args:
+            source_location: URL to CASE API endpoint
+            use_oauth: Whether to use OAuth2 authentication (for CASE Network)
+            client_id: OAuth2 client ID (required if use_oauth=True)
+            client_secret: OAuth2 client secret (required if use_oauth=True)
+
+        Returns:
+            Parsed CASE data with hierarchical structure
         """
+        # Prepare headers
+        headers = {}
+
+        # Get OAuth2 token if needed
+        if use_oauth:
+            if not client_id or not client_secret:
+                raise ValueError("client_id and client_secret required when use_oauth=True")
+
+            access_token = await self._get_oauth2_token(client_id, client_secret)
+            headers["Authorization"] = f"Bearer {access_token}"
+            logger.info(f"Fetching CASE data from {source_location} with OAuth2")
+
+        # Fetch CASE data
         async with aiohttp.ClientSession() as session:
-            async with session.get(source_location) as response:
+            async with session.get(source_location, headers=headers) as response:
                 if response.status != 200:
+                    error_text = await response.text()
+                    logger.error(f"Failed to fetch CASE data: {response.status} - {error_text}")
                     raise ValueError(f"Failed to fetch CASE data: HTTP {response.status}")
 
                 data = await response.json()
@@ -269,7 +495,17 @@ class CASEParser:
         }
 
         for uri in subject_uris:
-            uri_lower = uri.lower()
+            # Handle both string URIs and dict objects
+            if isinstance(uri, dict):
+                # Try to get URI or title from dict
+                uri_str = uri.get("uri", "") or uri.get("title", "")
+            else:
+                uri_str = str(uri)
+
+            if not uri_str:
+                continue
+
+            uri_lower = uri_str.lower()
             for key, value in subject_map.items():
                 if key in uri_lower:
                     return value
@@ -702,17 +938,19 @@ class StandardsImportService:
         source_type: str,
         source_location: str,
         format: str,
-        metadata: Dict[str, Any]
+        metadata: Dict[str, Any],
+        db_session=None
     ) -> Dict[str, Any]:
         """
         Process a standards import job.
 
         Args:
             job_id: StandardImportJob ID
-            source_type: url, file, api, or manual
+            source_type: url, file, api, case_network, or manual
             source_location: Location of the source data
             format: case, pdf, html, xml, json, csv, or manual
             metadata: Additional metadata (name, code, type, subject, etc.)
+            db_session: Database session (required for case_network to retrieve secrets)
 
         Returns:
             Dict with:
@@ -730,8 +968,48 @@ class StandardsImportService:
                     "error_message": f"Unknown format: {format}. Supported: case, html, xml, json, csv, pdf"
                 }
 
+            # Check if this is a CASE Network source (requires OAuth2)
+            use_oauth = source_type == "case_network"
+            client_id = None
+            client_secret = None
+
+            if use_oauth:
+                # Retrieve CASE Network credentials from secrets
+                if not db_session:
+                    return {
+                        "success": False,
+                        "error_message": "Database session required for CASE Network authentication"
+                    }
+
+                from services.secrets_helper import get_secrets_helper
+                secrets_helper = get_secrets_helper(db_session)
+                credentials = secrets_helper.get_case_network_credentials()
+
+                if not credentials:
+                    return {
+                        "success": False,
+                        "error_message": (
+                            "CASE Network credentials not found. "
+                            "Please add 'case_network_key' secret with client ID and secret."
+                        )
+                    }
+
+                client_id = credentials["client_id"]
+                client_secret = credentials["client_secret"]
+                logger.info("Retrieved CASE Network credentials from secrets")
+
             # Parse the source
-            parsed_data = await parser.parse(source_location)
+            if format == "case" and isinstance(parser, CASEParser):
+                # Pass OAuth2 params to CASE parser if needed
+                parsed_data = await parser.parse(
+                    source_location,
+                    use_oauth=use_oauth,
+                    client_id=client_id,
+                    client_secret=client_secret
+                )
+            else:
+                # Other parsers don't support OAuth2
+                parsed_data = await parser.parse(source_location)
 
             # Check for parsing errors
             if "error" in parsed_data:

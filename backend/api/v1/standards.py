@@ -10,10 +10,12 @@ Provides CRUD operations for educational standards including:
 - Search within standards
 """
 import json
-from typing import List, Optional
+import logging
+from typing import List, Optional, Generic, TypeVar
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks, status
 from sqlalchemy.orm import Session
+from pydantic import BaseModel
 from database.session import get_db
 from core.security import get_current_active_user, get_author, get_editor
 from models.user import User
@@ -30,8 +32,21 @@ from models.standard import (
     StandardImportJobCreate,
     StandardImportJobInDB,
 )
+from models.content_type import ContentTypeModel, ContentInstanceModel
 
 router = APIRouter(prefix="/standards")
+logger = logging.getLogger(__name__)
+
+# Generic pagination response model
+T = TypeVar('T')
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    """Generic paginated response wrapper."""
+    items: List[T]
+    total: int
+    limit: int
+    offset: int
+    has_more: bool
 
 
 @router.get("/", response_model=List[StandardPublic])
@@ -524,6 +539,81 @@ async def list_import_jobs(
     return jobs
 
 
+@router.get("/case-network/frameworks")
+async def get_case_network_frameworks(
+    limit: int = Query(100, ge=1, le=500, description="Maximum number of frameworks to return"),
+    offset: int = Query(0, ge=0, description="Number of frameworks to skip"),
+    current_user: User = Depends(get_author),
+    db: Session = Depends(get_db),
+):
+    """
+    Get list of available CASE frameworks from CASE Network with pagination.
+
+    Requires CASE Network credentials to be configured in Secrets.
+
+    Pagination:
+    - **limit**: Maximum number of frameworks to return (1-500, default 100)
+    - **offset**: Number of frameworks to skip (default 0)
+
+    Returns:
+        {
+            "success": true,
+            "frameworks": [...],
+            "total": total_count,
+            "limit": requested_limit,
+            "offset": requested_offset,
+            "has_more": boolean
+        }
+    """
+    from services.standards_importer import get_standards_import_service
+    from services.secrets_helper import get_secrets_helper
+
+    # Get CASE Network credentials
+    secrets_helper = get_secrets_helper(db)
+    credentials = secrets_helper.get_case_network_credentials()
+
+    if not credentials:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=(
+                "CASE Network credentials not found. "
+                "Please add 'case_network_key' secret with client ID and secret."
+            )
+        )
+
+    # Get frameworks list
+    try:
+        import_service = get_standards_import_service()
+        case_parser = import_service.parsers.get("case")
+
+        frameworks = await case_parser.get_available_frameworks(
+            client_id=credentials["client_id"],
+            client_secret=credentials["client_secret"],
+            limit=limit,
+            offset=offset
+        )
+
+        # Note: CASE Network API may not provide total count, so we estimate
+        # has_more based on whether we received the full limit
+        has_more = len(frameworks) >= limit
+
+        return {
+            "success": True,
+            "frameworks": frameworks,
+            "total": len(frameworks) + offset,  # Estimated total (at least this many)
+            "limit": limit,
+            "offset": offset,
+            "has_more": has_more
+        }
+
+    except Exception as e:
+        logger.exception("Error fetching CASE Network frameworks")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to fetch CASE Network frameworks: {str(e)}"
+        )
+
+
 # Background task execution
 async def process_standards_import_job(job_id: int):
     """
@@ -584,7 +674,8 @@ async def process_standards_import_job(job_id: int):
             source_type=job.source_type,
             source_location=job.source_location,
             format=job.format,
-            metadata=metadata
+            metadata=metadata,
+            db_session=db  # Pass database session for secrets retrieval
         )
 
         job.progress_percentage = 70
@@ -593,49 +684,176 @@ async def process_standards_import_job(job_id: int):
 
         # Check if processing was successful
         if result["success"]:
-            # Create Standard record
-            parsed_data = result["parsed_data"]
+            # Get the raw CASE data for creating individual standard instances
+            # The parser returns simplified data, but we need to re-fetch the full CFItems
+            import aiohttp
 
-            # Build standard_dict with only valid Standard model fields
-            standard_dict = {
-                "name": parsed_data["name"],
-                "short_name": parsed_data["short_name"],
-                "code": parsed_data["code"],
-                "type": parsed_data["type"],
-                "subject": parsed_data["subject"],
-                "source_organization": parsed_data["source_organization"],
-                "source_url": parsed_data.get("source_url"),
-                "version": parsed_data.get("version"),
-                "year": parsed_data.get("year"),
-                "state": parsed_data.get("state"),
-                "district": parsed_data.get("district"),
-                "country": parsed_data.get("country"),
-                "description": parsed_data.get("description"),
-                "status": StandardStatus.IMPORTED,
-                "imported_by_id": import_log_data.get("user_id"),
-                "structure": json.dumps(parsed_data["structure"]),
-                "standards_list": json.dumps(parsed_data["standards_list"]),
-                "grade_levels": json.dumps(parsed_data["grade_levels"]) if parsed_data.get("grade_levels") else None,
-                "total_standards_count": len(parsed_data["standards_list"]),
-            }
+            # Get the CASE Standard content type
+            case_standard_type = db.query(ContentTypeModel).filter(
+                ContentTypeModel.name == "CASE Standard"
+            ).first()
 
-            # Create standard
-            db_standard = Standard(**standard_dict)
-            db.add(db_standard)
+            if not case_standard_type:
+                job.status = "failed"
+                job.completed_at = datetime.utcnow()
+                job.error_message = "CASE Standard content type not found in database"
+                job.import_log = json.dumps({
+                    "success": False,
+                    "error": "missing_content_type",
+                    "message": job.error_message
+                })
+                db.commit()
+                return
+
+            # Re-fetch the CASE data to get full CFItems
+            # (The parser simplified it too much - we need all fields for each standard)
+            from services.standards_importer import get_standards_import_service
+            import_svc = get_standards_import_service()
+            case_parser = import_svc.parsers.get("case")
+
+            # Fetch with OAuth if needed
+            use_oauth = job.source_type == "case_network"
+            client_id = None
+            client_secret = None
+
+            if use_oauth:
+                from services.secrets_helper import get_secrets_helper
+                secrets_helper = get_secrets_helper(db)
+                credentials = secrets_helper.get_case_network_credentials()
+                if credentials:
+                    client_id = credentials["client_id"]
+                    client_secret = credentials["client_secret"]
+
+            # Fetch raw CASE data
+            headers = {}
+            if use_oauth and client_id:
+                access_token = await case_parser._get_oauth2_token(client_id, client_secret)
+                headers["Authorization"] = f"Bearer {access_token}"
+
+            async with aiohttp.ClientSession() as session:
+                async with session.get(job.source_location, headers=headers) as response:
+                    if response.status == 200:
+                        case_data = await response.json()
+                    else:
+                        raise ValueError(f"Failed to re-fetch CASE data: HTTP {response.status}")
+
+            cf_document = case_data.get("CFDocument", {})
+            cf_items = case_data.get("CFItems", [])
+            cf_associations = case_data.get("CFAssociations", [])
+
+            # Framework-level metadata to include in each instance
+            framework_title = cf_document.get("title", "")
+            framework_uri = cf_document.get("uri", "")
+
+            # Build parent-child relationships from associations
+            # Map of child_identifier -> parent_identifier
+            parent_map = {}
+            # Map of parent_identifier -> [child_identifiers]
+            children_map = {}
+
+            for assoc in cf_associations:
+                if assoc.get("associationType") == "isChildOf":
+                    # originNodeURI is the child, destinationNodeURI is the parent
+                    child_uri = assoc.get("originNodeURI", {})
+                    parent_uri = assoc.get("destinationNodeURI", {})
+
+                    # Extract identifiers from URIs
+                    child_id = child_uri.get("identifier") if isinstance(child_uri, dict) else None
+                    parent_id = parent_uri.get("identifier") if isinstance(parent_uri, dict) else None
+
+                    if child_id and parent_id:
+                        parent_map[child_id] = parent_id
+
+                        if parent_id not in children_map:
+                            children_map[parent_id] = []
+                        children_map[parent_id].append(child_id)
+
+            # Create one content instance per CFItem
+            created_count = 0
+            skipped_count = 0
+
+            for cf_item in cf_items:
+                # Extract identifier for duplicate check
+                identifier = cf_item.get("identifier", "")
+                if not identifier:
+                    continue
+
+                # Check if this CFItem already exists
+                from sqlalchemy import cast, String, or_
+                existing = db.query(ContentInstanceModel).filter(
+                    ContentInstanceModel.content_type_id == case_standard_type.id,
+                    or_(
+                        cast(ContentInstanceModel.data, String).like(f'%"identifier": "{identifier}"%'),
+                        cast(ContentInstanceModel.data, String).like(f'%"uri": "{cf_item.get("uri", "")}"%')
+                    )
+                ).first()
+
+                if existing:
+                    skipped_count += 1
+                    continue
+
+                # Get parent and children from association maps
+                item_parent = parent_map.get(identifier)  # None if root node
+                item_children = children_map.get(identifier, [])  # Empty list if leaf node
+
+                # Build content instance data from full CFItem
+                # Store the complete CFItem data plus framework context
+                instance_data = {
+                    "identifier": cf_item.get("identifier", ""),
+                    "uri": cf_item.get("uri", ""),
+                    "human_coding_scheme": cf_item.get("humanCodingScheme", ""),
+                    "list_enumeration": cf_item.get("listEnumeration"),
+                    "full_statement": cf_item.get("fullStatement", ""),
+                    "abbreviated_statement": cf_item.get("abbreviatedStatement"),
+                    "concept_keywords": cf_item.get("conceptKeywords", []),
+                    "notes": cf_item.get("notes"),
+                    "language": cf_item.get("language", "en"),
+                    "parent": item_parent,  # Parent identifier from associations
+                    "children": item_children,  # List of child identifiers from associations
+                    "related_items": [],
+                    "prerequisite_items": [],
+                    "cf_item_type": cf_item.get("CFItemType", "Standard"),
+                    "education_level": cf_item.get("educationLevel", []),
+                    "cf_item_type_uri": cf_item.get("CFItemTypeURI", {}).get("uri") if isinstance(cf_item.get("CFItemTypeURI"), dict) else cf_item.get("CFItemTypeURI"),
+                    "license_uri": cf_item.get("licenseURI", {}).get("uri") if isinstance(cf_item.get("licenseURI"), dict) else cf_item.get("licenseURI"),
+                    "status_start_date": cf_item.get("statusStartDate"),
+                    "status_end_date": cf_item.get("statusEndDate"),
+                    "last_change_date_time": cf_item.get("lastChangeDateTime"),
+                    "cf_document_uri": framework_uri,
+                    "framework_title": framework_title,
+                    "subject": cf_item.get("subjectURI", []),
+                    "alternative_label": cf_item.get("alternativeLabel"),
+                    "statement_notation": cf_item.get("statementNotation"),
+                    "statement_label": cf_item.get("statementLabel"),
+                    "alignment_type": None,  # For future use
+                    "case_json": cf_item  # Store raw CASE data
+                }
+
+                # Create content instance
+                db_instance = ContentInstanceModel(
+                    content_type_id=case_standard_type.id,
+                    data=instance_data,
+                    status="published",  # Auto-publish imported standards
+                    created_by=import_log_data.get("user_id")
+                )
+                db.add(db_instance)
+                created_count += 1
+
+            # Commit all instances at once
             db.commit()
-            db.refresh(db_standard)
 
             # Update job as completed
             job.status = "completed"
             job.completed_at = datetime.utcnow()
             job.progress_percentage = 100
-            job.progress_message = "Import complete"
-            job.standard_id = db_standard.id
-            job.standards_extracted = result["standards_extracted"]
+            job.progress_message = f"Import complete: {created_count} created, {skipped_count} skipped"
+            job.standard_id = None  # No longer using standards table
+            job.standards_extracted = created_count
             job.import_log = json.dumps({
                 "success": True,
-                "standard_id": db_standard.id,
-                "standards_count": result["standards_extracted"]
+                "created_count": created_count,
+                "skipped_count": skipped_count,
+                "total_cf_items": len(cf_items)
             })
         else:
             # Import failed
@@ -650,7 +868,13 @@ async def process_standards_import_job(job_id: int):
         db.commit()
 
     except Exception as e:
-        if job:
+        # Rollback any pending transaction before updating job status
+        db.rollback()
+
+        try:
+            # Refresh job object to get latest state
+            db.refresh(job)
+
             job.status = "failed"
             job.completed_at = datetime.utcnow()
             job.error_message = str(e)
@@ -660,5 +884,8 @@ async def process_standards_import_job(job_id: int):
                 "traceback": str(e)
             })
             db.commit()
+        except Exception as update_error:
+            logger.error(f"Failed to update job status after error: {update_error}")
+            db.rollback()
     finally:
         db.close()

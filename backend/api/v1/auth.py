@@ -12,10 +12,12 @@ from core.security import (
     get_password_hash,
     verify_password,
     verify_token,
+    get_current_user,
 )
 from database.session import get_db
 from models.user import Token, UserCreate, UserInDB, User as UserModel
 from services import user_service
+from services.audit_service import audit_service
 
 router = APIRouter(prefix="/auth")
 
@@ -33,6 +35,15 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
     # Check if user already exists
     existing_user = user_service.get_user_by_email(db, user.email)
     if existing_user:
+        # Log failed registration attempt
+        audit_service.log_event(
+            db=db,
+            who=user.email,
+            action="register",
+            resource="authentication",
+            decision="deny",
+            reason="Email already registered"
+        )
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Email already registered",
@@ -40,6 +51,18 @@ async def register(user: UserCreate, db: Session = Depends(get_db)):
 
     # Create user
     db_user = user_service.create_user(db, user)
+
+    # Log successful registration
+    audit_service.log_event(
+        db=db,
+        who=f"user-{db_user.id}",
+        action="register",
+        resource="authentication",
+        decision="allow",
+        reason="User registration successful",
+        created_by_id=db_user.id
+    )
+
     return db_user
 
 
@@ -58,6 +81,15 @@ async def login(
     # Authenticate user
     user = user_service.get_user_by_email(db, form_data.username)
     if not user or not verify_password(form_data.password, user.hashed_password):
+        # Log failed login attempt
+        audit_service.log_event(
+            db=db,
+            who=form_data.username,
+            action="login",
+            resource="authentication",
+            decision="deny",
+            reason="Incorrect email or password"
+        )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -76,6 +108,9 @@ async def login(
     # Update last login
     user_service.update_last_login(db, user.id)
 
+    # Log successful login
+    audit_service.log_login(db, user, success=True)
+
     return {
         "access_token": access_token,
         "refresh_token": refresh_token,
@@ -93,6 +128,15 @@ async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
     # Verify refresh token
     payload = verify_token(refresh_token, "refresh")
     if not payload:
+        # Log failed token refresh
+        audit_service.log_event(
+            db=db,
+            who="unknown",
+            action="token_refresh",
+            resource="authentication",
+            decision="deny",
+            reason="Invalid refresh token"
+        )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid refresh token",
@@ -100,6 +144,15 @@ async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
 
     user_id = payload.get("sub")
     if not user_id:
+        # Log failed token refresh
+        audit_service.log_event(
+            db=db,
+            who="unknown",
+            action="token_refresh",
+            resource="authentication",
+            decision="deny",
+            reason="Invalid token payload"
+        )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid token payload",
@@ -108,6 +161,15 @@ async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
     # Get user
     user = user_service.get_user_by_id(db, int(user_id))
     if not user or not user.is_active:
+        # Log failed token refresh
+        audit_service.log_event(
+            db=db,
+            who=f"user-{user_id}",
+            action="token_refresh",
+            resource="authentication",
+            decision="deny",
+            reason="User not found or inactive"
+        )
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="User not found or inactive",
@@ -117,6 +179,17 @@ async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
     new_access_token = create_access_token(data={"sub": str(user.id)})
     new_refresh_token = create_refresh_token(data={"sub": str(user.id)})
 
+    # Log successful token refresh
+    audit_service.log_event(
+        db=db,
+        who=f"user-{user.id}",
+        action="token_refresh",
+        resource="authentication",
+        decision="allow",
+        reason="Token refreshed successfully",
+        created_by_id=user.id
+    )
+
     return {
         "access_token": new_access_token,
         "refresh_token": new_refresh_token,
@@ -125,11 +198,17 @@ async def refresh_token(refresh_token: str, db: Session = Depends(get_db)):
 
 
 @router.post("/logout")
-async def logout():
+async def logout(
+    current_user: UserModel = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
     """
     Logout user (client should discard tokens).
 
     Note: JWT tokens cannot be invalidated on the server side.
     The client must discard the tokens to complete logout.
     """
+    # Log logout event
+    audit_service.log_logout(db, current_user)
+
     return {"message": "Successfully logged out. Please discard your tokens."}

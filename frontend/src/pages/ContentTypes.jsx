@@ -23,10 +23,12 @@ export default function ContentTypes() {
   const [importFile, setImportFile] = useState(null);
 
   // Fetch content types
-  const { data: contentTypes, isLoading } = useQuery({
+  const { data: contentTypesData, isLoading } = useQuery({
     queryKey: ['content-types'],
-    queryFn: contentTypesAPI.list,
+    queryFn: () => contentTypesAPI.list(),
   });
+
+  const contentTypes = contentTypesData?.items || contentTypesData || [];
 
   // Delete mutation
   const deleteMutation = useMutation({

@@ -25,17 +25,21 @@ export default function Dashboard() {
     queryFn: knowledgeAPI.getStats,
   });
 
-  const { data: myContent } = useQuery({
+  const { data: myContentData } = useQuery({
     queryKey: ['my-content'],
-    queryFn: () => contentTypesAPI.listAllInstances({ author_id: user?.id, limit: 10000 }),
+    queryFn: () => contentTypesAPI.listAllInstances({ author_id: user?.id, limit: 500 }),
     enabled: ['author', 'editor'].includes(user?.role),
   });
 
-  const { data: needsRevision } = useQuery({
+  const myContent = myContentData?.items || myContentData || [];
+
+  const { data: needsRevisionData } = useQuery({
     queryKey: ['needs-revision'],
-    queryFn: () => contentTypesAPI.listAllInstances({ status: 'needs_revision', author_id: user?.id, limit: 10000 }),
+    queryFn: () => contentTypesAPI.listAllInstances({ status: 'needs_revision', author_id: user?.id, limit: 500 }),
     enabled: user?.role === 'author',
   });
+
+  const needsRevision = needsRevisionData?.items || needsRevisionData || [];
 
   // Fetch content stats
   const { data: contentStats } = useQuery({

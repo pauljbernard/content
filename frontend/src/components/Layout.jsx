@@ -21,6 +21,8 @@ import {
   ServerIcon,
   CubeIcon,
   RectangleStackIcon,
+  CircleStackIcon,
+  KeyIcon,
 } from '@heroicons/react/24/outline';
 import useAuthStore from '../store/authStore';
 
@@ -67,6 +69,10 @@ export default function Layout({ children }) {
       name: 'System',
       items: [
         { name: 'Your Profile', href: '/profile', icon: UserCircleIcon, roles: ['all'] },
+        { name: 'Indexing', href: '/indexing', icon: ServerIcon, roles: ['knowledge_engineer'] },
+        { name: 'Secrets', href: '/secrets', icon: KeyIcon, roles: ['knowledge_engineer'] },
+        { name: 'Database Settings', href: '/settings/database', icon: CircleStackIcon, roles: ['knowledge_engineer'] },
+        { name: 'LLM Settings', href: '/settings/llm', icon: SparklesIcon, roles: ['knowledge_engineer'] },
       ],
     },
   ];

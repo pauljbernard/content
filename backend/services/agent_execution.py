@@ -99,7 +99,8 @@ class AgentExecutor:
         prompt_template: str,
         context: Dict[str, Any],
         user_inputs: Dict[str, Any],
-        examples: Optional[List[Dict[str, Any]]] = None
+        examples: Optional[List[Dict[str, Any]]] = None,
+        custom_prompt: Optional[str] = None
     ) -> str:
         """
         Assemble the final prompt from template, context, and examples.
@@ -109,6 +110,7 @@ class AgentExecutor:
             context: Retrieved context
             user_inputs: User-provided inputs
             examples: Few-shot examples
+            custom_prompt: User-defined custom instructions for this specific field
 
         Returns:
             Complete prompt string
@@ -140,6 +142,12 @@ class AgentExecutor:
                 examples_section += f"**Output:** {example.get('output', '')}\n\n"
             prompt = examples_section + prompt
 
+        # Add custom prompt instructions if provided
+        if custom_prompt and custom_prompt.strip():
+            prompt += "\n\n## Additional Field-Specific Instructions\n\n"
+            prompt += custom_prompt.strip()
+            prompt += "\n"
+
         return prompt
 
     def get_builtin_agent_config(
@@ -160,12 +168,14 @@ class AgentExecutor:
         ).first()
         content_type_name = content_type.name if content_type else "content"
 
-        # Extract RAG content types from attribute configuration
+        # Extract RAG content types and custom prompt from attribute configuration
         rag_content_types = []
+        custom_prompt = None
         if content_type and content_type.attributes:
             for attr in content_type.attributes:
                 if attr.get("name") == field_name:
                     rag_content_types = attr.get("ai_rag_content_types", [])
+                    custom_prompt = attr.get("ai_custom_prompt")
                     break
 
         # Define built-in agent configurations
@@ -179,6 +189,7 @@ class AgentExecutor:
                         "/subjects/{subject}/common/",
                         "/districts/{state}/"
                     ],
+                    "use_kb_vector_search": True,  # Enable KB vector search
                     "filters": {}
                 },
                 "prompt_template": f"""You are Claude Code acting as a Curriculum Architect, specializing in educational curriculum design and standards alignment.
@@ -253,6 +264,7 @@ Provide detailed, actionable lesson content ready for classroom implementation."
                         "/subjects/{subject}/common/",
                         "/universal/frameworks/dok-framework-guide.md"
                     ],
+                    "use_kb_vector_search": True,  # Enable KB vector search
                     "filters": {}
                 },
                 "prompt_template": f"""You are Claude Code acting as an Assessment Designer, specializing in creating valid, reliable assessments.
@@ -289,6 +301,7 @@ Provide assessment content that is valid, reliable, and aligned to objectives.""
                         "/universal/frameworks/",
                         "/subjects/{subject}/common/"
                     ],
+                    "use_kb_vector_search": True,  # Enable KB vector search
                     "filters": {}
                 },
                 "prompt_template": f"""You are Claude Code acting as a Content Developer, specializing in creating high-quality educational content.
@@ -421,6 +434,7 @@ Provide high-quality content appropriate for this field.""",
             "target_fields": [field_name],
             "retrieval_config": agent_config["retrieval_config"],
             "prompt_template": agent_config["prompt_template"],
+            "custom_prompt": custom_prompt,  # User-defined custom instructions for this field
             "required_user_inputs": [],
             "field_dependencies": [],
             "model_config": {
@@ -488,7 +502,7 @@ Provide high-quality content appropriate for this field.""",
 
         # 4. Retrieve context
         retrieval_config = agent_config.get("retrieval_config", {})
-        context = self.context_retriever.assemble_context(
+        context = await self.context_retriever.assemble_context(
             retrieval_config=retrieval_config,
             user_inputs=current_data
         )
@@ -496,11 +510,13 @@ Provide high-quality content appropriate for this field.""",
         # 5. Assemble prompt
         prompt_template = agent_config.get("prompt_template", "")
         examples = agent_config.get("examples")
+        custom_prompt = agent_config.get("custom_prompt")
         full_prompt = self.assemble_prompt(
             prompt_template=prompt_template,
             context=context,
             user_inputs=current_data,
-            examples=examples
+            examples=examples,
+            custom_prompt=custom_prompt
         )
 
         # 6. Get model configuration
@@ -608,7 +624,7 @@ Provide high-quality content appropriate for this field.""",
 
         # 4. Retrieve context
         retrieval_config = agent_config.get("retrieval_config", {})
-        context = self.context_retriever.assemble_context(
+        context = await self.context_retriever.assemble_context(
             retrieval_config=retrieval_config,
             user_inputs=current_data
         )
@@ -616,11 +632,13 @@ Provide high-quality content appropriate for this field.""",
         # 5. Assemble prompt
         prompt_template = agent_config.get("prompt_template", "")
         examples = agent_config.get("examples")
+        custom_prompt = agent_config.get("custom_prompt")
         full_prompt = self.assemble_prompt(
             prompt_template=prompt_template,
             context=context,
             user_inputs=current_data,
-            examples=examples
+            examples=examples,
+            custom_prompt=custom_prompt
         )
 
         # 6. Get model configuration

@@ -59,13 +59,15 @@ export default function Queues() {
   const [showFilters, setShowFilters] = useState(false);
 
   // Fetch content types for filtering
-  const { data: contentTypes } = useQuery({
+  const { data: contentTypesData } = useQuery({
     queryKey: ['content-types'],
-    queryFn: contentTypesAPI.list,
+    queryFn: () => contentTypesAPI.list(),
   });
 
+  const contentTypes = contentTypesData?.items || contentTypesData || [];
+
   // Fetch content instances for selected status
-  const { data: queueItems, isLoading } = useQuery({
+  const { data: queueData, isLoading } = useQuery({
     queryKey: ['queue', selectedStatus, selectedContentType, searchQuery],
     queryFn: () => {
       const params = { status: selectedStatus };
@@ -78,6 +80,8 @@ export default function Queues() {
       return contentTypesAPI.listAllInstances(params);
     },
   });
+
+  const queueItems = queueData?.items || queueData || [];
 
   // Update instance status mutation
   const updateStatusMutation = useMutation({

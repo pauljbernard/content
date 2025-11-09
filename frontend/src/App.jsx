@@ -34,6 +34,10 @@ import ContentInstanceEditor from './pages/ContentInstanceEditor';
 import ContentInstanceDetail from './pages/ContentInstanceDetail';
 import ContentTypeTemplates from './pages/ContentTypeTemplates';
 import ContentTypeSetup from './pages/ContentTypeSetup';
+import DatabaseSettings from './pages/DatabaseSettings';
+import LLMSettings from './pages/LLMSettings';
+import Secrets from './pages/Secrets';
+import Indexing from './pages/Indexing';
 
 // Create QueryClient
 const queryClient = new QueryClient({
@@ -283,6 +287,55 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          {/* Database Settings (Knowledge Engineers Only) */}
+          <Route
+            path="/settings/database"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['knowledge_engineer']}>
+                  <DatabaseSettings />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* LLM Settings (Knowledge Engineers Only) */}
+          <Route
+            path="/settings/llm"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['knowledge_engineer']}>
+                  <LLMSettings />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Secrets Management (Knowledge Engineers Only) */}
+          <Route
+            path="/secrets"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['knowledge_engineer']}>
+                  <Secrets />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Vector Indexing (Knowledge Engineers Only) */}
+          <Route
+            path="/indexing"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['knowledge_engineer']}>
+                  <Indexing />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+
           <Route
             path="/content-types/new"
             element={

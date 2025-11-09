@@ -7,6 +7,9 @@ from models.user import User
 from models.agent import AgentJob  # Import to register table with SQLAlchemy
 from models.standard import Standard, StandardImportJob  # Import to register tables with SQLAlchemy
 from models.content_type import ContentTypeModel, ContentInstanceModel, ContentRelationshipModel  # Import to register content type tables
+from models.database_config import DatabaseConfig, MigrationJob  # Import to register database config tables
+from models.llm_config import LLMProvider, LLMModel  # Import to register LLM config tables
+from models.secret import Secret  # Import to register secrets table
 from core.security import get_password_hash
 from core.config import settings
 

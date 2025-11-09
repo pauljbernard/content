@@ -47,6 +47,18 @@ class ContentTypeModel(Base):
     # Structure: [{"name": "title", "label": "Title", "type": "text", "required": true, "config": {...}}, ...]
     attributes = Column(JSON, nullable=False)
 
+    # Hierarchical content type configuration
+    is_hierarchical = Column(Boolean, default=False)
+    # Hierarchy configuration stored as JSON
+    # Structure: {
+    #   "identifier_field": "identifier",      # Field in data that uniquely identifies this item
+    #   "parent_field": "parent",              # Field in data that points to parent's identifier
+    #   "children_field": "children",          # Field in data that contains array of child identifiers
+    #   "display_field": "full_statement",     # Field to display in tree view
+    #   "supports_lazy_loading": true          # Whether children should be loaded on-demand
+    # }
+    hierarchy_config = Column(JSON)
+
     # Metadata
     created_by = Column(Integer, ForeignKey("users.id"))
     created_at = Column(DateTime, default=datetime.utcnow)
@@ -144,6 +156,8 @@ class AttributeDefinition(BaseModel):
     # AI Assist configuration
     ai_assist_enabled: bool = Field(default=False, description="Whether AI assistance is available for this field")
     ai_agents: List[str] = Field(default_factory=list, description="List of agent IDs that can assist with this field")
+    ai_rag_content_types: List[str] = Field(default_factory=list, description="List of content type IDs to search for RAG context")
+    ai_custom_prompt: Optional[str] = Field(None, description="Custom prompt instructions for field generation")
     ai_output_schema: Optional[str] = Field(None, description="JSON schema/sample for AI to produce structured output (for JSON fields)")
 
     class Config:
@@ -159,6 +173,8 @@ class AttributeDefinition(BaseModel):
                 "order_index": 0,
                 "ai_assist_enabled": False,
                 "ai_agents": [],
+                "ai_rag_content_types": [],
+                "ai_custom_prompt": None,
                 "ai_output_schema": None
             }
         }
@@ -170,6 +186,8 @@ class ContentTypeCreate(BaseModel):
     description: Optional[str] = None
     icon: Optional[str] = None
     attributes: List[AttributeDefinition] = Field(..., min_length=1)
+    is_hierarchical: bool = False
+    hierarchy_config: Optional[Dict[str, Any]] = None
 
     class Config:
         json_schema_extra = {
@@ -213,6 +231,8 @@ class ContentTypeUpdate(BaseModel):
     description: Optional[str] = None
     icon: Optional[str] = None
     attributes: Optional[List[AttributeDefinition]] = None
+    is_hierarchical: Optional[bool] = None
+    hierarchy_config: Optional[Dict[str, Any]] = None
 
 
 class ContentTypeInDB(BaseModel):
@@ -223,6 +243,8 @@ class ContentTypeInDB(BaseModel):
     icon: Optional[str]
     is_system: bool
     attributes: List[AttributeDefinition]
+    is_hierarchical: bool = False
+    hierarchy_config: Optional[Dict[str, Any]] = None
     created_by: Optional[int]
     created_at: datetime
     updated_at: datetime

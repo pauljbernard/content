@@ -326,7 +326,7 @@ class StandardPublic(BaseModel):
 class StandardImportJobCreate(BaseModel):
     """Schema for creating a standard import job."""
 
-    source_type: str = Field(..., pattern="^(url|file|api|manual)$")
+    source_type: str = Field(..., pattern="^(url|file|api|manual|case_network)$")
     source_location: str
     format: str = Field(..., pattern="^(case|pdf|html|xml|json|csv|manual)$")
 
