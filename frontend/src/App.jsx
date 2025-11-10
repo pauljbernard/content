@@ -21,6 +21,7 @@ import Profile from './pages/Profile';
 import Agents from './pages/Agents';
 import AgentDetails from './pages/AgentDetails';
 import AgentTask from './pages/AgentTask';
+import AgentJobDetail from './pages/AgentJobDetail';
 import Workflows from './pages/Workflows';
 import WorkflowDetail from './pages/WorkflowDetail';
 import WorkflowEditor from './pages/WorkflowEditor';
@@ -175,6 +176,16 @@ function App() {
               <ProtectedRoute>
                 <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
                   <AgentTask />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agents/jobs/:jobId"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['author', 'editor', 'knowledge_engineer']}>
+                  <AgentJobDetail />
                 </RoleRoute>
               </ProtectedRoute>
             }
